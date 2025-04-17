@@ -1,0 +1,105 @@
+from algoritmo2.paso import Paso
+from cola.cola_prioridad import ColaPrioridad
+from grafo.grafo import Grafo
+from grafo.nodo import Nodo
+
+NRO_PASO_INICIAL: int = 0
+
+
+class RecorridoAlgoritmo:
+    def __init__(self, grafo: Grafo, nodo_inicio: Nodo, nodo_objetivo):
+        self._nro_paso_actual: int = NRO_PASO_INICIAL
+        self._grafo: Grafo = grafo
+        self._nodo_inicio: Nodo = nodo_inicio
+        self._nodo_inicio.costo_desde_inicio = 0
+        self._nodo_objetivo: Nodo = nodo_objetivo
+
+        nodos_abiertos = ColaPrioridad()
+        nodos_abiertos.encolar_elemento(nodo_inicio, nodo_inicio.costo_total)
+        nodos_cerrados = set()
+        paso_inicial = Paso(self._nro_paso_actual, nodo_inicio, self._grafo.obtener_aristas_nodo(nodo_inicio),
+                            nodos_abiertos, nodos_cerrados, self.__construir_camino(nodo_inicio), False)
+        self._pasos: dict[int, Paso] = {self._nro_paso_actual: paso_inicial}
+
+    def obtener_paso_actual(self) -> Paso:
+        return self._pasos[self._nro_paso_actual]
+
+    def retroceder_paso(self) -> None:
+        if self._nro_paso_actual > NRO_PASO_INICIAL:
+            self._nro_paso_actual -= 1
+
+    def avanzar_paso(self) -> None:
+        self._nro_paso_actual += 1
+
+        paso_anterior: Paso = self.__obtener_paso_anterior()
+        if paso_anterior.fin:
+            # Se retrocede 1 paso, ya que la búsqueda finalizó y el paso actual no se procesa
+            self._nro_paso_actual -= 1
+            print("La busqueda ya finalizó")
+            return
+
+        nuevo_paso = self.__aplicar_algoritmo(paso_anterior)
+        self.__agregar_paso(nuevo_paso)
+
+    def __aplicar_algoritmo(self, paso_anterior: Paso) -> Paso:
+        nuevo_paso: Paso
+        fin_busqueda = False
+        # Nodos aun no evaluados priorizados por costo
+        cola_prioridad_abiertos: ColaPrioridad[Nodo] = paso_anterior.nodos_abiertos
+        # Nodos ya evaluados
+        conjunto_cerrados: set[Nodo] = paso_anterior.nodos_cerrados
+
+        nodo_actual = cola_prioridad_abiertos.desencolar_elemento()
+        if nodo_actual == self._nodo_objetivo:
+            fin_busqueda = True
+            nuevo_paso = Paso(self._nro_paso_actual, nodo_actual, self._grafo.obtener_aristas_nodo(nodo_actual),
+                              cola_prioridad_abiertos, conjunto_cerrados, self.__construir_camino(nodo_actual),
+                              fin_busqueda)
+            return nuevo_paso
+
+        conjunto_cerrados.add(nodo_actual)
+
+        aristas_nodo_actual = self._grafo.obtener_aristas_nodo(nodo_actual)
+        for arista in aristas_nodo_actual:
+            nodo_adyacente: Nodo = arista.obtener_nodo_opuesto(nodo_actual)
+            # Saltear nodo ya evaluado
+            if nodo_adyacente in conjunto_cerrados:
+                continue
+
+            costo_tentativo = nodo_actual.costo_desde_inicio + arista.distancia
+
+            if not cola_prioridad_abiertos.tiene_elemento(nodo_adyacente):
+                # Actualizo la info del nodo adyacente
+                nodo_adyacente.costo_desde_inicio = costo_tentativo
+                nodo_adyacente.nodo_padre = nodo_actual
+                cola_prioridad_abiertos.encolar_elemento(nodo_adyacente, nodo_adyacente.costo_total)
+            elif costo_tentativo < nodo_adyacente.costo_desde_inicio:
+                # Actualizo la info del nodo adyacente
+                nodo_adyacente.costo_desde_inicio = costo_tentativo
+                nodo_adyacente.nodo_padre = nodo_actual
+                # Se actualiza costo del nodo adyacente en la cola de prioridad
+                cola_prioridad_abiertos.encolar_elemento(nodo_adyacente, nodo_adyacente.costo_total)
+                continue
+
+        nuevo_paso = Paso(self._nro_paso_actual, nodo_actual, self._grafo.obtener_aristas_nodo(nodo_actual),
+                          cola_prioridad_abiertos, conjunto_cerrados, self.__construir_camino(nodo_actual),
+                          fin_busqueda)
+        return nuevo_paso
+
+    def __obtener_paso_anterior(self) -> Paso:
+        if self._nro_paso_actual == NRO_PASO_INICIAL:
+            return self._pasos[self._nro_paso_actual]
+        else:
+            return self._pasos[self._nro_paso_actual - 1]
+
+    def __agregar_paso(self, paso: Paso):
+        self._pasos[self._nro_paso_actual] = paso
+
+    def __construir_camino(self, nodo_objetivo: Nodo) -> list[Nodo]:
+        nodos_camino = []
+        nodo_actual = nodo_objetivo
+        while nodo_actual is not None:
+            nodos_camino.append(nodo_actual)
+            nodo_actual = nodo_actual.nodo_padre
+
+        return nodos_camino[::-1]
