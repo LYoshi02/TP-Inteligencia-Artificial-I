@@ -1,12 +1,10 @@
 class Nodo:
-    def __init__(self, nombre: str, costo: float = float("inf"), heuristica: float = 0):
+    def __init__(self, nombre: str, costo_desde_inicio: float = float("inf"), heuristica: float = 0):
         self._nombre = nombre
         # g: costo desde el nodo inicial hasta este nodo
-        self._costo: float = costo
+        self._costo_desde_inicio: float = costo_desde_inicio
         # h: costo aproximado desde este nodo hasta el nodo objetivo
         self._heuristica: float = heuristica
-        # f: funcion heuristica
-        # self._f: float = self.costo + heuristica
         # Nodo padre para construir el camino hacia el nodo objetivo
         self.nodo_padre: Nodo | None = None
 
@@ -15,12 +13,12 @@ class Nodo:
         return self._nombre
 
     @property
-    def costo(self):
-        return self._costo
+    def costo_desde_inicio(self):
+        return self._costo_desde_inicio
 
-    @costo.setter
-    def costo(self, costo: float):
-        self._costo = costo
+    @costo_desde_inicio.setter
+    def costo_desde_inicio(self, costo: float):
+        self._costo_desde_inicio = costo
 
     @property
     def heuristica(self):
@@ -31,8 +29,8 @@ class Nodo:
         self._heuristica = heuristica
 
     @property
-    def f(self):
-        return self._costo + self._heuristica
+    def costo_total(self):
+        return self._costo_desde_inicio + self._heuristica
 
     def __eq__(self, nodo):
         if isinstance(nodo, Nodo):
@@ -47,7 +45,7 @@ class Nodo:
         return hash(self.nombre)
 
     def __str__(self):
-        return f"Nodo(nombre={self.nombre}, g={self.costo}, h={self.heuristica})"
+        return f"Nodo(nombre={self.nombre}, g={self.costo_desde_inicio}, h={self.heuristica})"
 
     def __repr__(self):
-        return f"Nodo(nombre={self.nombre}, g={self.costo}, h={self.heuristica})"
+        return f"Nodo(nombre={self.nombre}, g={self.costo_desde_inicio}, h={self.heuristica})"
