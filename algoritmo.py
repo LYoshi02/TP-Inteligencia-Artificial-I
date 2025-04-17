@@ -1,27 +1,27 @@
-import heapq
-
+from cola.cola_prioridad import ColaPrioridad
 from grafo.grafo import Grafo
 from grafo.nodo import Nodo
 
 
-def a_estrella2(grafo: Grafo, nodo_inicio: Nodo, nodo_objetivo: Nodo):
+def a_estrella(grafo: Grafo, nodo_inicio: Nodo, nodo_objetivo: Nodo):
     iteracion = 0
-    nodo_inicio.costo = 0
 
-    cola_prioridad_abiertos: list[tuple[float, Nodo]] = [(nodo_inicio.f, nodo_inicio)]
+    cola_prioridad_abiertos: ColaPrioridad[Nodo] = ColaPrioridad()  # Nodos aun no evaluados priorizados por costo
     conjunto_cerrados: set[Nodo] = set()  # Nodos evaluados
 
+    nodo_inicio.costo_desde_inicio = 0
+    cola_prioridad_abiertos.encolar_elemento(nodo_inicio, nodo_inicio.costo_total)
     print("ENTRADAS:")
     print(f"Nodo inicio: {nodo_inicio}")
     print(f"Nodo objetivo: {nodo_objetivo}")
     print("%%%%%%%%%%%%%%")
     print("")
 
-    while cola_prioridad_abiertos:
+    while not cola_prioridad_abiertos.vacio():
         iteracion += 1
         print(f"ITERACION: {iteracion}")
         print(cola_prioridad_abiertos)
-        _, nodo_actual = heapq.heappop(cola_prioridad_abiertos)
+        nodo_actual = cola_prioridad_abiertos.desencolar_elemento()
         print(f"Nodo actual: {nodo_actual}")
 
         if nodo_actual == nodo_objetivo:
@@ -43,105 +43,34 @@ def a_estrella2(grafo: Grafo, nodo_inicio: Nodo, nodo_objetivo: Nodo):
                 print("------------")
                 continue
 
-            costo_tentativo = nodo_actual.costo + arista._distancia
+            costo_tentativo = nodo_actual.costo_desde_inicio + arista.distancia
 
-            if not nodo_adyacente in cola_prioridad_abiertos:
-                # Actualizo la info del nodo vecino
-                nodo_adyacente.costo = costo_tentativo
+            if not cola_prioridad_abiertos.tiene_elemento(nodo_adyacente):
+                # Actualizo la info del nodo adyacente
+                nodo_adyacente.costo_desde_inicio = costo_tentativo
                 nodo_adyacente.nodo_padre = nodo_actual
                 print("Se agrega al conjunto de abiertos")
-                heapq.heappush(cola_prioridad_abiertos, (nodo_adyacente.f, nodo_adyacente))
+                cola_prioridad_abiertos.encolar_elemento(nodo_adyacente, nodo_adyacente.costo_total)
                 print(f"Nodo adyacente actualizado: {nodo_adyacente}")
                 print("------------")
-            elif costo_tentativo < nodo_adyacente.costo:
-                print(f"Resultado: Se encontró un mejor camino {costo_tentativo} < {nodo_adyacente.costo}")
-                # Actualizo la info del nodo vecino
-                nodo_adyacente.costo = costo_tentativo
+            elif costo_tentativo < nodo_adyacente.costo_desde_inicio:
+                print(f"Resultado: Se encontró un mejor camino hacia {nodo_adyacente.nombre} "
+                      f"({costo_tentativo} < anterior {nodo_adyacente.costo_desde_inicio})")
+                # Actualizo la info del nodo adyacente
+                nodo_adyacente.costo_desde_inicio = costo_tentativo
                 nodo_adyacente.nodo_padre = nodo_actual
+                # Se actualiza costo del nodo adyacente en la cola de prioridad
+                cola_prioridad_abiertos.encolar_elemento(nodo_adyacente, nodo_adyacente.costo_total)
                 print("------------")
                 continue
 
         print("%%%%%%%%%%%%%%")
         print("")
 
-    return "Camino no encontrado"
-
-
-def a_estrella(grafo: Grafo, nodo_inicio: Nodo, nodo_objetivo: Nodo):
-    iteracion = 0
-    nodo_inicio.costo = 0
-
-    conjunto_abiertos: set[Nodo] = {nodo_inicio}  # Nodos a evaluar
-    conjunto_cerrados: set[Nodo] = set()  # Nodos evaluados
-
-    print("ENTRADAS:")
-    print(f"Nodo inicio: {nodo_inicio}")
-    print(f"Nodo objetivo: {nodo_objetivo}")
-    print("%%%%%%%%%%%%%%")
-    print("")
-
-    while conjunto_abiertos:
-        iteracion += 1
-        print(f"ITERACION: {iteracion}")
-        nodo_actual: Nodo = buscar_nodo_menor_costo(conjunto_abiertos)
-        print(f"Nodo actual: {nodo_actual}")
-
-        if nodo_actual == nodo_objetivo:
-            print("Resultado: nodo objetivo encontrado")
-            return construir_camino(nodo_actual)
-
-        conjunto_abiertos.discard(nodo_actual)
-        conjunto_cerrados.add(nodo_actual)
-        print(f"Accion: agregando nodo {nodo_actual.nombre} a conjunto de cerrados")
-        print("------------")
-
-        aristas_nodo_actual = grafo.obtener_aristas_nodo(nodo_actual)
-        for arista in aristas_nodo_actual:
-            nodo_adyacente: Nodo = arista.obtener_nodo_opuesto(nodo_actual)
-            print(f"Nodo adyacente: {nodo_adyacente}")
-
-            # Saltear nodo ya evaluado
-            if nodo_adyacente in conjunto_cerrados:
-                print("Resultado: el nodo ya fue evaluado")
-                print("------------")
-                continue
-
-            costo_tentativo = nodo_actual.costo + arista._distancia
-
-            if not nodo_adyacente in conjunto_abiertos:
-                # Actualizo la info del nodo vecino
-                nodo_adyacente.nodo_padre = nodo_actual
-                nodo_adyacente.costo = costo_tentativo
-                print("Se agrega al conjunto de abiertos")
-                conjunto_abiertos.add(nodo_adyacente)
-                print(f"Nodo adyacente actualizado: {nodo_adyacente}")
-                print("------------")
-                conjunto_abiertos.add(nodo_adyacente)
-            elif costo_tentativo < nodo_adyacente.costo:
-                print(f"Resultado: Se encontró un mejor camino {costo_tentativo} < {nodo_adyacente.costo}")
-                # Actualizo la info del nodo vecino
-                nodo_adyacente.nodo_padre = nodo_actual
-                nodo_adyacente.costo = costo_tentativo
-                print("------------")
-                continue
-
-        print("%%%%%%%%%%%%%%")
-        print("")
-
-    return "Camino no encontrado"
+    return "Resultado: camino no encontrado"
 
 
 # HELPERS
-def buscar_nodo_menor_costo(conjunto_nodos: set[Nodo]) -> Nodo:
-    nodo_menor_costo: Nodo = conjunto_nodos.pop()
-
-    for nodo in conjunto_nodos:
-        if nodo.f < nodo_menor_costo.f:
-            nodo_menor_costo = nodo
-
-    return nodo_menor_costo
-
-
 def construir_camino(nodo_objetivo: Nodo) -> str:
     nodos_camino = []
     nodo_actual = nodo_objetivo

@@ -1,4 +1,4 @@
-from algoritmo import a_estrella2
+from algoritmo import a_estrella
 from grafo.grafo import Grafo
 from grafo.nodo import Nodo
 
@@ -10,7 +10,7 @@ def main():
     nodo_inicio: Nodo = grafo.obtener_nodo("S")
     nodo_objetivo: Nodo = grafo.obtener_nodo("E")
 
-    print(a_estrella2(grafo, nodo_inicio, nodo_objetivo))
+    print(a_estrella(grafo, nodo_inicio, nodo_objetivo))
 
 
 def generar_grafo() -> Grafo:
