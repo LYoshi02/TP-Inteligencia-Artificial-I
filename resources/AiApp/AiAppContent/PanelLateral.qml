@@ -27,24 +27,26 @@ Item {
             spacing: 20
             anchors.horizontalCenter: parent.horizontalCenter
 
-            Button {
-                width: 50
-                height: 50
-                focusPolicy: Qt.NoFocus
-                background: Rectangle {
-                    color: "black"
-                    radius: 25
-                }
+           Rectangle {
+            width: 50
+            height: 50
+            radius: 25
+            color: "black"
 
-                contentItem: Image {
-                    source: "images/play.png"
-                    width: 24
-                    height: 24
-                    anchors.centerIn: parent
-                }
-
-                onClicked: console.log("Play clicked!")
+            Image {
+                source: "images/play.png"
+                width: 24
+                height: 24
+                anchors.centerIn: parent
             }
+
+            MouseArea {
+                anchors.fill: parent
+                onClicked: console.log("Play clicked!")
+                hoverEnabled: true
+                cursorShape: Qt.PointingHandCursor
+            }
+        }
 
             Rectangle {
                 width: 50

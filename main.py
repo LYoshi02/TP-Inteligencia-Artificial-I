@@ -1,5 +1,4 @@
 from PyQt6.QtWidgets import QApplication
-from PyQt6.QtCore import QUrl
 from PyQt6.QtQml import QQmlApplicationEngine
 
 from algoritmo import a_estrella
