@@ -1,0 +1,64 @@
+from algoritmo2.paso import Paso
+from algoritmo2.recorrido_algoritmo import RecorridoAlgoritmo
+from grafo.grafo import Grafo
+from grafo.nodo import Nodo
+
+
+class Controlador:
+    def __init__(self):
+        self._grafo = Grafo()
+        self._nodo_inicio: Nodo | None = None
+        self._nodo_objetivo: Nodo | None = None
+        self._recorrido_algoritmo: RecorridoAlgoritmo | None = None
+
+    def restablecer_grafo(self):
+        self._grafo = Grafo()
+        self._nodo_inicio = None
+        self._nodo_objetivo = None
+        self._recorrido_algoritmo = None
+
+    # Operaciones con Nodos
+    def obtener_nodo(self, nombre: str) -> Nodo | None:
+        return self._grafo.obtener_nodo(nombre)
+
+    def agregar_nodo(self, nombre: str) -> Grafo:
+        nodo: Nodo = Nodo(nombre)
+        self._grafo.agregar_nodo(nodo)
+        return self._grafo
+
+    def eliminar_nodo(self, nombre: str) -> Grafo:
+        nodo: Nodo = Nodo(nombre)
+        self._grafo.eliminar_nodo(nodo)
+        return self._grafo
+
+    def establecer_nodo_inicio(self, nodo: Nodo):
+        self._nodo_inicio = nodo
+
+    def establecer_nodo_objetivo(self, nodo: Nodo):
+        self._nodo_objetivo = nodo
+
+    # Operaciones con Aristas
+    def agregar_arista(self, nodo_origen: Nodo, nodo_destino: Nodo, distancia: float) -> Grafo:
+        self._grafo.agregar_arista(nodo_origen, nodo_destino, distancia)
+        return self._grafo
+
+    def eliminar_arista(self, nodo_origen: Nodo, nodo_destino: Nodo) -> Grafo:
+        self._grafo.eliminar_arista(nodo_origen, nodo_destino)
+        return self._grafo
+
+    # Operaciones del Algoritmo
+    def comenzar_algoritmo(self) -> Paso:
+        if self._nodo_inicio == None or self._nodo_objetivo == None:
+            print("No se establecieron los nodos de inicio y/o objetivo")
+            return
+
+        self._recorrido_algoritmo = RecorridoAlgoritmo(self._grafo, self._nodo_inicio, self._nodo_objetivo)
+        return self._recorrido_algoritmo.obtener_paso_actual()
+
+    def avanzar_paso(self) -> Paso:
+        self._recorrido_algoritmo.avanzar_paso()
+        return self._recorrido_algoritmo.obtener_paso_actual()
+
+    def retroceder_paso(self) -> Paso:
+        self._recorrido_algoritmo.retroceder_paso()
+        return self._recorrido_algoritmo.obtener_paso_actual()
