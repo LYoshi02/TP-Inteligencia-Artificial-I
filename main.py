@@ -1,15 +1,15 @@
-from PyQt6.QtWidgets import QApplication, QMainWindow
+from PyQt6.QtWidgets import QMainWindow, QApplication
+
 from vista import vista
 from algoritmo import a_estrella
 from grafo.grafo import Grafo
 from grafo.nodo import Nodo
 import sys
 
+from vista.vista import Vista
+
 
 class main(QMainWindow, vista.Ui_MainWindow):
-    def __init__(self):
-        super().__init__()
-        self.setupUi(self)
 
     def ejecutar_algoritmo(self):
         grafo = generar_grafo()
@@ -55,9 +55,16 @@ def generar_grafo() -> Grafo:
 
     return grafo
 
-
 if __name__ == "__main__":
     app = QApplication(sys.argv)
-    window = main()
+    with open("resources/styles/style.qss", "r") as f:
+        style = f.read()
+        app.setStyleSheet(style)
+    window = Vista()
+
+    # Mostramos la ventana
     window.show()
+
+    # Ejecutamos la aplicación
     sys.exit(app.exec())
+

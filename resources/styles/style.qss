@@ -1,0 +1,183 @@
+QWidget#centralwidget {
+    background-color: #F0F0E6;
+}
+
+#separator1, #separator2 {
+    background-color: #A9B388;
+}
+
+#separator3{
+    background-color: #F0F0E6;
+}
+
+
+#line{
+    background-color: rgb(194, 194, 194);
+}
+
+#widget_RLR,
+#widget_HR,
+#widget_H,
+#widget_LR {
+   background-color: white;
+    border-radius: 15px;
+}
+
+#widget_4, #widget_6{
+    background-color: white;
+    border-radius: 25px;
+    padding: 10px;
+}
+
+#graphicsView_H, #graphicsView_LR {
+    background-color: #f0f0f0;
+}
+
+QLabel {
+    color: black;
+    font-weight: bold;
+}
+
+QLabel#Titulo{
+    color: black;
+    font-weight: bold;
+    font-size: 22px;
+}
+
+QLabel#labelWidget2, QLabel#labelWidget5{
+    font-size: 14px;
+    color: #333333;
+}
+
+QComboBox, QSpinBox {
+    background-color: white;
+    color: black;
+}
+
+QComboBox QFontComboBox{
+    color: black;
+}
+
+QRadioButton {
+    color: black;
+    spacing: 8px;
+}
+
+#pushButton_3,
+#pushButton_4,
+#pushButton_5{
+    background-color: #A9B388;
+    border-radius: 15px;
+}
+
+#pushButtonPlay{
+    background-color: #111111;
+    border-radius: 15px;
+    color: white;
+    font-size: 24px;
+}
+
+QRadioButton::indicator {
+    width: 16px;
+    height: 16px;
+    border-radius: 8px;
+    border: 1px solid #999999;
+    background: white;
+}
+
+#pushButton_3,
+#pushButton_4,
+#pushButton_5 {
+    background-color: #A9B388;
+    border-radius: 15px;
+    transition: background-color 0.3s ease;
+}
+
+#pushButton_3:hover,
+#pushButton_4:hover,
+#pushButton_5:hover {
+    background-color: #8A9B6A;
+}
+
+#pushButtonPlay {
+    background-color: #111111;
+    border-radius: 15px;
+    color: white;
+    font-size: 24px;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+#pushButtonPlay:hover {
+    background-color: #444444;
+}
+
+QPushButton {
+    background-color: transparent;
+    border: none;
+}
+
+QPushButton:focus {
+    outline: none;
+}
+
+QRadioButton::indicator:checked {
+    background-color: #556B2F;
+    border: 1px solid #FFFFFF;
+}
+
+QSpinBox:disabled, QComboBox:disabled {
+    background-color: #eeeeee;
+    color: #888888;
+}
+
+QInputDialog, QMessageBox {
+    background-color: white;
+    border-radius: 15px;
+    padding: 20px;
+    font-family: "Arial", sans-serif;
+}
+
+QInputDialog QLabel, QMessageBox QLabel {
+    font-size: 16px;
+    color: #333333;
+    font-weight: normal;
+}
+
+QInputDialog QLineEdit, QMessageBox QLineEdit {
+    background-color: #F0F0E6;
+    border: 2px solid #A9B388;
+    border-radius: 10px;
+    padding: 5px;
+    font-size: 14px;
+    color: #333333;
+}
+
+QInputDialog QLineEdit:focus, QMessageBox QLineEdit:focus {
+    border: 2px solid #8A9B6A;
+    background-color: #FFFFFF;
+}
+
+QInputDialog QPushButton, QMessageBox QPushButton {
+    background-color: #A9B388;
+    border-radius: 12px;
+    padding: 6px 12px;
+    font-size: 14px;
+    color: white;
+}
+
+QInputDialog QPushButton:hover, QMessageBox QPushButton:hover {
+    background-color: #8A9B6A;
+}
+
+QInputDialog QPushButton:pressed, QMessageBox QPushButton:pressed {
+    background-color: #6C7A4E;
+}
+
+QInputDialog QPushButton:disabled, QMessageBox QPushButton:disabled {
+    background-color: #B0B79B;
+    color: #888888;
+}
+
+QInputDialog QPushButton:focus, QMessageBox QPushButton:focus {
+    outline: none;
+}
