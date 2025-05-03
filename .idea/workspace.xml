@@ -5,12 +5,10 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="877b008c-9c82-42c4-83ce-733d86adadbf" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/resources/styles/style.qss" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/vista/graficoGrafo.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/vista/ui_mainWindow.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/tp-inteligencia-artificial-I.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/tp-inteligencia-artificial-I.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/vista/vista.py" beforeDir="false" afterPath="$PROJECT_DIR$/vista/vista.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -170,6 +168,9 @@
         </entry>
       </map>
     </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <option name="LAST_COMMIT_MESSAGE" value="" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/TP_Inteligencia_Artificial_I$vista1.coverage" NAME="vista1 Coverage Results" MODIFIED="1745687319253" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/vista" />
