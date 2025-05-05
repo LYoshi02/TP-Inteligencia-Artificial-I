@@ -1,9 +1,11 @@
-from PyQt6 import QtWidgets
+from PyQt6 import QtCore, QtWidgets
+from PyQt6.QtGui import QColor
 from PyQt6.QtWidgets import QMainWindow
 
 from controlador.controlador import Controlador
 from vista.ui_mainWindow import Ui_MainWindow
-from vista.graficoGrafo import GrafoScene
+from vista.graficoGrafo import GrafoScene, NodoGrafico
+
 
 class Vista(QMainWindow):
 
@@ -11,45 +13,99 @@ class Vista(QMainWindow):
         super().__init__()
         self.ui = Ui_MainWindow()
         self.ui.setupUi(self)
-        self.centrar_ventana()
         self.controlador = Controlador()
-        self.scene_H = GrafoScene()
-        self.scene_LR = GrafoScene()
-        self.ui.graphicsView_H.setScene(self.scene_H)
-        self.ui.graphicsView_LR.setScene(self.scene_LR)
 
-        #Desactivar widgets
-        self.ui.graphicsView_H.setDisabled(True)
-        self.ui.graphicsView_LR.setDisabled(True)
+        self._configurar_interfaz()
+        self._conectar_botones()
+        self.centrar_ventana()
 
-        # Conectar botones de la interfaz
-        self.ui.pushButtonPlay.clicked.connect(self.iniciar_algoritmo)
-        self.ui.pushButton_3.clicked.connect(self.avanzar_paso)
-        self.ui.pushButton_4.clicked.connect(self.retroceder_paso)
+    def _configurar_interfaz(self):
+        self.scene_B = GrafoScene(self.controlador)
 
-        # ComboBox Heurística
-        self.ui.comboBox.setDisabled(True)
-        self.ui.comboBox.currentTextChanged.connect(self.actualizar_widgets_heuristica)
-        self.ui.infoButtonComboBox.clicked.connect(self.mostrar_info_heuristica)
+        self.ui.graphicsView_base.setScene(self.scene_B)
+        self.ui.graphicsView_manhattan.setScene(self.scene_B)
+        self.ui.graphicsView_lRecta.setScene(self.scene_B)
 
-        # Modo de Generación
-        self.ui.infoButtonModo.clicked.connect(self.mostrar_info_modo_generacion)
-        # Selección de modo
-        self.ui.radioButtonManual.toggled.connect(self.activar_campos)
-        self.ui.spinBox.setDisabled(True)
-        self.ui.radioButtonAleatorio.toggled.connect(self.activar_campos)
+        self.ui.widget_manhattan.setVisible(False)
+        self.ui.widget_lRecta.setVisible(False)
+        self.ui.widget_base.setDisabled(True)
 
-        # Cantidad de nodos
-        self.ui.infoButtonSpinBox.clicked.connect(self.mostrar_info_cantidad_nodos)
+        self.ui.graphicsView_manhattan.setDisabled(True)
+        self.ui.graphicsView_lRecta.setDisabled(True)
+        self.ui.graphicsView_base.setDisabled(True)
 
+        self.mostrar_resultados(False)
+
+
+        # Desactivar campos de datos
+        self.ui.labelComboBox.setVisible(False)
+        self.ui.comboBox.setVisible(False)
+        item = self.ui.comboBox.model().item(0)
+        item.setEnabled(False)
+
+        self.ui.labelSpinBox.setVisible(False)
+        self.ui.spinBox.setVisible(False)
+
+        self.ui.infoButtonComboBox.setVisible(False)
+        self.ui.infoButtonSpinBox.setVisible(False)
+
+        self.ui.groupBoxInstrucciones.setVisible(False)
+
+
+    # Centrar la ventana
     def centrar_ventana(self):
         qr = self.frameGeometry()
         cp = QtWidgets.QApplication.primaryScreen().availableGeometry().center()
         qr.moveCenter(cp)
         self.move(qr.topLeft())
 
+    # Botones
+    def _conectar_botones(self):
+        self.ui.pushButtonPlay.clicked.connect(self.iniciar_algoritmo)
+        self.findChild(QtWidgets.QPushButton, "pushButton_siguiente_paso").clicked.connect(self.avanzar_paso)
+        self.findChild(QtWidgets.QPushButton, "pushButton_paso_atras").clicked.connect(self.retroceder_paso)
+        self.findChild(QtWidgets.QPushButton, "pushButton_limpiar").clicked.connect(self.limpiar_escena)
+        self.ui.infoButtonComboBox.clicked.connect(self.mostrar_info_heuristica)
+        self.ui.infoButtonModo.clicked.connect(self.mostrar_info_modo_generacion)
+        self.ui.radioButtonManual.toggled.connect(self.activar_campos)
+        self.ui.radioButtonAleatorio.toggled.connect(self.activar_campos)
+        self.ui.infoButtonSpinBox.clicked.connect(self.mostrar_info_cantidad_nodos)
+
+    # ---- Funcionalidades de los botones: Conexión con el controlador ----
     def iniciar_algoritmo(self):
-        self.controlador.comenzar_algoritmo()
+
+        try:
+            seleccion = self.ui.comboBox.currentText()
+            nodos = self.controlador.obtener_nodos()
+
+            if not self._validar_entrada(seleccion, nodos):
+                return
+
+            self.obtener_estados(nodos)
+
+            if seleccion == "Ambos":
+                self.ejecutar_ambas_heuristicas()
+            else:
+                self.ejecutar_heuristica()
+
+            self.mostrar_resultados(True)
+        except Exception as e:
+            QtWidgets.QMessageBox.critical(self, "Error", f"Ocurrió un error: {str(e)}")
+
+    def _validar_entrada(self, seleccion, nodos):
+        if not nodos:
+            QtWidgets.QMessageBox.warning(self, "Advertencia", "No hay nodos disponibles.")
+            return False
+        if seleccion == "Selecciona una heurística":
+            QtWidgets.QMessageBox.warning(self, "Advertencia", "Por favor, selecciona una heurística.")
+            return False
+        return True
+
+    def agregar_nodo(self, nombre, x, y):
+        self.controlador.agregar_nodo(nombre, x, y)
+
+    def agregar_arista(self, nodo_origen, nodo_destino, peso):
+        self.controlador.agregar_arista(nodo_origen, nodo_destino, peso)
 
     def avanzar_paso(self):
         self.controlador.avanzar_paso()
@@ -57,51 +113,193 @@ class Vista(QMainWindow):
     def retroceder_paso(self):
         self.controlador.retroceder_paso()
 
-    def actualizar_widgets_heuristica(self):
+    def obtener_estados(self, nodos):
+        dialogo = QtWidgets.QDialog(self)
+        dialogo.setWindowTitle("Seleccionar Estados")
+        layout = QtWidgets.QVBoxLayout(dialogo)
+
+        combo_inicial = QtWidgets.QComboBox()
+        combo_objetivo = QtWidgets.QComboBox()
+        nombres_nodos = [nodo.nombre for nodo in nodos]
+        combo_inicial.addItems(nombres_nodos)
+        combo_objetivo.addItems(nombres_nodos)
+
+        layout.addWidget(QtWidgets.QLabel("Estado inicial:"))
+        layout.addWidget(combo_inicial)
+        layout.addWidget(QtWidgets.QLabel("Estado objetivo:"))
+        layout.addWidget(combo_objetivo)
+
+        btn_aceptar = QtWidgets.QPushButton("Aceptar")
+        layout.addWidget(btn_aceptar)
+
+        def aceptar():
+            estado_inicial = combo_inicial.currentText()
+            estado_objetivo = combo_objetivo.currentText()
+            if estado_inicial == estado_objetivo:
+                QtWidgets.QMessageBox.warning(dialogo, "Error", "El estado inicial y el objetivo deben ser distintos.")
+            else:
+                self.establecer_estados(estado_objetivo, estado_inicial)
+                dialogo.accept()
+
+        btn_aceptar.clicked.connect(aceptar)
+        dialogo.exec()
+
+    def establecer_estados(self, estado_objetivo, estado_inicial):
+        nodo_inicial = self.controlador.obtener_nodo(estado_inicial)
+        nodo_objetivo = self.controlador.obtener_nodo(estado_objetivo)
+
+        self.controlador.establecer_nodo_inicio(nodo_inicial)
+        self.controlador.establecer_nodo_objetivo(nodo_objetivo)
+
+        for nodo_item in self.scene_B.nodos:
+            if nodo_item.nombre == estado_inicial:
+                nodo_item.set_color(QColor("#A0A0A0"))
+            elif nodo_item.nombre == estado_objetivo:
+                nodo_item.set_color(QColor("#C25B56"))
+            else:  # Caso normal
+                nodo_item.set_color(QColor("#487575"))
+
+    def limpiar_escena(self):
+        for item in list(self.scene_B.items()):
+            if isinstance(item, (NodoGrafico, QtWidgets.QGraphicsLineItem)):
+                self.scene_B.removeItem(item)
+
+        if hasattr(self.scene_B, 'nodos'):
+            self.scene_B.nodos.clear()
+
+        self.controlador.restablecer_grafo()
+
+        self.mostrar_resultados(False)
+        self.ui.widget_base.setDisabled(False)
+        self.ui.graphicsView_base.setDisabled(False)
+
+        self.ui.comboBox.setCurrentIndex(0)
+
+        self.ui.widget_manhattan.setVisible(False)
+        self.ui.graphicsView_manhattan.setVisible(False)
+        self.ui.widget_base.setVisible(True)
+        self.ui.graphicsView_base.setVisible(True)
+        self.ui.widget_lRecta.setVisible(False)
+        self.ui.graphicsView_lRecta.setVisible(False)
+
+    # ---- Interacciones con la UI ----
+    def activar_campos(self):
+        self.ui.groupBoxInstrucciones.setVisible(True)
+
+        modo_aleatorio = self.ui.radioButtonAleatorio.isChecked()
+        modo_manual = self.ui.radioButtonManual.isChecked()
+
+        self.ui.infoButtonSpinBox.setVisible(modo_aleatorio)
+        self.ui.labelSpinBox.setVisible(modo_aleatorio)
+        self.ui.spinBox.setVisible(modo_aleatorio)
+
+        self.ui.widget_base.setDisabled( modo_aleatorio)
+        self.ui.graphicsView_base.setDisabled(modo_aleatorio)
+
+        self.ui.infoButtonComboBox.setVisible(True)
+        self.ui.labelComboBox.setVisible(True)
+        self.ui.comboBox.setVisible(True)
+
+        if modo_manual:
+            titulo = "Pasos para dibujar el grafo:"
+            instrucciones =  [
+                "<b>1.</b> Haz clic en el área para agregar nodos.",
+                "<b>2.</b> Haz doble clic en un nodo y luego en otro para conectarlos mediante una arista e ingresar su peso.",
+                "<b>3.</b> Selecciona la heurística que desees utilizar.",
+                "<b>4.</b> Haz clic en 'Play' para ejecutar el algoritmo."
+            ]
+        else:
+            titulo = "Pasos para generar el grafo:"
+            instrucciones = [
+                "<b>1.</b> Ingrese la cantidad de nodos.",
+                "<b>2.</b> Selecciona la heurística.",
+                "<b>3.</b> Presiona 'Play' para generar y resolver el grafo automáticamente."
+            ]
+        self.ui.groupBoxInstrucciones.setTitle(titulo)
+        self.actualizar_instrucciones(instrucciones)
+
+    def actualizar_instrucciones(self, instrucciones):
+        while self.ui.layoutInstrucciones.count():
+            item = self.ui.layoutInstrucciones.takeAt(0)
+            widget = item.widget()
+            if widget:
+                widget.deleteLater()
+
+        for texto in instrucciones:
+            label = QtWidgets.QLabel()
+            label.setTextFormat(QtCore.Qt.TextFormat.RichText)  # Permitir HTML
+            label.setWordWrap(True)
+            label.setText(texto)
+            self.ui.layoutInstrucciones.addWidget(label)
+
+    def mostrar_resultados(self, mostrar: bool):
+        self.ui.horizontalLayout_2.setEnabled(mostrar)
+        self.ui.horizontalLayout_2.setContentsMargins(0, 0, 0, 0)
+
+        for i in range(self.ui.horizontalLayout_2.count()):
+            item = self.ui.horizontalLayout_2.itemAt(i).widget()
+            if item:
+                item.setVisible(False)
+
+        self.ui.widget_lRectaResults.setVisible(False)
+        self.ui.widget_manhattanResults.setVisible(False)
+
+        if mostrar:
+            self.ui.layoutContenedorP.setStretch(0, 10)
+            self.ui.layoutContenedorP.setStretch(1, 3)
+
+            seleccion = self.ui.comboBox.currentText()
+            if seleccion == "Línea Recta":
+                self.ui.widget_lRectaResults.setVisible(True)
+            elif seleccion == "Manhattan":
+                self.ui.widget_manhattanResults.setVisible(True)
+            elif seleccion == "Ambos":
+                self.ui.widget_manhattanResults.setVisible(True)
+                self.ui.widget_lRectaResults.setVisible(True)
+        else:
+            self.ui.layoutContenedorP.setStretch(0, 1)
+            self.ui.layoutContenedorP.setStretch(1, 0)
+
+    def ejecutar_heuristica(self):
         seleccion = self.ui.comboBox.currentText()
 
-        # Ocultar todos los widgets primero
-        self.ui.widget_LR.setVisible(False)
-        self.ui.widget_RLR.setVisible(False)
-        self.ui.widget_H.setVisible(False)
-        self.ui.widget_HR.setVisible(False)
+        self.ui.widget_lRecta.setVisible(False)
+        self.ui.widget_manhattan.setVisible(False)
+        self.ui.graphicsView_lRecta.setDisabled(True)
+        self.ui.graphicsView_manhattan.setDisabled(True)
+        self.ui.widget_base.setVisible(False)
+        self.ui.graphicsView_base.setVisible(False)
 
-        # Mostrar los widgets correspondientes según la selección
         if seleccion == "Línea Recta":
-            self.ui.widget_LR.setVisible(True)
-            self.ui.widget_RLR.setVisible(True)
-            self.ui.graphicsView_LR.setDisabled(False)
+            self.ui.widget_lRecta.setVisible(True)
+            self.ui.graphicsView_lRecta.setDisabled(True)
         elif seleccion == "Manhattan":
-            self.ui.widget_H.setVisible(True)
-            self.ui.widget_HR.setVisible(True)
-            self.ui.graphicsView_H.setDisabled(False)
-        elif seleccion == "Ambos":
-            self.ui.graphicsView_H.setDisabled(False)
-            self.ui.graphicsView_LR.setDisabled(False)
-            self.ui.widget_LR.setVisible(True)
-            self.ui.widget_RLR.setVisible(True)
-            self.ui.widget_H.setVisible(True)
-            self.ui.widget_HR.setVisible(True)
+            self.ui.widget_manhattan.setVisible(True)
+            self.ui.graphicsView_manhattan.setDisabled(True)
 
-    def activar_campos(self):
-        self.ui.comboBox.setDisabled(False)
-        if self.ui.radioButtonManual.isChecked():
-            self.ui.spinBox.setDisabled(True)
-        elif self.ui.radioButtonAleatorio.isChecked():
-            self.ui.spinBox.setDisabled(False)
+    def ejecutar_ambas_heuristicas(self):
+        self.ui.graphicsView_manhattan.setScene(self.scene_B)
+        self.ui.graphicsView_lRecta.setScene(self.scene_B)
 
+        self.ui.graphicsView_lRecta.setDisabled(True)
+        self.ui.widget_base.setDisabled(False)
+        self.ui.widget_lRecta.setVisible(True)
+        self.ui.widget_manhattan.setVisible(True)
+        self.ui.graphicsView_manhattan.setDisabled(True)
+        self.ui.widget_base.setVisible(False)
+
+    # Guia de usuario
     def mostrar_info_cantidad_nodos(self):
         QtWidgets.QMessageBox.information(
-            None,
-            "Información - Cantidad de Nodos",
+            None, "Información - Cantidad de Nodos",
             "Define cuántos nodos tendrá el grafo a generar"
         )
 
     def mostrar_info_modo_generacion(self):
         QtWidgets.QMessageBox.information(
-            None,
-            "Información - Modo de Generación",
-            "Manual: creas los nodos y conexiones con click.\nAleatorio: generar un grafo aleatorio automáticamente a partir de una cantidad de nodos dada."
+            None, "Información - Modo de Generación",
+            "Manual: creas los nodos y conexiones con click.\n"
+            "Aleatorio: generar un grafo aleatorio automáticamente a partir de una cantidad de nodos dada."
         )
 
     def mostrar_info_heuristica(self):
@@ -109,4 +307,3 @@ class Vista(QMainWindow):
             None, "Información - Heurística",
             "Selecciona el tipo de heurística que se utilizará para calcular el camino."
         )
-

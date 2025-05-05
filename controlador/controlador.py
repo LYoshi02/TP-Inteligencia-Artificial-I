@@ -21,24 +21,32 @@ class Controlador:
     def obtener_nodo(self, nombre: str) -> Nodo | None:
         return self._grafo.obtener_nodo(nombre)
 
-    def agregar_nodo(self, nombre: str) -> Grafo:
-        nodo: Nodo = Nodo(nombre)
+    def obtener_nodos(self):
+        return self._grafo.obtener_nodos()
+
+    def agregar_nodo(self, nombre: str, x: float, y: float) -> Grafo:
+        nodo: Nodo = Nodo(nombre, x, y)
+        print("Agregando nodo", nodo)
         self._grafo.agregar_nodo(nodo)
+        print("Nodos actuales en el grafo:", self._grafo.obtener_nodos())
         return self._grafo
 
-    def eliminar_nodo(self, nombre: str) -> Grafo:
-        nodo: Nodo = Nodo(nombre)
+    def eliminar_nodo(self, nombre: str, x: float, y: float) -> Grafo:
+        nodo: Nodo = Nodo(nombre, x, y)
         self._grafo.eliminar_nodo(nodo)
         return self._grafo
 
     def establecer_nodo_inicio(self, nodo: Nodo):
         self._nodo_inicio = nodo
+        print("Estado Inicial: ", self._nodo_inicio)
 
     def establecer_nodo_objetivo(self, nodo: Nodo):
         self._nodo_objetivo = nodo
+        print("Estado Objetivo: ", self._nodo_objetivo)
 
     # Operaciones con Aristas
     def agregar_arista(self, nodo_origen: Nodo, nodo_destino: Nodo, distancia: float) -> Grafo:
+        print("Agregando arista:", nodo_origen, nodo_destino, distancia)
         self._grafo.agregar_arista(nodo_origen, nodo_destino, distancia)
         return self._grafo
 

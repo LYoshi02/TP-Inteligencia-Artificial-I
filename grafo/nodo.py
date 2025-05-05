@@ -1,5 +1,5 @@
 class Nodo:
-    def __init__(self, nombre: str, costo_desde_inicio: float = float("inf"), heuristica: float = 0):
+    def __init__(self, nombre: str, x: float, y: float, costo_desde_inicio: float = float("inf"), heuristica: float = 0):
         self._nombre = nombre
         # g: costo desde el nodo inicial hasta este nodo
         self._costo_desde_inicio: float = costo_desde_inicio
@@ -7,6 +7,9 @@ class Nodo:
         self._heuristica: float = heuristica
         # Nodo padre para construir el camino hacia el nodo objetivo
         self.nodo_padre: Nodo | None = None
+        # Coordenadas del Nodo
+        self._x: float = x
+        self._y: float = y
 
     @property
     def nombre(self):
@@ -45,7 +48,8 @@ class Nodo:
         return hash(self.nombre)
 
     def __str__(self):
-        return f"Nodo(nombre={self.nombre}, g={self.costo_desde_inicio}, h={self.heuristica})"
+        #return f"Nodo(nombre={self.nombre}, g={self.costo_desde_inicio}, h={self.heuristica})"
+        return f"Nodo nombre: {self.nombre}, posición: x: {self._x}, y: {self._y}"
 
     def __repr__(self):
         return f"Nodo(nombre={self.nombre}, g={self.costo_desde_inicio}, h={self.heuristica})"

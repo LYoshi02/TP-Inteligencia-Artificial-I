@@ -11,17 +11,20 @@ class Grafo:
     # Devuelve el nodo que tiene el nombre recibido, si es que existe
     def obtener_nodo(self, nombre: str) -> Nodo | None:
         for key in self._nodos.keys():
-            if key == Nodo(nombre):
+            if key.nombre == nombre:
                 return key
         print(f"obtener_nodo - No se encontró el nodo con el nombre '{nombre}'")
         return None
+
+    #Retorna todos los nodos registrados en el grafo
+    def obtener_nodos(self) -> list[Nodo]:
+        return list(self._nodos.keys())
 
     # Agrega un nuevo nodo al diccionario
     def agregar_nodo(self, nodo: Nodo):
         if nodo in self._nodos:
             print(f"agregar_nodo - El nodo '{nodo.nombre}' ya existe en el diccionario")
             return
-
         self._nodos[nodo] = set()
 
     # Elimina el nodo del diccionario y elimina todas las aristas de otros nodos

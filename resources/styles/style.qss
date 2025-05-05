@@ -1,106 +1,81 @@
+
 QWidget#centralwidget {
-    background-color: #F0F0E6;
+    background-color: #E5E5EA;
 }
 
 #separator1, #separator2 {
-    background-color: #A9B388;
+    background-color: #487575;
 }
 
-#separator3{
-    background-color: #F0F0E6;
+#line {
+    background-color: #C0C0C0;
 }
 
-
-#line{
-    background-color: rgb(194, 194, 194);
-}
-
-#widget_RLR,
-#widget_HR,
-#widget_H,
-#widget_LR {
-   background-color: white;
+#widget_base,
+#widget_manhattan,
+#widget_lRecta,
+#widget_manhattanResults,
+#widget_lRectaResults {
+    background-color: #FFFFFF;
     border-radius: 15px;
+    border: 1px solid #DADADA;
 }
 
-#widget_4, #widget_6{
-    background-color: white;
+#widget_menu,
+#widget_6 {
+    background-color: #FFFFFF;
     border-radius: 25px;
     padding: 10px;
+    border: 1px solid #DADADA;
 }
 
-#graphicsView_H, #graphicsView_LR {
-    background-color: #f0f0f0;
+#graphicsView_manhattan,
+#graphicsView_lRecta,
+#graphicsView_base {
+    background-color: #F0F0F0;
 }
 
 QLabel {
-    color: black;
+    color: #222222;
     font-weight: bold;
 }
 
-QLabel#Titulo{
-    color: black;
-    font-weight: bold;
+QLabel#Titulo {
     font-size: 22px;
 }
 
-QLabel#labelWidget2, QLabel#labelWidget5{
+QLabel#labelWidget2,
+QLabel#labelWidget5 {
     font-size: 14px;
-    color: #333333;
+    color: #555555;
 }
 
-QComboBox, QSpinBox {
-    background-color: white;
-    color: black;
+QComboBox,
+QSpinBox {
+    background-color: #FFFFFF;
+    color: #222222;
 }
 
-QComboBox QFontComboBox{
-    color: black;
+QComboBox QFontComboBox {
+    color: #222222;
 }
 
-QRadioButton {
-    color: black;
-    spacing: 8px;
-}
-
-#pushButton_3,
-#pushButton_4,
-#pushButton_5{
-    background-color: #A9B388;
-    border-radius: 15px;
-}
-
-#pushButtonPlay{
-    background-color: #111111;
-    border-radius: 15px;
-    color: white;
-    font-size: 24px;
-}
-
-QRadioButton::indicator {
-    width: 16px;
-    height: 16px;
-    border-radius: 8px;
-    border: 1px solid #999999;
-    background: white;
+QSpinBox:disabled,
+QComboBox:disabled {
+    background-color: #EEEEEE;
+    color: #AAAAAA;
 }
 
 #pushButton_3,
 #pushButton_4,
 #pushButton_5 {
-    background-color: #A9B388;
+    background-color: #5A8C8C;
     border-radius: 15px;
-    transition: background-color 0.3s ease;
-}
-
-#pushButton_3:hover,
-#pushButton_4:hover,
-#pushButton_5:hover {
-    background-color: #8A9B6A;
+    color: white;
 }
 
 #pushButtonPlay {
-    background-color: #111111;
+    background-color: #222222;
     border-radius: 15px;
     color: white;
     font-size: 24px;
@@ -109,6 +84,21 @@ QRadioButton::indicator {
 
 #pushButtonPlay:hover {
     background-color: #444444;
+}
+
+#pushButton_siguiente_paso,
+#pushButton_paso_atras,
+#pushButton_limpiar {
+    background-color: #5A8C8C;
+    border-radius: 15px;
+    color: white;
+    transition: background-color 0.3s ease;
+}
+
+#pushButton_siguiente_paso:hover,
+#pushButton_paso_atras:hover,
+#pushButton_limpiar:hover {
+    background-color: #487575;
 }
 
 QPushButton {
@@ -120,64 +110,115 @@ QPushButton:focus {
     outline: none;
 }
 
+QRadioButton {
+    color: #222222;
+    spacing: 8px;
+}
+
+QRadioButton::indicator {
+    width: 16px;
+    height: 16px;
+    border-radius: 8px;
+    border: 1px solid #999999;
+    background: white;
+}
+
 QRadioButton::indicator:checked {
-    background-color: #556B2F;
-    border: 1px solid #FFFFFF;
+    background-color: #5A8C8C;
+    border: 1px solid white;
 }
 
-QSpinBox:disabled, QComboBox:disabled {
-    background-color: #eeeeee;
-    color: #888888;
-}
-
-QInputDialog, QMessageBox {
-    background-color: white;
+QInputDialog,
+QMessageBox,
+QDialog {
+    background-color: #FFFFFF;
     border-radius: 15px;
     padding: 20px;
     font-family: "Arial", sans-serif;
 }
 
-QInputDialog QLabel, QMessageBox QLabel {
+QInputDialog QLabel,
+QMessageBox QLabel,
+QDialog QLabel {
     font-size: 16px;
     color: #333333;
     font-weight: normal;
 }
 
-QInputDialog QLineEdit, QMessageBox QLineEdit {
-    background-color: #F0F0E6;
-    border: 2px solid #A9B388;
+QInputDialog QLineEdit,
+QMessageBox QLineEdit,
+QDialog QLineEdit {
+    background-color: #F0F0F0;
+    border: 2px solid #5A8C8C;
     border-radius: 10px;
     padding: 5px;
     font-size: 14px;
     color: #333333;
 }
 
-QInputDialog QLineEdit:focus, QMessageBox QLineEdit:focus {
-    border: 2px solid #8A9B6A;
+QInputDialog QLineEdit:focus,
+QMessageBox QLineEdit:focus,
+QDialog QLineEdit:focus {
+    border: 2px solid #487575;
     background-color: #FFFFFF;
 }
 
-QInputDialog QPushButton, QMessageBox QPushButton {
-    background-color: #A9B388;
+QInputDialog QPushButton,
+QMessageBox QPushButton,
+QDialog QPushButton {
+    background-color: #5A8C8C;
     border-radius: 12px;
     padding: 6px 12px;
     font-size: 14px;
     color: white;
 }
 
-QInputDialog QPushButton:hover, QMessageBox QPushButton:hover {
-    background-color: #8A9B6A;
+QInputDialog QPushButton:hover,
+QMessageBox QPushButton:hover,
+QDialog QPushButton:hover {
+    background-color: #487575;
 }
 
-QInputDialog QPushButton:pressed, QMessageBox QPushButton:pressed {
-    background-color: #6C7A4E;
+QInputDialog QPushButton:pressed,
+QMessageBox QPushButton:pressed,
+QDialog QPushButton:pressed {
+    background-color: #3B5E5E;
 }
 
-QInputDialog QPushButton:disabled, QMessageBox QPushButton:disabled {
-    background-color: #B0B79B;
+QInputDialog QPushButton:disabled,
+QMessageBox QPushButton:disabled,
+QDialog QPushButton:disabled {
+    background-color: #B0BFC0;
     color: #888888;
 }
 
-QInputDialog QPushButton:focus, QMessageBox QPushButton:focus {
+QInputDialog QPushButton:focus,
+QMessageBox QPushButton:focus,
+QDialog QPushButton:focus {
     outline: none;
 }
+
+QDialog QComboBox {
+    background-color: white;
+    color: black;
+    border: 1px solid #999999;
+    padding: 5px;
+}
+
+QGroupBox {
+        font-weight: bold;
+        color: black;
+        border: 1px solid #3B5E5E;
+        border-radius: 5px;
+        margin-top: 10px;
+    }
+    QGroupBox::title {
+        subcontrol-origin: margin;
+        subcontrol-position: top left;
+        padding: 5px;
+    }
+    QGroupBox QLabel {
+        font-weight: normal;
+        color: black;
+        padding: 2px 5px;
+    }
