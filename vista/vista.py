@@ -62,8 +62,8 @@ class Vista(QMainWindow):
     # Botones
     def _conectar_botones(self):
         self.ui.pushButtonPlay.clicked.connect(self.iniciar_algoritmo)
-        self.findChild(QtWidgets.QPushButton, "pushButton_siguiente_paso").clicked.connect(self.avanzar_paso)
-        self.findChild(QtWidgets.QPushButton, "pushButton_paso_atras").clicked.connect(self.retroceder_paso)
+        #self.findChild(QtWidgets.QPushButton, "pushButton_siguiente_paso").clicked.connect(self.avanzar_paso)
+        #self.findChild(QtWidgets.QPushButton, "pushButton_paso_atras").clicked.connect(self.retroceder_paso)
         self.findChild(QtWidgets.QPushButton, "pushButton_limpiar").clicked.connect(self.limpiar_escena)
         self.ui.infoButtonComboBox.clicked.connect(self.mostrar_info_heuristica)
         self.ui.infoButtonModo.clicked.connect(self.mostrar_info_modo_generacion)
