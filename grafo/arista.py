@@ -28,7 +28,7 @@ class Arista:
         return False
 
     def __hash__(self):
-        return hash((self._nodo_origen, self._nodo_destino))
+        return hash(frozenset([self._nodo_origen, self._nodo_destino]))
 
     def __repr__(self):
         return f"{self._nodo_origen} --({self._distancia})-- {self._nodo_destino}"
