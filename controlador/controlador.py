@@ -1,5 +1,5 @@
-from algoritmo2.paso import Paso
 from algoritmo2.recorrido_algoritmo import RecorridoAlgoritmo
+from grafo.arista import Arista
 from grafo.grafo import Grafo
 from grafo.nodo import Nodo
 
@@ -10,6 +10,10 @@ class Controlador:
         self._nodo_inicio: Nodo | None = None
         self._nodo_objetivo: Nodo | None = None
         self._recorrido_algoritmo: RecorridoAlgoritmo | None = None
+
+    # Operaciones con Grafo
+    def obtener_grafo(self):
+        return self._grafo
 
     def restablecer_grafo(self):
         self._grafo = Grafo()
@@ -54,19 +58,22 @@ class Controlador:
         self._grafo.eliminar_arista(nodo_origen, nodo_destino)
         return self._grafo
 
+    def obtener_aristas_nodo(self, nodo: Nodo) -> set[Arista] | None:
+        return self._grafo.obtener_aristas_nodo(nodo)
+
     # Operaciones del Algoritmo
-    def comenzar_algoritmo(self) -> Paso:
+    def comenzar_algoritmo(self) -> RecorridoAlgoritmo:
         if self._nodo_inicio == None or self._nodo_objetivo == None:
             print("No se establecieron los nodos de inicio y/o objetivo")
             return
 
         self._recorrido_algoritmo = RecorridoAlgoritmo(self._grafo, self._nodo_inicio, self._nodo_objetivo)
-        return self._recorrido_algoritmo.obtener_paso_actual()
+        return self._recorrido_algoritmo
 
-    def avanzar_paso(self) -> Paso:
+    def avanzar_paso(self) -> RecorridoAlgoritmo:
         self._recorrido_algoritmo.avanzar_paso()
-        return self._recorrido_algoritmo.obtener_paso_actual()
+        return self._recorrido_algoritmo
 
-    def retroceder_paso(self) -> Paso:
+    def retroceder_paso(self) -> RecorridoAlgoritmo:
         self._recorrido_algoritmo.retroceder_paso()
-        return self._recorrido_algoritmo.obtener_paso_actual()
+        return self._recorrido_algoritmo
