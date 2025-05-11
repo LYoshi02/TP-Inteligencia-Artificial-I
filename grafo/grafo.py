@@ -60,8 +60,16 @@ class Grafo:
             print(f"agregar_arista - Los nodos son iguales")
             return
 
-        self._nodos[nodo_origen].add(Arista(nodo_origen, nodo_destino, distancia))
-        self._nodos[nodo_destino].add(Arista(nodo_destino, nodo_origen, distancia))
+        nueva_arista = Arista(nodo_origen, nodo_destino)
+        if nueva_arista in self._nodos[nodo_origen]:
+            # Elimina la arista existente
+            self._nodos[nodo_origen].discard(nueva_arista)
+            self._nodos[nodo_destino].discard(nueva_arista)
+
+        # Agrega una nueva arista al diccionario
+        nueva_arista.distancia = distancia
+        self._nodos[nodo_origen].add(nueva_arista)
+        self._nodos[nodo_destino].add(nueva_arista)
 
     # Verifica si la arista que se quiere eliminar existe y la elimina de ambos nodos
     # dentro del diccionario
