@@ -6,7 +6,7 @@ class Nodo:
         # h: costo aproximado desde este nodo hasta el nodo objetivo
         self._heuristica: float = heuristica
         # Nodo padre para construir el camino hacia el nodo objetivo
-        self.nodo_padre: Nodo | None = None
+        self._nodo_padre: Nodo | None = None
         # Coordenadas del Nodo
         self._x: float = x
         self._y: float = y
@@ -32,8 +32,27 @@ class Nodo:
         self._heuristica = heuristica
 
     @property
+    def nodo_padre(self):
+        return self._nodo_padre
+
+    @nodo_padre.setter
+    def nodo_padre(self, nodo: 'Nodo'):
+        if isinstance(nodo, Nodo):
+            self._nodo_padre = nodo
+        else:
+            raise ValueError("Debe ser una instancia de Nodo")
+
+    @property
     def costo_total(self):
         return self._costo_desde_inicio + self._heuristica
+
+    @property
+    def x(self):
+        return self._x
+
+    @property
+    def y(self):
+        return self._y
 
     def __eq__(self, nodo):
         if isinstance(nodo, Nodo):
