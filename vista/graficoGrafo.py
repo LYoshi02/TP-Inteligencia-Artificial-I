@@ -13,7 +13,7 @@ from grafo.grafo import Grafo
 from grafo.nodo import Nodo
 
 
-TemaNodo = Literal["default", "seleccionado", "inicio", "actual", "cerrado"]
+TemaNodo = Literal["default", "seleccionado", "inicio", "actual", "cerrado", "abierto", "abierto_mejor"]
 
 class NodoGrafico(QGraphicsEllipseItem):
     def __init__(self, nodo: Nodo, radio=20):
@@ -47,6 +47,10 @@ class NodoGrafico(QGraphicsEllipseItem):
                 self.setBrush(QBrush(QColor("red")))
             case "cerrado":
                 self.setBrush(QBrush(QColor("darkGray")))
+            case "abierto":
+                self.setBrush(QBrush(QColor("darkMagenta")))
+            case "abierto_mejor":
+                self.setBrush(QBrush(QColor("magenta")))
 
     def set_color(self, color: QColor):
         self.setBrush(QBrush(color))
@@ -142,6 +146,14 @@ class GrafoScene(QGraphicsScene):
             if nodo in paso_actual.nodos_cerrados:
                 print("Nodo cerrado: " + str(nodo))
                 nodo_ui.aplicar_tema("cerrado")
+        # Pintar nodos abiertos
+        for i, nodo in enumerate(paso_actual.nodos_abiertos):
+            print("Nodo abierto: " + str(nodo))
+            nodo_abierto_ui = nodos_graficados[nodo]
+            if i == 0:
+                nodo_abierto_ui.aplicar_tema("abierto_mejor")
+            else:
+                nodo_abierto_ui.aplicar_tema("abierto")
         # Pintar nodo inicial
         nodo_inicio_ui = nodos_graficados[recorrido_algoritmo.nodo_inicio]
         print("Nodo inicio: " + str(recorrido_algoritmo.nodo_inicio))

@@ -50,6 +50,12 @@ class ColaPrioridad(Generic[T]):
                 return False
         return True
 
+    def __iter__(self):
+        # Devuelve un iterador sobre los elementos válidos en orden de prioridad
+        elementos_validos = [entrada for entrada in self._elementos if entrada[2] != self._ELEMENTO_ELIMINADO]
+        for entrada in sorted(elementos_validos):  # Ordena por prioridad y contador
+            yield entrada[2]
+
     def __str__(self) -> str:
         # Representación visual de la cola sin tareas eliminadas
         return str([entrada for entrada in self._elementos if entrada[2] != self._ELEMENTO_ELIMINADO])
