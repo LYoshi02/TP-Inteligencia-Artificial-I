@@ -62,8 +62,8 @@ class Vista(QMainWindow):
     # Botones
     def _conectar_botones(self):
         self.ui.pushButtonPlay.clicked.connect(self.iniciar_algoritmo)
-        #self.findChild(QtWidgets.QPushButton, "pushButton_siguiente_paso").clicked.connect(self.avanzar_paso)
-        #self.findChild(QtWidgets.QPushButton, "pushButton_paso_atras").clicked.connect(self.retroceder_paso)
+        self.findChild(QtWidgets.QPushButton, "pushButton_siguiente_paso").clicked.connect(self.avanzar_paso)
+        self.findChild(QtWidgets.QPushButton, "pushButton_paso_atras").clicked.connect(self.retroceder_paso)
         self.findChild(QtWidgets.QPushButton, "pushButton_limpiar").clicked.connect(self.limpiar_escena)
         self.ui.infoButtonComboBox.clicked.connect(self.mostrar_info_heuristica)
         self.ui.infoButtonModo.clicked.connect(self.mostrar_info_modo_generacion)
@@ -88,6 +88,9 @@ class Vista(QMainWindow):
             else:
                 self.ejecutar_heuristica()
 
+            recorrido = self.controlador.comenzar_algoritmo()
+            self.scene_B.graficar_grafo(self.controlador.obtener_grafo(), recorrido)
+
             self.mostrar_resultados(True)
         except Exception as e:
             QtWidgets.QMessageBox.critical(self, "Error", f"Ocurrió un error: {str(e)}")
@@ -108,10 +111,12 @@ class Vista(QMainWindow):
         self.controlador.agregar_arista(nodo_origen, nodo_destino, peso)
 
     def avanzar_paso(self):
-        self.controlador.avanzar_paso()
+        recorrido = self.controlador.avanzar_paso()
+        self.scene_B.graficar_grafo(self.controlador.obtener_grafo(), recorrido)
 
     def retroceder_paso(self):
-        self.controlador.retroceder_paso()
+        recorrido = self.controlador.retroceder_paso()
+        self.scene_B.graficar_grafo(self.controlador.obtener_grafo(), recorrido)
 
     def obtener_estados(self, nodos):
         dialogo = QtWidgets.QDialog(self)
