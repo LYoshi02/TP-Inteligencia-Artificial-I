@@ -1,3 +1,5 @@
+import copy
+
 from algoritmo2.paso import Paso
 from cola.cola_prioridad import ColaPrioridad
 from grafo.grafo import Grafo
@@ -38,23 +40,23 @@ class RecorridoAlgoritmo:
             print("La busqueda ya finalizó")
             return
 
-        nuevo_paso = self.__aplicar_algoritmo(paso_anterior)
-        self.__agregar_paso(nuevo_paso)
+        # Solo se aplica el algoritmo si no se calculó anteriormente el siguiente paso
+        if not self._nro_paso_actual in self._pasos:
+            nuevo_paso = self.__aplicar_algoritmo(paso_anterior)
+            self.__agregar_paso(nuevo_paso)
 
     def __aplicar_algoritmo(self, paso_anterior: Paso) -> Paso:
         nuevo_paso: Paso
         fin_busqueda = False
         # Nodos aun no evaluados priorizados por costo
-        cola_prioridad_abiertos: ColaPrioridad[Nodo] = paso_anterior.nodos_abiertos
+        cola_prioridad_abiertos: ColaPrioridad[Nodo] = copy.deepcopy(paso_anterior.nodos_abiertos)
         # Nodos ya evaluados
-        conjunto_cerrados: set[Nodo] = paso_anterior.nodos_cerrados
+        conjunto_cerrados: set[Nodo] = copy.deepcopy(paso_anterior.nodos_cerrados)
 
-        nodo_actual = cola_prioridad_abiertos.desencolar_elemento()
+        nodo_actual = copy.deepcopy(cola_prioridad_abiertos.desencolar_elemento())
         if nodo_actual == self._nodo_objetivo:
             fin_busqueda = True
-            nuevo_paso = Paso(self._nro_paso_actual, nodo_actual, self._grafo.obtener_aristas_nodo(nodo_actual),
-                              cola_prioridad_abiertos, conjunto_cerrados, self.__construir_camino(nodo_actual),
-                              fin_busqueda)
+            nuevo_paso = self.__generar_nuevo_paso(nodo_actual, cola_prioridad_abiertos, conjunto_cerrados, fin_busqueda)
             return nuevo_paso
 
         conjunto_cerrados.add(nodo_actual)
@@ -81,9 +83,15 @@ class RecorridoAlgoritmo:
                 cola_prioridad_abiertos.encolar_elemento(nodo_adyacente, nodo_adyacente.costo_total)
                 continue
 
-        nuevo_paso = Paso(self._nro_paso_actual, nodo_actual, self._grafo.obtener_aristas_nodo(nodo_actual),
-                          cola_prioridad_abiertos, conjunto_cerrados, self.__construir_camino(nodo_actual),
-                          fin_busqueda)
+        nuevo_paso = self.__generar_nuevo_paso(nodo_actual, cola_prioridad_abiertos, conjunto_cerrados, fin_busqueda)
+        return nuevo_paso
+
+    def __generar_nuevo_paso(self, nodo_actual: Nodo, nodos_abiertos: ColaPrioridad[Nodo],
+                             nodos_cerrados: set[Nodo], fin_busqueda: bool) -> Paso:
+        aristas_nodo_actual = copy.deepcopy(self._grafo.obtener_aristas_nodo(nodo_actual))
+        camino_busqueda = copy.deepcopy(self.__construir_camino(nodo_actual))
+        nuevo_paso = Paso(self._nro_paso_actual, nodo_actual, aristas_nodo_actual, nodos_abiertos,
+                          nodos_cerrados, camino_busqueda, fin_busqueda)
         return nuevo_paso
 
     def __obtener_paso_anterior(self) -> Paso:
@@ -103,3 +111,7 @@ class RecorridoAlgoritmo:
             nodo_actual = nodo_actual.nodo_padre
 
         return nodos_camino[::-1]
+
+    @property
+    def nodo_inicio(self):
+        return self._nodo_inicio
