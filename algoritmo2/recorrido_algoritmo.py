@@ -1,5 +1,6 @@
 import copy
 
+from algoritmo2.heuristica.heuristica import Heuristica
 from algoritmo2.paso import Paso
 from cola.cola_prioridad import ColaPrioridad
 from grafo.grafo import Grafo
@@ -9,7 +10,9 @@ NRO_PASO_INICIAL: int = 0
 
 
 class RecorridoAlgoritmo:
-    def __init__(self, grafo: Grafo, nodo_inicio: Nodo, nodo_objetivo):
+    def __init__(self, grafo: Grafo, nodo_inicio: Nodo, nodo_objetivo: Nodo, heuristica: Heuristica):
+        self.__calcular_heuristicas(grafo, nodo_objetivo, heuristica)
+
         self._nro_paso_actual: int = NRO_PASO_INICIAL
         self._grafo: Grafo = grafo
         self._nodo_inicio: Nodo = nodo_inicio
@@ -22,6 +25,14 @@ class RecorridoAlgoritmo:
         paso_inicial = Paso(self._nro_paso_actual, nodo_inicio, self._grafo.obtener_aristas_nodo(nodo_inicio),
                             nodos_abiertos, nodos_cerrados, self.__construir_camino(nodo_inicio), False)
         self._pasos: dict[int, Paso] = {self._nro_paso_actual: paso_inicial}
+
+    def __calcular_heuristicas(self, grafo: Grafo, nodo_objetivo: Nodo, heuristica: Heuristica) -> None:
+        for nodo in grafo.obtener_nodos():
+            valor_heuristica = heuristica.calcular(nodo.x, nodo.y, nodo_objetivo.x, nodo_objetivo.y)
+            nodo_actualizado = copy.deepcopy(nodo)
+            nodo_actualizado.heuristica = valor_heuristica
+            grafo.actualizar_nodo(nodo_actualizado)
+            print(f"Heuristica Nodo {nodo.nombre}: {valor_heuristica:.2f}")
 
     def obtener_paso_actual(self) -> Paso:
         return self._pasos[self._nro_paso_actual]

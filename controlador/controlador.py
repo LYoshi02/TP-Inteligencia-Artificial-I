@@ -1,3 +1,6 @@
+from algoritmo2.heuristica.distancia_manhattan import DistanciaManhattan
+from algoritmo2.heuristica.distancia_linea_recta import DistanciaLineaRecta
+from algoritmo2.heuristica.heuristica import Heuristica
 from algoritmo2.recorrido_algoritmo import RecorridoAlgoritmo
 from grafo.arista import Arista
 from grafo.grafo import Grafo
@@ -62,12 +65,21 @@ class Controlador:
         return self._grafo.obtener_aristas_nodo(nodo)
 
     # Operaciones del Algoritmo
-    def comenzar_algoritmo(self) -> RecorridoAlgoritmo:
+    def comenzar_algoritmo(self, nombre_heuristica: str) -> RecorridoAlgoritmo:
         if self._nodo_inicio == None or self._nodo_objetivo == None:
             print("No se establecieron los nodos de inicio y/o objetivo")
             return
 
-        self._recorrido_algoritmo = RecorridoAlgoritmo(self._grafo, self._nodo_inicio, self._nodo_objetivo)
+        heuristica: Heuristica
+        if nombre_heuristica == "Línea Recta":
+            heuristica = DistanciaLineaRecta()
+        elif nombre_heuristica == "Manhattan":
+            heuristica = DistanciaManhattan()
+        # TODO: ver como manejar este caso
+        else:
+            heuristica = DistanciaLineaRecta()
+
+        self._recorrido_algoritmo = RecorridoAlgoritmo(self._grafo, self._nodo_inicio, self._nodo_objetivo, heuristica)
         return self._recorrido_algoritmo
 
     def avanzar_paso(self) -> RecorridoAlgoritmo:

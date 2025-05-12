@@ -23,8 +23,8 @@ class Vista(QMainWindow):
         self.scene_B = GrafoScene(self.controlador)
 
         self.ui.graphicsView_base.setScene(self.scene_B)
-        self.ui.graphicsView_manhattan.setScene(self.scene_B)
-        self.ui.graphicsView_lRecta.setScene(self.scene_B)
+        # self.ui.graphicsView_manhattan.setScene(self.scene_B)
+        # self.ui.graphicsView_lRecta.setScene(self.scene_B)
 
         self.ui.widget_manhattan.setVisible(False)
         self.ui.widget_lRecta.setVisible(False)
@@ -88,7 +88,7 @@ class Vista(QMainWindow):
             else:
                 self.ejecutar_heuristica()
 
-            recorrido = self.controlador.comenzar_algoritmo()
+            recorrido = self.controlador.comenzar_algoritmo(seleccion)
             self.scene_B.graficar_grafo(self.controlador.obtener_grafo(), recorrido)
 
             self.mostrar_resultados(True)
