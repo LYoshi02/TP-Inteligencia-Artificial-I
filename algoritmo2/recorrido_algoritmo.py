@@ -29,9 +29,7 @@ class RecorridoAlgoritmo:
     def __calcular_heuristicas(self, grafo: Grafo, nodo_objetivo: Nodo, heuristica: Heuristica) -> None:
         for nodo in grafo.obtener_nodos():
             valor_heuristica = heuristica.calcular(nodo.x, nodo.y, nodo_objetivo.x, nodo_objetivo.y)
-            nodo_actualizado = copy.deepcopy(nodo)
-            nodo_actualizado.heuristica = valor_heuristica
-            grafo.actualizar_nodo(nodo_actualizado)
+            nodo.heuristica = valor_heuristica
             print(f"Heuristica Nodo {nodo.nombre}: {valor_heuristica:.2f}")
 
     def obtener_paso_actual(self) -> Paso:
@@ -126,3 +124,7 @@ class RecorridoAlgoritmo:
     @property
     def nodo_inicio(self):
         return self._nodo_inicio
+
+    @property
+    def nodo_objetivo(self):
+        return self._nodo_objetivo
