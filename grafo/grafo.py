@@ -27,10 +27,6 @@ class Grafo:
             return
         self._nodos[nodo] = set()
 
-    def actualizar_nodo(self, nodo_actualizado: Nodo):
-        aristas: set[Arista] = self._nodos.pop(nodo_actualizado)
-        self._nodos[nodo_actualizado] = aristas
-
     # Elimina el nodo del diccionario y elimina todas las aristas de otros nodos
     # que conecten con el nodo que se quiere eliminar
     def eliminar_nodo(self, nodo_eliminar: Nodo):
