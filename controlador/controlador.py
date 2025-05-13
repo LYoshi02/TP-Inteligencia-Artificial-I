@@ -2,6 +2,7 @@ from algoritmo2.heuristica.distancia_manhattan import DistanciaManhattan
 from algoritmo2.heuristica.distancia_linea_recta import DistanciaLineaRecta
 from algoritmo2.heuristica.heuristica import Heuristica
 from algoritmo2.recorrido_algoritmo import RecorridoAlgoritmo
+from constantes.heuristicas import HEURISTICAS
 from grafo.arista import Arista
 from grafo.grafo import Grafo
 from grafo.nodo import Nodo
@@ -12,7 +13,7 @@ class Controlador:
         self._grafo = Grafo()
         self._nodo_inicio: Nodo | None = None
         self._nodo_objetivo: Nodo | None = None
-        self._recorrido_algoritmo: RecorridoAlgoritmo | None = None
+        self._procesos_busqueda: dict[str, RecorridoAlgoritmo] = {}
 
     # Operaciones con Grafo
     def obtener_grafo(self):
@@ -22,7 +23,7 @@ class Controlador:
         self._grafo = Grafo()
         self._nodo_inicio = None
         self._nodo_objetivo = None
-        self._recorrido_algoritmo = None
+        self._procesos_busqueda = {}
 
     # Operaciones con Nodos
     def obtener_nodo(self, nombre: str) -> Nodo | None:
@@ -65,27 +66,48 @@ class Controlador:
         return self._grafo.obtener_aristas_nodo(nodo)
 
     # Operaciones del Algoritmo
-    def comenzar_algoritmo(self, nombre_heuristica: str) -> RecorridoAlgoritmo:
+    def comenzar_algoritmo(self, heuristica_elegida: str) -> RecorridoAlgoritmo:
         if self._nodo_inicio == None or self._nodo_objetivo == None:
             print("No se establecieron los nodos de inicio y/o objetivo")
             return
 
-        heuristica: Heuristica
-        if nombre_heuristica == "Línea Recta":
-            heuristica = DistanciaLineaRecta()
-        elif nombre_heuristica == "Manhattan":
-            heuristica = DistanciaManhattan()
+        heuristica = self.__obtener_tecnica_heuristica(heuristica_elegida)
+        llave_busqueda = self.__obtener_llave_busqueda(heuristica_elegida)
+
+        self._procesos_busqueda[llave_busqueda] = RecorridoAlgoritmo(self._grafo, self._nodo_inicio, self._nodo_objetivo, heuristica)
+
+        return self._procesos_busqueda[llave_busqueda]
+
+    def __obtener_tecnica_heuristica(self, heuristica: str):
+        tecnica_heuristica: Heuristica
+        if heuristica == HEURISTICAS.distancia_linea_recta.texto:
+            tecnica_heuristica = DistanciaLineaRecta()
+        elif heuristica == HEURISTICAS.distancia_manhattan.texto:
+            tecnica_heuristica = DistanciaManhattan()
         # TODO: ver como manejar este caso
         else:
-            heuristica = DistanciaLineaRecta()
+            tecnica_heuristica = DistanciaLineaRecta()
 
-        self._recorrido_algoritmo = RecorridoAlgoritmo(self._grafo, self._nodo_inicio, self._nodo_objetivo, heuristica)
-        return self._recorrido_algoritmo
+        return tecnica_heuristica
 
-    def avanzar_paso(self) -> RecorridoAlgoritmo:
-        self._recorrido_algoritmo.avanzar_paso()
-        return self._recorrido_algoritmo
+    def __obtener_llave_busqueda(self, heuristica: str):
+        llave_busqueda: str
+        if heuristica == HEURISTICAS.distancia_linea_recta.texto:
+            llave_busqueda = HEURISTICAS.distancia_linea_recta.nombre
+        elif heuristica == HEURISTICAS.distancia_manhattan.texto:
+            llave_busqueda = HEURISTICAS.distancia_manhattan.nombre
+        # TODO: ver como manejar este caso
+        else:
+            llave_busqueda = HEURISTICAS.distancia_linea_recta.nombre
 
-    def retroceder_paso(self) -> RecorridoAlgoritmo:
-        self._recorrido_algoritmo.retroceder_paso()
-        return self._recorrido_algoritmo
+        return llave_busqueda
+
+    def avanzar_paso(self, heuristica: str) -> RecorridoAlgoritmo:
+        llave_busqueda = self.__obtener_llave_busqueda(heuristica)
+        self._procesos_busqueda[llave_busqueda].avanzar_paso()
+        return self._procesos_busqueda[llave_busqueda]
+
+    def retroceder_paso(self, heuristica: str) -> RecorridoAlgoritmo:
+        llave_busqueda = self.__obtener_llave_busqueda(heuristica)
+        self._procesos_busqueda[llave_busqueda].retroceder_paso()
+        return self._procesos_busqueda[llave_busqueda]

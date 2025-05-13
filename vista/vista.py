@@ -111,11 +111,13 @@ class Vista(QMainWindow):
         self.controlador.agregar_arista(nodo_origen, nodo_destino, peso)
 
     def avanzar_paso(self):
-        recorrido = self.controlador.avanzar_paso()
+        heuristica = self.ui.comboBox.currentText()
+        recorrido = self.controlador.avanzar_paso(heuristica)
         self.scene_B.graficar_grafo(self.controlador.obtener_grafo(), recorrido)
 
     def retroceder_paso(self):
-        recorrido = self.controlador.retroceder_paso()
+        heuristica = self.ui.comboBox.currentText()
+        recorrido = self.controlador.retroceder_paso(heuristica)
         self.scene_B.graficar_grafo(self.controlador.obtener_grafo(), recorrido)
 
     def obtener_estados(self, nodos):
