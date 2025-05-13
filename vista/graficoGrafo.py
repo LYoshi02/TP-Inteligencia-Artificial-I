@@ -13,7 +13,7 @@ from grafo.grafo import Grafo
 from grafo.nodo import Nodo
 
 
-TemaNodo = Literal["default", "seleccionado", "inicio", "actual", "cerrado", "abierto", "abierto_mejor"]
+TemaNodo = Literal["default", "seleccionado", "inicio", "actual", "cerrado", "abierto", "abierto_mejor", "camino"]
 
 class NodoGrafico(QGraphicsEllipseItem):
     def __init__(self, nodo: Nodo, radio=20):
@@ -42,15 +42,17 @@ class NodoGrafico(QGraphicsEllipseItem):
                 self.setBrush(QBrush(QColor("#333333")))
                 self.setPen(QPen(QColor("#555555")))
             case "inicio":
-                self.setBrush(QBrush(QColor("blue")))
+                self.setBrush(QBrush(QColor("#ef233c")))
             case "actual":
-                self.setBrush(QBrush(QColor("red")))
+                self.setBrush(QBrush(QColor("#EE9B00")))
             case "cerrado":
-                self.setBrush(QBrush(QColor("darkGray")))
+                self.setBrush(QBrush(QColor("#ced4da")))
             case "abierto":
-                self.setBrush(QBrush(QColor("darkMagenta")))
+                self.setBrush(QBrush(QColor("#48cae4")))
             case "abierto_mejor":
-                self.setBrush(QBrush(QColor("magenta")))
+                self.setBrush(QBrush(QColor("#0077b6")))
+            case "camino":
+                self.setBrush(QBrush(QColor("#ff5a5f")))
 
     def set_color(self, color: QColor):
         self.setBrush(QBrush(color))
@@ -82,8 +84,6 @@ class AristaGrafico(QGraphicsItemGroup):
 
         # Crear el texto del peso
         self.texto = QGraphicsTextItem(str(peso), self.linea)
-        self.texto.setDefaultTextColor(Qt.GlobalColor.black)
-        self.texto.setFont(QFont("Arial", 10))
         # Posicionar el texto en el medio de la línea
         self.texto.setPos(
             (origen.x + destino.x) / 2,
@@ -100,8 +100,15 @@ class AristaGrafico(QGraphicsItemGroup):
         match tema:
             case "default":
                 self.linea.setPen(QPen(Qt.GlobalColor.black))
+                self.texto.setDefaultTextColor(Qt.GlobalColor.black)
+                self.texto.setFont(QFont("Arial", 10))
             case "camino":
-                self.linea.setPen(QPen(QColor("red")))
+                pen = QPen(QColor("#9B2226"))
+                pen.setWidth(2)
+                self.linea.setPen(pen)
+                font = QFont("Arial", 10)
+                font.setBold(True)
+                self.texto.setFont(font)
 
 
 class GrafoScene(QGraphicsScene):
@@ -154,6 +161,11 @@ class GrafoScene(QGraphicsScene):
                 nodo_abierto_ui.aplicar_tema("abierto_mejor")
             else:
                 nodo_abierto_ui.aplicar_tema("abierto")
+        # Pintar nodos del camino actual
+        for nodo, nodo_ui in nodos_graficados.items():
+            if nodo in paso_actual.camino:
+                print("Nodo camino: " + str(nodo))
+                nodo_ui.aplicar_tema("camino")
         # Pintar nodo inicial
         nodo_inicio_ui = nodos_graficados[recorrido_algoritmo.nodo_inicio]
         print("Nodo inicio: " + str(recorrido_algoritmo.nodo_inicio))
@@ -162,7 +174,9 @@ class GrafoScene(QGraphicsScene):
         # Pintar nodo actual
         nodo_actual_ui = nodos_graficados[paso_actual.nodo_actual]
         print("Nodo actual: " + str(paso_actual.nodo_actual))
-        if nodo_actual_ui:
+        if nodo_actual_ui.nombre == recorrido_algoritmo.nodo_objetivo.nombre:
+            nodo_actual_ui.aplicar_tema("inicio")
+        elif nodo_actual_ui:
             nodo_actual_ui.aplicar_tema("actual")
 
         # Pintar camino recorrido

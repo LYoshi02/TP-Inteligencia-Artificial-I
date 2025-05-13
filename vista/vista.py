@@ -23,8 +23,8 @@ class Vista(QMainWindow):
         self.scene_B = GrafoScene(self.controlador)
 
         self.ui.graphicsView_base.setScene(self.scene_B)
-        # self.ui.graphicsView_manhattan.setScene(self.scene_B)
-        # self.ui.graphicsView_lRecta.setScene(self.scene_B)
+        self.ui.graphicsView_manhattan.setScene(self.scene_B)
+        self.ui.graphicsView_lRecta.setScene(self.scene_B)
 
         self.ui.widget_manhattan.setVisible(False)
         self.ui.widget_lRecta.setVisible(False)
