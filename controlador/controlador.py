@@ -20,8 +20,7 @@ class Controlador:
         return self._grafo
 
     def obtener_grafo_busqueda(self, heuristica: str):
-        llave_busqueda = self.__obtener_llave_busqueda(heuristica)
-        return self._procesos_busqueda[llave_busqueda].grafo
+        return self._procesos_busqueda[heuristica].grafo
 
     def restablecer_grafo(self):
         self._grafo = Grafo()
@@ -70,23 +69,21 @@ class Controlador:
         return self._grafo.obtener_aristas_nodo(nodo)
 
     # Operaciones del Algoritmo
-    def comenzar_algoritmo(self, heuristica_elegida: str) -> RecorridoAlgoritmo:
+    def comenzar_algoritmo(self, heuristica: str) -> RecorridoAlgoritmo:
         if self._nodo_inicio == None or self._nodo_objetivo == None:
             print("No se establecieron los nodos de inicio y/o objetivo")
             return
 
-        heuristica = self.__obtener_tecnica_heuristica(heuristica_elegida)
-        llave_busqueda = self.__obtener_llave_busqueda(heuristica_elegida)
+        tecnica_heuristica = self.__obtener_tecnica_heuristica(heuristica)
+        self._procesos_busqueda[heuristica] = RecorridoAlgoritmo(self._grafo, self._nodo_inicio, self._nodo_objetivo, tecnica_heuristica)
 
-        self._procesos_busqueda[llave_busqueda] = RecorridoAlgoritmo(self._grafo, self._nodo_inicio, self._nodo_objetivo, heuristica)
-
-        return self._procesos_busqueda[llave_busqueda]
+        return self._procesos_busqueda[heuristica]
 
     def __obtener_tecnica_heuristica(self, heuristica: str):
         tecnica_heuristica: Heuristica
-        if heuristica == HEURISTICAS.distancia_linea_recta.texto:
+        if heuristica == HEURISTICAS.distancia_linea_recta.nombre:
             tecnica_heuristica = DistanciaLineaRecta()
-        elif heuristica == HEURISTICAS.distancia_manhattan.texto:
+        elif heuristica == HEURISTICAS.distancia_manhattan.nombre:
             tecnica_heuristica = DistanciaManhattan()
         # TODO: ver como manejar este caso
         else:
@@ -94,24 +91,10 @@ class Controlador:
 
         return tecnica_heuristica
 
-    def __obtener_llave_busqueda(self, heuristica: str):
-        llave_busqueda: str
-        if heuristica == HEURISTICAS.distancia_linea_recta.texto:
-            llave_busqueda = HEURISTICAS.distancia_linea_recta.nombre
-        elif heuristica == HEURISTICAS.distancia_manhattan.texto:
-            llave_busqueda = HEURISTICAS.distancia_manhattan.nombre
-        # TODO: ver como manejar este caso
-        else:
-            llave_busqueda = HEURISTICAS.distancia_linea_recta.nombre
-
-        return llave_busqueda
-
     def avanzar_paso(self, heuristica: str) -> RecorridoAlgoritmo:
-        llave_busqueda = self.__obtener_llave_busqueda(heuristica)
-        self._procesos_busqueda[llave_busqueda].avanzar_paso()
-        return self._procesos_busqueda[llave_busqueda]
+        self._procesos_busqueda[heuristica].avanzar_paso()
+        return self._procesos_busqueda[heuristica]
 
     def retroceder_paso(self, heuristica: str) -> RecorridoAlgoritmo:
-        llave_busqueda = self.__obtener_llave_busqueda(heuristica)
-        self._procesos_busqueda[llave_busqueda].retroceder_paso()
-        return self._procesos_busqueda[llave_busqueda]
+        self._procesos_busqueda[heuristica].retroceder_paso()
+        return self._procesos_busqueda[heuristica]

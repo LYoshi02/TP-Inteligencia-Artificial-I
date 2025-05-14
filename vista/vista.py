@@ -284,13 +284,13 @@ class Vista(QMainWindow):
             self.ui.graphicsView_lRecta.setDisabled(True)
             self.ui.graphicsView_lRecta.setScene(scene_heuristica)
             self.escenas_heuristicas[HEURISTICAS.distancia_linea_recta.nombre] = (
-                EscenaHeuristica(self.controlador, scene_heuristica, HEURISTICAS.distancia_linea_recta.texto))
+                EscenaHeuristica(self.controlador, scene_heuristica, HEURISTICAS.distancia_linea_recta.nombre))
         elif seleccion == "Manhattan":
             self.ui.widget_manhattan.setVisible(True)
             self.ui.graphicsView_manhattan.setDisabled(True)
             self.ui.graphicsView_manhattan.setScene(scene_heuristica)
             self.escenas_heuristicas[HEURISTICAS.distancia_manhattan.nombre] = (
-                EscenaHeuristica(self.controlador, scene_heuristica, HEURISTICAS.distancia_manhattan.texto))
+                EscenaHeuristica(self.controlador, scene_heuristica, HEURISTICAS.distancia_manhattan.nombre))
 
     def ejecutar_ambas_heuristicas(self):
         scene_linea_recta = GrafoScene(self.controlador)
@@ -307,9 +307,9 @@ class Vista(QMainWindow):
         self.ui.widget_base.setVisible(False)
 
         self.escenas_heuristicas[HEURISTICAS.distancia_linea_recta.nombre] = (
-            EscenaHeuristica(self.controlador, scene_linea_recta, HEURISTICAS.distancia_linea_recta.texto))
+            EscenaHeuristica(self.controlador, scene_linea_recta, HEURISTICAS.distancia_linea_recta.nombre))
         self.escenas_heuristicas[HEURISTICAS.distancia_manhattan.nombre] = (
-            EscenaHeuristica(self.controlador, scene_manhattan, HEURISTICAS.distancia_manhattan.texto))
+            EscenaHeuristica(self.controlador, scene_manhattan, HEURISTICAS.distancia_manhattan.nombre))
 
     # Guia de usuario
     def mostrar_info_cantidad_nodos(self):
