@@ -3,8 +3,8 @@ from PyQt6.QtWidgets import QMainWindow
 
 from constantes.heuristicas import HEURISTICAS
 from controlador.controlador import Controlador
-from vista.escenas.EscenaHeuristica import EscenaHeuristica
-from vista.ui_mainWindow import Ui_MainWindow
+from vista.escenas.escena_heuristica import EscenaHeuristica
+from vista.ui_main_window import Ui_MainWindow
 from vista.grafo.arista_grafico import AristaGrafico
 from vista.grafo.nodo_grafico import NodoGrafico
 from vista.grafo.grafo_scene import GrafoScene
