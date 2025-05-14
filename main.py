@@ -57,7 +57,7 @@ def generar_grafo() -> Grafo:
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
-    with open("resources/styles/style.qss", "r") as f:
+    with open("vista/styles/style.qss", "r") as f:
         style = f.read()
         app.setStyleSheet(style)
     window = Vista()
