@@ -8,8 +8,6 @@ class EscenaHeuristica:
         self._escena_grafo = escena_grafo
         self._heuristica = heuristica
 
-        self._controlador.comenzar_algoritmo(heuristica)
-
     def graficar_grafo(self, recorrido: RecorridoAlgoritmo) -> None:
         self._escena_grafo.graficar_grafo(self._controlador.obtener_grafo_busqueda(self._heuristica), recorrido)
 

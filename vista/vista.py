@@ -159,14 +159,6 @@ class Vista(QMainWindow):
         self.controlador.establecer_nodo_inicio(nodo_inicial)
         self.controlador.establecer_nodo_objetivo(nodo_objetivo)
 
-        for nodo_item in self.scene_B.nodos:
-            if nodo_item.nombre == estado_inicial:
-                nodo_item.set_color(QColor("#A0A0A0"))
-            elif nodo_item.nombre == estado_objetivo:
-                nodo_item.set_color(QColor("#C25B56"))
-            else:  # Caso normal
-                nodo_item.set_color(QColor("#487575"))
-
     def limpiar_escena(self):
         escena_base = self.ui.graphicsView_base.scene()
         for item in list(escena_base.items()):

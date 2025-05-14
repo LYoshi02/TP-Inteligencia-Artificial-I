@@ -115,7 +115,6 @@ class GrafoScene(QGraphicsScene):
     def __init__(self, controlador: Controlador):
         super().__init__()
         self.controlador = controlador
-        self.nodos = []
         self.nodo_para_conectar = None
 
     def graficar_grafo(self, grafo: Grafo, recorrido_algoritmo: RecorridoAlgoritmo = None):
@@ -214,7 +213,8 @@ class GrafoScene(QGraphicsScene):
             item = next((i for i in items if isinstance(i, NodoGrafico)), None)
 
             if item is None:
-                if not any(nodo.contains_point(pos) for nodo in self.nodos):
+                # TODO: ver que hacer con esta linea
+                # if not any(nodo.contains_point(pos) for nodo in self.nodos):
                     nombre, ok = QInputDialog.getText(None, "Nuevo Nodo", "Nombre del nodo:")
                     if ok and nombre:
                         print(f"Nodo ({nombre}) creado en: ({pos.x():.2f}, {pos.y():.2f})")
