@@ -1,6 +1,6 @@
 from algoritmo2.recorrido_algoritmo import RecorridoAlgoritmo
 from controlador.controlador import Controlador
-from vista.graficoGrafo import GrafoScene
+from vista.grafo.grafo_scene import GrafoScene
 
 class EscenaHeuristica:
     def __init__(self, controlador: Controlador, escena_grafo: GrafoScene, heuristica: str):

@@ -1,12 +1,13 @@
 from PyQt6 import QtCore, QtWidgets
-from PyQt6.QtGui import QColor
 from PyQt6.QtWidgets import QMainWindow
 
 from constantes.heuristicas import HEURISTICAS
 from controlador.controlador import Controlador
 from vista.escenas.EscenaHeuristica import EscenaHeuristica
 from vista.ui_mainWindow import Ui_MainWindow
-from vista.graficoGrafo import GrafoScene, NodoGrafico, AristaGrafico
+from vista.grafo.arista_grafico import AristaGrafico
+from vista.grafo.nodo_grafico import NodoGrafico
+from vista.grafo.grafo_scene import GrafoScene
 
 
 class Vista(QMainWindow):
