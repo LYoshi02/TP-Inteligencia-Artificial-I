@@ -6,7 +6,7 @@ from constantes.heuristicas import HEURISTICAS
 from controlador.controlador import Controlador
 from vista.escenas.EscenaHeuristica import EscenaHeuristica
 from vista.ui_mainWindow import Ui_MainWindow
-from vista.graficoGrafo import GrafoScene, NodoGrafico
+from vista.graficoGrafo import GrafoScene, NodoGrafico, AristaGrafico
 
 
 class Vista(QMainWindow):
@@ -168,27 +168,27 @@ class Vista(QMainWindow):
                 nodo_item.set_color(QColor("#487575"))
 
     def limpiar_escena(self):
-        for item in list(self.scene_B.items()):
-            if isinstance(item, (NodoGrafico, QtWidgets.QGraphicsLineItem)):
-                self.scene_B.removeItem(item)
-
-        if hasattr(self.scene_B, 'nodos'):
-            self.scene_B.nodos.clear()
+        escena_base = self.ui.graphicsView_base.scene()
+        for item in list(escena_base.items()):
+            if isinstance(item, (NodoGrafico, AristaGrafico)):
+                escena_base.removeItem(item)
 
         self.controlador.restablecer_grafo()
 
         self.mostrar_resultados(False)
+
         self.ui.widget_base.setDisabled(False)
+        self.ui.widget_base.setVisible(True)
         self.ui.graphicsView_base.setDisabled(False)
+        self.ui.graphicsView_base.setVisible(True)
 
         self.ui.comboBox.setCurrentIndex(0)
 
         self.ui.widget_manhattan.setVisible(False)
-        self.ui.graphicsView_manhattan.setVisible(False)
-        self.ui.widget_base.setVisible(True)
-        self.ui.graphicsView_base.setVisible(True)
+        self.ui.graphicsView_manhattan.setDisabled(True)
+
         self.ui.widget_lRecta.setVisible(False)
-        self.ui.graphicsView_lRecta.setVisible(False)
+        self.ui.graphicsView_lRecta.setDisabled(True)
 
     # ---- Interacciones con la UI ----
     def activar_campos(self):
