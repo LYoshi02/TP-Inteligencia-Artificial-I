@@ -2,7 +2,9 @@ from PyQt6 import QtCore, QtWidgets
 from PyQt6.QtGui import QColor
 from PyQt6.QtWidgets import QMainWindow
 
+from constantes.heuristicas import HEURISTICAS
 from controlador.controlador import Controlador
+from vista.escenas.EscenaHeuristica import EscenaHeuristica
 from vista.ui_mainWindow import Ui_MainWindow
 from vista.graficoGrafo import GrafoScene, NodoGrafico
 
@@ -14,6 +16,7 @@ class Vista(QMainWindow):
         self.ui = Ui_MainWindow()
         self.ui.setupUi(self)
         self.controlador = Controlador()
+        self.escenas_heuristicas: dict[str, EscenaHeuristica] = {}
 
         self._configurar_interfaz()
         self._conectar_botones()
@@ -21,10 +24,7 @@ class Vista(QMainWindow):
 
     def _configurar_interfaz(self):
         self.scene_B = GrafoScene(self.controlador)
-
         self.ui.graphicsView_base.setScene(self.scene_B)
-        self.ui.graphicsView_manhattan.setScene(self.scene_B)
-        self.ui.graphicsView_lRecta.setScene(self.scene_B)
 
         self.ui.widget_manhattan.setVisible(False)
         self.ui.widget_lRecta.setVisible(False)
@@ -88,9 +88,7 @@ class Vista(QMainWindow):
             else:
                 self.ejecutar_heuristica()
 
-            recorrido = self.controlador.comenzar_algoritmo(seleccion)
-            self.scene_B.graficar_grafo(self.controlador.obtener_grafo(), recorrido)
-
+            self.inicializar_busquedas()
             self.mostrar_resultados(True)
         except Exception as e:
             QtWidgets.QMessageBox.critical(self, "Error", f"Ocurrió un error: {str(e)}")
@@ -110,15 +108,18 @@ class Vista(QMainWindow):
     def agregar_arista(self, nodo_origen, nodo_destino, peso):
         self.controlador.agregar_arista(nodo_origen, nodo_destino, peso)
 
+    def inicializar_busquedas(self):
+        for escena_heuristica in self.escenas_heuristicas.values():
+            recorrido = self.controlador.comenzar_algoritmo(escena_heuristica.heuristica)
+            escena_heuristica.graficar_grafo(recorrido)
+
     def avanzar_paso(self):
-        heuristica = self.ui.comboBox.currentText()
-        recorrido = self.controlador.avanzar_paso(heuristica)
-        self.scene_B.graficar_grafo(self.controlador.obtener_grafo(), recorrido)
+        for escena_heuristica in self.escenas_heuristicas.values():
+            escena_heuristica.avanzar_paso()
 
     def retroceder_paso(self):
-        heuristica = self.ui.comboBox.currentText()
-        recorrido = self.controlador.retroceder_paso(heuristica)
-        self.scene_B.graficar_grafo(self.controlador.obtener_grafo(), recorrido)
+        for escena_heuristica in self.escenas_heuristicas.values():
+            escena_heuristica.retroceder_paso()
 
     def obtener_estados(self, nodos):
         dialogo = QtWidgets.QDialog(self)
@@ -269,6 +270,7 @@ class Vista(QMainWindow):
 
     def ejecutar_heuristica(self):
         seleccion = self.ui.comboBox.currentText()
+        scene_heuristica = GrafoScene(self.controlador)
 
         self.ui.widget_lRecta.setVisible(False)
         self.ui.widget_manhattan.setVisible(False)
@@ -280,13 +282,22 @@ class Vista(QMainWindow):
         if seleccion == "Línea Recta":
             self.ui.widget_lRecta.setVisible(True)
             self.ui.graphicsView_lRecta.setDisabled(True)
+            self.ui.graphicsView_lRecta.setScene(scene_heuristica)
+            self.escenas_heuristicas[HEURISTICAS.distancia_linea_recta.nombre] = (
+                EscenaHeuristica(self.controlador, scene_heuristica, HEURISTICAS.distancia_linea_recta.texto))
         elif seleccion == "Manhattan":
             self.ui.widget_manhattan.setVisible(True)
             self.ui.graphicsView_manhattan.setDisabled(True)
+            self.ui.graphicsView_manhattan.setScene(scene_heuristica)
+            self.escenas_heuristicas[HEURISTICAS.distancia_manhattan.nombre] = (
+                EscenaHeuristica(self.controlador, scene_heuristica, HEURISTICAS.distancia_manhattan.texto))
 
     def ejecutar_ambas_heuristicas(self):
-        self.ui.graphicsView_manhattan.setScene(self.scene_B)
-        self.ui.graphicsView_lRecta.setScene(self.scene_B)
+        scene_linea_recta = GrafoScene(self.controlador)
+        scene_manhattan = GrafoScene(self.controlador)
+
+        self.ui.graphicsView_lRecta.setScene(scene_linea_recta)
+        self.ui.graphicsView_manhattan.setScene(scene_manhattan)
 
         self.ui.graphicsView_lRecta.setDisabled(True)
         self.ui.widget_base.setDisabled(False)
@@ -294,6 +305,11 @@ class Vista(QMainWindow):
         self.ui.widget_manhattan.setVisible(True)
         self.ui.graphicsView_manhattan.setDisabled(True)
         self.ui.widget_base.setVisible(False)
+
+        self.escenas_heuristicas[HEURISTICAS.distancia_linea_recta.nombre] = (
+            EscenaHeuristica(self.controlador, scene_linea_recta, HEURISTICAS.distancia_linea_recta.texto))
+        self.escenas_heuristicas[HEURISTICAS.distancia_manhattan.nombre] = (
+            EscenaHeuristica(self.controlador, scene_manhattan, HEURISTICAS.distancia_manhattan.texto))
 
     # Guia de usuario
     def mostrar_info_cantidad_nodos(self):

@@ -14,7 +14,7 @@ class RecorridoAlgoritmo:
         self.__calcular_heuristicas(grafo, nodo_objetivo, heuristica)
 
         self._nro_paso_actual: int = NRO_PASO_INICIAL
-        self._grafo: Grafo = grafo
+        self._grafo: Grafo = copy.deepcopy(grafo)
         self._nodo_inicio: Nodo = nodo_inicio
         self._nodo_inicio.costo_desde_inicio = 0
         self._nodo_objetivo: Nodo = nodo_objetivo
@@ -120,6 +120,10 @@ class RecorridoAlgoritmo:
             nodo_actual = nodo_actual.nodo_padre
 
         return nodos_camino[::-1]
+
+    @property
+    def grafo(self):
+        return self._grafo
 
     @property
     def nodo_inicio(self):

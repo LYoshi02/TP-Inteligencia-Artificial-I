@@ -19,6 +19,10 @@ class Controlador:
     def obtener_grafo(self):
         return self._grafo
 
+    def obtener_grafo_busqueda(self, heuristica: str):
+        llave_busqueda = self.__obtener_llave_busqueda(heuristica)
+        return self._procesos_busqueda[llave_busqueda].grafo
+
     def restablecer_grafo(self):
         self._grafo = Grafo()
         self._nodo_inicio = None

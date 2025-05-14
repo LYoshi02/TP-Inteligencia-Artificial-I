@@ -1,5 +1,3 @@
-import math
-
 from algoritmo2.heuristica.heuristica import Heuristica
 
 class DistanciaManhattan(Heuristica):
