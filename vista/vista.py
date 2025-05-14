@@ -103,12 +103,6 @@ class Vista(QMainWindow):
             return False
         return True
 
-    def agregar_nodo(self, nombre, x, y):
-        self.controlador.agregar_nodo(nombre, x, y)
-
-    def agregar_arista(self, nodo_origen, nodo_destino, peso):
-        self.controlador.agregar_arista(nodo_origen, nodo_destino, peso)
-
     def inicializar_busquedas(self):
         for escena_heuristica in self.escenas_heuristicas.values():
             recorrido = self.controlador.comenzar_algoritmo(escena_heuristica.heuristica)

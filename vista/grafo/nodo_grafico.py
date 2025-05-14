@@ -48,12 +48,10 @@ class NodoGrafico(QGraphicsEllipseItem):
             case "camino":
                 self.setBrush(QBrush(QColor("#ff5a5f")))
 
-    def set_color(self, color: QColor):
-        self.setBrush(QBrush(color))
-
-    def contains_point(self, point): # Determina si clic fue dentro del círculo del nodo
-        center = self.pos() + self.boundingRect().center()
-        return math.sqrt((point.x() - center.x()) ** 2 + (point.y() - center.y()) ** 2) <= self.radio
+    # TODO: ver que hacer con esto
+    # def contains_point(self, point): # Determina si clic fue dentro del círculo del nodo
+    #     center = self.pos() + self.boundingRect().center()
+    #     return math.sqrt((point.x() - center.x()) ** 2 + (point.y() - center.y()) ** 2) <= self.radio
 
     def contextMenuEvent(self, event):
         menu = QMenu()
