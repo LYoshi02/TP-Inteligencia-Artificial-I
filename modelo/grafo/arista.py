@@ -1,4 +1,4 @@
-from grafo.nodo import Nodo
+from modelo.grafo.nodo import Nodo
 
 
 class Arista:

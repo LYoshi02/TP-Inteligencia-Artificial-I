@@ -1,6 +1,7 @@
-from cola.cola_prioridad import ColaPrioridad
-from grafo.grafo import Grafo
-from grafo.nodo import Nodo
+# TODO: borrar al terminar el proyecto
+from modelo.cola.cola_prioridad import ColaPrioridad
+from modelo.grafo.grafo import Grafo
+from modelo.grafo.nodo import Nodo
 
 
 def a_estrella(grafo: Grafo, nodo_inicio: Nodo, nodo_objetivo: Nodo):

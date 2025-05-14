@@ -1,6 +1,6 @@
-from cola.cola_prioridad import ColaPrioridad
-from grafo.arista import Arista
-from grafo.nodo import Nodo
+from modelo.cola.cola_prioridad import ColaPrioridad
+from modelo.grafo.arista import Arista
+from modelo.grafo.nodo import Nodo
 
 
 class Paso:

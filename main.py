@@ -1,10 +1,10 @@
+import sys
 from PyQt6.QtWidgets import QMainWindow, QApplication
 
 from vista import vista
 from algoritmo import a_estrella
-from grafo.grafo import Grafo
-from grafo.nodo import Nodo
-import sys
+from modelo.grafo.grafo import Grafo
+from modelo.grafo.nodo import Nodo
 
 from vista.vista import Vista
 

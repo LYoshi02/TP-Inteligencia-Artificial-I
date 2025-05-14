@@ -5,7 +5,7 @@ from PyQt6.QtCore import Qt
 from PyQt6.QtGui import QBrush, QColor, QPen
 from PyQt6.QtWidgets import QGraphicsEllipseItem, QGraphicsTextItem, QMenu
 
-from grafo.nodo import Nodo
+from modelo.grafo.nodo import Nodo
 
 TemaNodo = Literal["default", "seleccionado", "inicio", "actual", "cerrado", "abierto", "abierto_mejor", "camino"]
 

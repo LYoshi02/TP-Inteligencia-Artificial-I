@@ -1,11 +1,11 @@
 from PyQt6.QtCore import Qt
 from PyQt6.QtWidgets import QGraphicsScene, QInputDialog
 
-from algoritmo2.recorrido_algoritmo import RecorridoAlgoritmo
+from modelo.algoritmo.recorrido_algoritmo import RecorridoAlgoritmo
 from controlador.controlador import Controlador
-from grafo.arista import Arista
-from grafo.grafo import Grafo
-from grafo.nodo import Nodo
+from modelo.grafo.arista import Arista
+from modelo.grafo.grafo import Grafo
+from modelo.grafo.nodo import Nodo
 from vista.grafo.arista_grafico import AristaGrafico
 from vista.grafo.nodo_grafico import NodoGrafico
 

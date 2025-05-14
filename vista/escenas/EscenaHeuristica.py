@@ -1,4 +1,4 @@
-from algoritmo2.recorrido_algoritmo import RecorridoAlgoritmo
+from modelo.algoritmo.recorrido_algoritmo import RecorridoAlgoritmo
 from controlador.controlador import Controlador
 from vista.grafo.grafo_scene import GrafoScene
 

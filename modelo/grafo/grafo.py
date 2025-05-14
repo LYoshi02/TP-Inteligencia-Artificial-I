@@ -1,5 +1,5 @@
-from grafo.arista import Arista
-from grafo.nodo import Nodo
+from modelo.grafo.arista import Arista
+from modelo.grafo.nodo import Nodo
 
 
 class Grafo:

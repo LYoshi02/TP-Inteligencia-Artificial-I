@@ -1,11 +1,11 @@
-from algoritmo2.heuristica.distancia_manhattan import DistanciaManhattan
-from algoritmo2.heuristica.distancia_linea_recta import DistanciaLineaRecta
-from algoritmo2.heuristica.heuristica import Heuristica
-from algoritmo2.recorrido_algoritmo import RecorridoAlgoritmo
 from constantes.heuristicas import HEURISTICAS
-from grafo.arista import Arista
-from grafo.grafo import Grafo
-from grafo.nodo import Nodo
+from modelo.algoritmo.heuristica.distancia_manhattan import DistanciaManhattan
+from modelo.algoritmo.heuristica.distancia_linea_recta import DistanciaLineaRecta
+from modelo.algoritmo.heuristica.heuristica import Heuristica
+from modelo.algoritmo.recorrido_algoritmo import RecorridoAlgoritmo
+from modelo.grafo.arista import Arista
+from modelo.grafo.grafo import Grafo
+from modelo.grafo.nodo import Nodo
 
 
 class Controlador:

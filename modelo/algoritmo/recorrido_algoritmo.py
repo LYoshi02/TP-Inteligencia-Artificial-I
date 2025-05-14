@@ -1,10 +1,10 @@
 import copy
 
-from algoritmo2.heuristica.heuristica import Heuristica
-from algoritmo2.paso import Paso
-from cola.cola_prioridad import ColaPrioridad
-from grafo.grafo import Grafo
-from grafo.nodo import Nodo
+from modelo.algoritmo.heuristica.heuristica import Heuristica
+from modelo.algoritmo.paso import Paso
+from modelo.cola.cola_prioridad import ColaPrioridad
+from modelo.grafo.grafo import Grafo
+from modelo.grafo.nodo import Nodo
 
 NRO_PASO_INICIAL: int = 0
 

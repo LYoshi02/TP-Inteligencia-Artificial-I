@@ -4,7 +4,7 @@ from PyQt6.QtCore import Qt
 from PyQt6.QtGui import QPen, QFont, QColor
 from PyQt6.QtWidgets import QGraphicsItemGroup, QGraphicsLineItem, QGraphicsTextItem
 
-from grafo.nodo import Nodo
+from modelo.grafo.nodo import Nodo
 
 TemaArista = Literal["default", "camino"]
 
