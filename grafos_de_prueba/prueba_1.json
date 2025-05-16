@@ -1,0 +1,51 @@
+{
+    "nodos": [
+        {
+            "nombre": "A",
+            "x": -40.0,
+            "y": -290.0
+        },
+        {
+            "nombre": "B",
+            "x": -41.0,
+            "y": -176.0
+        },
+        {
+            "nombre": "C",
+            "x": -165.0,
+            "y": -61.0
+        },
+        {
+            "nombre": "D",
+            "x": -51.0,
+            "y": -56.0
+        },
+        {
+            "nombre": "E",
+            "x": 89.0,
+            "y": -51.0
+        }
+    ],
+    "aristas": [
+        {
+            "nodo_origen": "A",
+            "nodo_destino": "B",
+            "distancia": 1
+        },
+        {
+            "nodo_origen": "B",
+            "nodo_destino": "C",
+            "distancia": 2
+        },
+        {
+            "nodo_origen": "B",
+            "nodo_destino": "D",
+            "distancia": 3
+        },
+        {
+            "nodo_origen": "B",
+            "nodo_destino": "E",
+            "distancia": 1000
+        }
+    ]
+}

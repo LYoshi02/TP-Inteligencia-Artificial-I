@@ -89,6 +89,44 @@ class Grafo:
             print(
                 f"eliminar_arista - No existe la arista '{nodo_origen.nombre}---{nodo_destino.nombre}' que se quiere eliminar")
 
+    def to_dict(self):
+        nodos_data = [nodo.to_dict() for nodo in self._nodos.keys()]
+
+        aristas_guardadas = set()
+        aristas_data = []
+        for nodo, aristas in self._nodos.items():
+            for arista in aristas:
+                clave = frozenset([arista.nodo_origen.nombre, arista.nodo_destino.nombre])
+                if clave not in aristas_guardadas:
+                    aristas_data.append(arista.to_dict())
+                    aristas_guardadas.add(clave)
+
+        return {
+            "nodos": nodos_data,
+            "aristas": aristas_data,
+        }
+
+    @staticmethod
+    def from_dict(data: dict):
+        if not isinstance(data, dict):
+            raise Exception("El archivo no contiene un objeto JSON válido")
+        elif not "nodos" in data or not "aristas" in data:
+            raise Exception("El archivo no contiene un objeto JSON válido")
+
+        grafo = Grafo()
+        nombre_a_nodo = {}
+
+        for nodo_data in data["nodos"]:
+            nodo = Nodo.from_dict(nodo_data)
+            grafo.agregar_nodo(nodo)
+            nombre_a_nodo[nodo.nombre] = nodo
+
+        for arista_data in data["aristas"]:
+            arista = Arista.from_dict(arista_data, nombre_a_nodo)
+            grafo.agregar_arista(arista.nodo_origen, arista.nodo_destino, arista.distancia)
+
+        return grafo
+
     # Imprimir nodos y aristas del grafo
     def __str__(self):
         resultado = ""

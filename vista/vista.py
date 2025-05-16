@@ -1,5 +1,5 @@
 from PyQt6 import QtCore, QtWidgets
-from PyQt6.QtWidgets import QMainWindow
+from PyQt6.QtWidgets import QMainWindow, QFileDialog
 
 from constantes.heuristicas import HEURISTICAS
 from controlador.controlador import Controlador
@@ -52,6 +52,8 @@ class Vista(QMainWindow):
 
         self.ui.groupBoxInstrucciones.setVisible(False)
 
+        self.mostrar_botones_archivo(False)
+
 
     # Centrar la ventana
     def centrar_ventana(self):
@@ -66,6 +68,9 @@ class Vista(QMainWindow):
         self.findChild(QtWidgets.QPushButton, "pushButton_siguiente_paso").clicked.connect(self.avanzar_paso)
         self.findChild(QtWidgets.QPushButton, "pushButton_paso_atras").clicked.connect(self.retroceder_paso)
         self.findChild(QtWidgets.QPushButton, "pushButton_limpiar").clicked.connect(self.limpiar_escena)
+        self.findChild(QtWidgets.QPushButton, "pushButton_cargar_archivo_grafo").clicked.connect(self.cargar_archivo_grafo)
+        self.findChild(QtWidgets.QPushButton, "pushButton_guardar_archivo_grafo").clicked.connect(self.guardar_archivo_grafo)
+
         self.ui.infoButtonComboBox.clicked.connect(self.mostrar_info_heuristica)
         self.ui.infoButtonModo.clicked.connect(self.mostrar_info_modo_generacion)
         self.ui.radioButtonManual.toggled.connect(self.activar_campos)
@@ -83,6 +88,7 @@ class Vista(QMainWindow):
                 return
 
             self.obtener_estados(nodos)
+            self.mostrar_botones_archivo(False)
 
             if seleccion == "Ambos":
                 self.ejecutar_ambas_heuristicas()
@@ -177,6 +183,8 @@ class Vista(QMainWindow):
         self.ui.widget_lRecta.setVisible(False)
         self.ui.graphicsView_lRecta.setDisabled(True)
 
+        self.mostrar_botones_archivo(True)
+
     # ---- Interacciones con la UI ----
     def activar_campos(self):
         self.ui.groupBoxInstrucciones.setVisible(True)
@@ -190,6 +198,8 @@ class Vista(QMainWindow):
 
         self.ui.widget_base.setDisabled( modo_aleatorio)
         self.ui.graphicsView_base.setDisabled(modo_aleatorio)
+
+        self.mostrar_botones_archivo(True)
 
         self.ui.infoButtonComboBox.setVisible(True)
         self.ui.labelComboBox.setVisible(True)
@@ -317,3 +327,26 @@ class Vista(QMainWindow):
             None, "Información - Heurística",
             "Selecciona el tipo de heurística que se utilizará para calcular el camino."
         )
+
+    def mostrar_botones_archivo(self, visibilidad: bool):
+        self.ui.pushButtonCargarArchivo.setVisible(visibilidad)
+        self.ui.pushButtonGuardarArchivo.setVisible(visibilidad)
+
+    def cargar_archivo_grafo(self):
+        path, _ = QFileDialog.getOpenFileName(None, "Cargar Grafo", "", "Archivos JSON (*.json)")
+        grafo_cargado = self.controlador.cargar_archivo_grafo(path)
+        if grafo_cargado:
+            self.scene_B.graficar_grafo(self.controlador.obtener_grafo())
+        else:
+            dialogo = QtWidgets.QDialog(self)
+            dialogo.setWindowTitle("Cargar Grafo")
+            QtWidgets.QMessageBox.warning(dialogo, "Error", "No se pudo cargar el grafo del archivo seleccionado.")
+
+
+    def guardar_archivo_grafo(self):
+        path, _ = QFileDialog.getSaveFileName(None, "Guardar Grafo", "", "Archivos JSON (*.json)")
+        grafo_guardado = self.controlador.guardar_archivo_grafo(path)
+        if not grafo_guardado:
+            dialogo = QtWidgets.QDialog(self)
+            dialogo.setWindowTitle("Guardar Grafo")
+            QtWidgets.QMessageBox.warning(dialogo, "Error", "No se pudo guardar el grafo.")

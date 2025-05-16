@@ -88,7 +88,9 @@ QComboBox:disabled {
 
 #pushButton_siguiente_paso,
 #pushButton_paso_atras,
-#pushButton_limpiar {
+#pushButton_limpiar,
+#pushButton_cargar_archivo_grafo,
+#pushButton_guardar_archivo_grafo {
     background-color: #5A8C8C;
     border-radius: 15px;
     color: white;
@@ -97,8 +99,18 @@ QComboBox:disabled {
 
 #pushButton_siguiente_paso:hover,
 #pushButton_paso_atras:hover,
-#pushButton_limpiar:hover {
+#pushButton_limpiar:hover,
+#pushButton_cargar_archivo_grafo:hover,
+#pushButton_guardar_archivo_grafo:hover {
     background-color: #487575;
+}
+
+#pushButton_cargar_archivo_grafo,
+#pushButton_guardar_archivo_grafo {
+    border-radius: 5px;
+    width: 100%;
+    padding: 10px 0;
+    font-weight: bold;
 }
 
 QPushButton {

@@ -1,3 +1,5 @@
+import json
+
 from constantes.heuristicas import HEURISTICAS
 from modelo.algoritmo.heuristica.distancia_manhattan import DistanciaManhattan
 from modelo.algoritmo.heuristica.distancia_linea_recta import DistanciaLineaRecta
@@ -98,3 +100,35 @@ class Controlador:
     def retroceder_paso(self, heuristica: str) -> RecorridoAlgoritmo:
         self._procesos_busqueda[heuristica].retroceder_paso()
         return self._procesos_busqueda[heuristica]
+
+    # Operaciones de archivos
+    def cargar_archivo_grafo(self, ruta_archivo: str) -> bool:
+        if not ruta_archivo:
+            return False
+
+        try:
+            with open(ruta_archivo, "r", encoding="utf-8") as archivo:
+                data = json.load(archivo)
+                grafo = Grafo.from_dict(data)
+                if not grafo:
+                    return False
+
+                self._grafo = grafo
+                return True
+        except Exception as e:
+            return False
+
+    def guardar_archivo_grafo(self, ruta_archivo: str) -> bool:
+        if not ruta_archivo:
+            return False
+
+        if not hasattr(self, "_grafo") or self._grafo is None:
+            return False
+
+        try:
+            with open(ruta_archivo, "w", encoding="utf-8") as archivo:
+                json.dump(self._grafo.to_dict(), archivo, indent=4)
+
+            return True
+        except Exception as e:
+            return False

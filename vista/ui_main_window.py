@@ -115,6 +115,23 @@ class Ui_MainWindow(object):
         self.comboBox.addItems(["Selecciona una heurística", "Ambos", "Línea Recta", "Manhattan"])
         self.layoutControles.addWidget(self.comboBox)
 
+        # ----- Botones de Manejo de Archivos -----
+        self.layoutBotonesArchivo = QtWidgets.QVBoxLayout(self.widgetControles)
+        self.layoutBotonesArchivo.setSpacing(10)
+
+        self.pushButtonCargarArchivo = QtWidgets.QPushButton()
+        self.pushButtonCargarArchivo.setObjectName("pushButton_cargar_archivo_grafo")
+        self.pushButtonCargarArchivo.setText("Cargar Grafo")
+
+        self.pushButtonGuardarArchivo = QtWidgets.QPushButton()
+        self.pushButtonGuardarArchivo.setObjectName("pushButton_guardar_archivo_grafo")
+        self.pushButtonGuardarArchivo.setText("Guardar Grafo")
+
+        self.layoutBotonesArchivo.addWidget(self.pushButtonCargarArchivo)
+        self.layoutBotonesArchivo.addWidget(self.pushButtonGuardarArchivo)
+        self.layoutControles.addLayout(self.layoutBotonesArchivo)
+        # -------------------
+
         self.layoutDatos.addWidget(self.widgetControles)
         self.layoutDatos.addStretch()
 

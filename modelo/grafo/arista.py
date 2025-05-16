@@ -14,12 +14,39 @@ class Arista:
             return self._nodo_origen
 
     @property
+    def nodo_origen(self):
+        return self._nodo_origen
+
+    @property
+    def nodo_destino(self):
+        return self._nodo_destino
+
+    @property
     def distancia(self):
         return self._distancia
 
     @distancia.setter
     def distancia(self, distancia: float):
         self._distancia = distancia
+
+    def to_dict(self) -> dict:
+        return {
+            "nodo_origen": self._nodo_origen.nombre,
+            "nodo_destino": self._nodo_destino.nombre,
+            "distancia": self._distancia
+        }
+
+    @staticmethod
+    def from_dict(data: dict, nodos: dict[str, Nodo]) -> 'Arista':
+        if not isinstance(data, dict):
+            raise Exception("El archivo no contiene un objeto JSON válido")
+        elif not "nodo_origen" in data or not "nodo_destino" in data:
+            raise Exception("El archivo no contiene un objeto JSON válido")
+
+        nodo_origen = nodos[data["nodo_origen"]]
+        nodo_destino = nodos[data["nodo_destino"]]
+        distancia = data.get("distancia", 0)
+        return Arista(nodo_origen, nodo_destino, distancia)
 
     def __eq__(self, arista):
         if isinstance(arista, Arista):

@@ -54,6 +54,25 @@ class Nodo:
     def y(self):
         return self._y
 
+    def to_dict(self) -> dict:
+        return {
+            "nombre": self._nombre,
+            "x": self._x,
+            "y": self._y,
+        }
+
+    @staticmethod
+    def from_dict(data: dict) -> 'Nodo':
+        if not isinstance(data, dict):
+            raise Exception("El archivo no contiene un objeto JSON válido")
+        elif not "nombre" in data or not "x" in data or not "y" in data:
+            raise Exception("El archivo no contiene un objeto JSON válido")
+
+        nombre = data["nombre"]
+        x = data["x"]
+        y = data["y"]
+        return Nodo(nombre, x, y)
+
     def __eq__(self, nodo):
         if isinstance(nodo, Nodo):
             return self.nombre == nodo.nombre
