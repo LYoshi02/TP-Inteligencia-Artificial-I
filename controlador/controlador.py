@@ -95,6 +95,13 @@ class Controlador:
         print("Nodos actuales en el grafo:", self._grafo.obtener_nodos())
         return self._grafo
 
+    def actualizar_nodo(self, nombre: str, x: float, y: float) -> Grafo:
+        nodo_actualizado: Nodo = Nodo(nombre, x, y)
+        print("Actualizando nodo", nodo_actualizado)
+        self._grafo.actualizar_nodo(nodo_actualizado)
+        print("Nodos actuales en el grafo:", self._grafo.obtener_nodos())
+        return self._grafo
+
     def eliminar_nodo(self, nombre: str, x: float, y: float) -> Grafo:
         nodo: Nodo = Nodo(nombre, x, y)
         self._grafo.eliminar_nodo(nodo)
