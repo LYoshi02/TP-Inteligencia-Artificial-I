@@ -132,6 +132,7 @@ class Vista(QMainWindow):
         combo_inicial = QtWidgets.QComboBox()
         combo_objetivo = QtWidgets.QComboBox()
         nombres_nodos = [nodo.nombre for nodo in nodos]
+        nombres_nodos.sort()
         combo_inicial.addItems(nombres_nodos)
         combo_objetivo.addItems(nombres_nodos)
 
