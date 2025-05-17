@@ -90,7 +90,8 @@ QComboBox:disabled {
 #pushButton_paso_atras,
 #pushButton_limpiar,
 #pushButton_cargar_archivo_grafo,
-#pushButton_guardar_archivo_grafo {
+#pushButton_guardar_archivo_grafo,
+#pushButton_generar{
     background-color: #5A8C8C;
     border-radius: 15px;
     color: white;
@@ -101,12 +102,14 @@ QComboBox:disabled {
 #pushButton_paso_atras:hover,
 #pushButton_limpiar:hover,
 #pushButton_cargar_archivo_grafo:hover,
-#pushButton_guardar_archivo_grafo:hover {
+#pushButton_guardar_archivo_grafo:hover,
+#pushButton_generar:hover{
     background-color: #487575;
 }
 
 #pushButton_cargar_archivo_grafo,
-#pushButton_guardar_archivo_grafo {
+#pushButton_guardar_archivo_grafo,
+#pushButton_generar{
     border-radius: 5px;
     width: 100%;
     padding: 10px 0;

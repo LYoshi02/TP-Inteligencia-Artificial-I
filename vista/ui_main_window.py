@@ -96,6 +96,12 @@ class Ui_MainWindow(object):
         self.spinBox.setMinimumHeight(30)
         self.layoutControles.addWidget(self.spinBox)
 
+        self.pushButton_generar = QtWidgets.QPushButton()
+        self.pushButton_generar.setObjectName("pushButton_generar")
+        self.pushButton_generar.setText("Generar grafo")
+        self.pushButton_generar.setFixedSize(100, 30)
+        self.layoutControles.addWidget(self.pushButton_generar, alignment=QtCore.Qt.AlignmentFlag.AlignHCenter)
+
         # ComboBox
         self.layoutLabelComboBox = QtWidgets.QHBoxLayout()
         self.infoButtonComboBox = QtWidgets.QPushButton()

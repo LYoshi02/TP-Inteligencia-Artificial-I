@@ -1,4 +1,5 @@
 import json
+import random
 
 from constantes.heuristicas import HEURISTICAS
 from modelo.algoritmo.heuristica.distancia_manhattan import DistanciaManhattan
@@ -29,6 +30,56 @@ class Controlador:
         self._nodo_inicio = None
         self._nodo_objetivo = None
         self._procesos_busqueda = {}
+
+    def generar_grafo_aleatorio(self, cant_nodos: int, ancho: float, alto: float) -> Grafo:
+        self.restablecer_grafo()
+
+        # TODO: idea n°1 para solucionar lo de las posiciones
+        # pos_x_anterior = 0
+        # pos_y_anterior = 0
+        # for i in range(cant_nodos):
+        #     nombre = chr(65 + i)
+        #     x = random.uniform(pos_x_anterior + 50, ancho)
+        #     y = random.uniform(pos_y_anterior + 50 , alto)
+        #     try:
+        #         self.agregar_nodo(nombre, x, y)
+        #         pos_x_anterior = x
+        #         pos_y_anterior = y
+        #     except Exception as e:
+        #         print(f"Error al agregar nodo {nombre}: {e}")
+
+        for i in range(cant_nodos):
+            nombre = chr(65 + i)
+            x = random.uniform(0, ancho - 100)
+            y = random.uniform(0, alto - 100)
+            try:
+                self.agregar_nodo(nombre, x, y)
+            except Exception as e:
+                print(f"Error al agregar nodo {nombre}: {e}")
+
+        nodos_creados = list(self._grafo.obtener_nodos())
+
+        for nodo_origen in nodos_creados:
+            posibles_destinos = [n for n in nodos_creados if n != nodo_origen]
+
+            if posibles_destinos:
+                nodo_destino_1 = random.choice(posibles_destinos)
+                peso_1 = random.randint(1, 99)
+                try:
+                    self.agregar_arista(nodo_origen, nodo_destino_1, peso_1)
+                except Exception as e:
+                    print(f"Error al agregar la primer arista de {nodo_origen} a {nodo_destino_1}: {e}")
+
+                restantes = [n for n in posibles_destinos if n != nodo_destino_1]
+                if restantes:
+                    nodo_destino_2 = random.choice(restantes)
+                    peso_2 = random.randint(1, 99)
+                    try:
+                        self.agregar_arista(nodo_origen, nodo_destino_2, peso_2)
+                    except Exception as e:
+                        print(f"Error al agregar la segunda arista de {nodo_origen} a {nodo_destino_2}: {e}")
+
+        return self._grafo
 
     # Operaciones con Nodos
     def obtener_nodo(self, nombre: str) -> Nodo | None:

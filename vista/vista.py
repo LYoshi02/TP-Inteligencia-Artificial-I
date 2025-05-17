@@ -46,6 +46,7 @@ class Vista(QMainWindow):
 
         self.ui.labelSpinBox.setVisible(False)
         self.ui.spinBox.setVisible(False)
+        self.ui.pushButton_generar.setVisible(False)
 
         self.ui.infoButtonComboBox.setVisible(False)
         self.ui.infoButtonSpinBox.setVisible(False)
@@ -70,6 +71,7 @@ class Vista(QMainWindow):
         self.findChild(QtWidgets.QPushButton, "pushButton_limpiar").clicked.connect(self.limpiar_escena)
         self.findChild(QtWidgets.QPushButton, "pushButton_cargar_archivo_grafo").clicked.connect(self.cargar_archivo_grafo)
         self.findChild(QtWidgets.QPushButton, "pushButton_guardar_archivo_grafo").clicked.connect(self.guardar_archivo_grafo)
+        self.ui.pushButton_generar.clicked.connect(self.generar_grafo_aleatorio)
 
         self.ui.infoButtonComboBox.clicked.connect(self.mostrar_info_heuristica)
         self.ui.infoButtonModo.clicked.connect(self.mostrar_info_modo_generacion)
@@ -185,6 +187,10 @@ class Vista(QMainWindow):
 
         self.mostrar_botones_archivo(True)
 
+    def generar_grafo_aleatorio(self):
+        grafo = self.controlador.generar_grafo_aleatorio(self.ui.spinBox.value(), self.ui.graphicsView_base.width(), self.ui.graphicsView_base.height())
+        self.scene_B.graficar_grafo(grafo)
+
     # ---- Interacciones con la UI ----
     def activar_campos(self):
         self.ui.groupBoxInstrucciones.setVisible(True)
@@ -195,8 +201,9 @@ class Vista(QMainWindow):
         self.ui.infoButtonSpinBox.setVisible(modo_aleatorio)
         self.ui.labelSpinBox.setVisible(modo_aleatorio)
         self.ui.spinBox.setVisible(modo_aleatorio)
+        self.ui.pushButton_generar.setVisible(modo_aleatorio)
 
-        self.ui.widget_base.setDisabled( modo_aleatorio)
+        self.ui.widget_base.setDisabled(modo_aleatorio)
         self.ui.graphicsView_base.setDisabled(modo_aleatorio)
 
         self.mostrar_botones_archivo(True)
