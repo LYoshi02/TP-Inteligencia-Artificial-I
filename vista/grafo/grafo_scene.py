@@ -32,8 +32,11 @@ class GrafoScene(QGraphicsScene):
             aristas_nodo = self.controlador.obtener_aristas_nodo(nodo)
             for arista in aristas_nodo:
                 if not arista in aristas_graficadas:
-                    arista_ui = self.__graficar_arista(nodo, arista.obtener_nodo_opuesto(nodo), arista.distancia)
+                    arista_ui = self.__graficar_arista(nodos_graficados[nodo], nodos_graficados[arista.obtener_nodo_opuesto(nodo)], arista.distancia)
                     aristas_graficadas[arista] = arista_ui
+                    nodos_graficados[nodo].agregar_arista_conectada(arista_ui)
+                else:
+                    nodos_graficados[nodo].agregar_arista_conectada(aristas_graficadas[arista])
 
         # Graficar recorrido del algoritmo
         if recorrido_algoritmo:
@@ -96,30 +99,35 @@ class GrafoScene(QGraphicsScene):
 
     def __graficar_nodo(self, nodo: Nodo) -> NodoGrafico:
         nodo_ui = NodoGrafico(nodo)
+
+        if self.nodo_para_conectar and nodo_ui == self.nodo_para_conectar:
+            nodo_ui.aplicar_tema("seleccionado")
+            nodo_ui.permitir_movimiento(True)
+
         self.addItem(nodo_ui)
         return nodo_ui
 
-    def __graficar_arista(self, origen: Nodo, destino: Nodo, peso: float) -> AristaGrafico:
+    def __graficar_arista(self, origen: NodoGrafico, destino: NodoGrafico, peso: float) -> AristaGrafico:
         print(f"Graficando arista ({origen.nombre}) con ({destino.nombre}) con peso {peso}")
         arista_ui = AristaGrafico(origen, destino, peso)
         self.addItem(arista_ui)
         return arista_ui
 
     def mousePressEvent(self, event):
+        super().mousePressEvent(event)
+
         if event.button() == Qt.MouseButton.LeftButton:
             pos = event.scenePos()
             items = self.items(pos)
             item = next((i for i in items if isinstance(i, NodoGrafico)), None)
 
             if item is None:
-                # TODO: ver que hacer con esta linea
-                # if not any(nodo.contains_point(pos) for nodo in self.nodos):
-                    nombre, ok = QInputDialog.getText(None, "Nuevo Nodo", "Nombre del nodo:")
-                    if ok and nombre:
-                        print(f"Nodo ({nombre}) creado en: ({pos.x():.2f}, {pos.y():.2f})")
-                        #Se agrega el nodo al controlador
-                        nuevo_grafo = self.controlador.agregar_nodo(nombre, pos.x(), pos.y())
-                        self.graficar_grafo(nuevo_grafo)
+                nombre, ok = QInputDialog.getText(None, "Nuevo Nodo", "Nombre del nodo:")
+                if ok and nombre:
+                    print(f"Nodo ({nombre}) creado en: ({pos.x():.2f}, {pos.y():.2f})")
+                    #Se agrega el nodo al controlador
+                    nuevo_grafo = self.controlador.agregar_nodo(nombre, pos.x(), pos.y())
+                    self.graficar_grafo(nuevo_grafo)
 
     def mouseDoubleClickEvent(self, event):
         if event.button() == Qt.MouseButton.LeftButton:
@@ -130,10 +138,12 @@ class GrafoScene(QGraphicsScene):
             if item:
                 if self.nodo_para_conectar is None:
                     self.nodo_para_conectar = item
+                    item.permitir_movimiento(True)
                     item.aplicar_tema("seleccionado")
                 # Para deseleccionar nodo
                 elif self.nodo_para_conectar == item:
                     self.nodo_para_conectar = None
+                    item.permitir_movimiento(False)
                     item.aplicar_tema("default")
                 elif item != self.nodo_para_conectar:
                     peso, ok = QInputDialog.getInt(None, "Peso de la arista", "Ingrese el peso:")
@@ -147,9 +157,19 @@ class GrafoScene(QGraphicsScene):
                             nuevo_grafo = self.controlador.agregar_arista(nodo_origen, nodo_destino, peso)
                             self.graficar_grafo(nuevo_grafo)
 
-                    self.nodo_para_conectar.aplicar_tema("default")
-                    self.nodo_para_conectar = None
-
     def eliminar_nodo(self, nodo: NodoGrafico):
         nuevo_grafo = self.controlador.eliminar_nodo(nodo.nombre, nodo.pos().x(), nodo.pos().y())
         self.graficar_grafo(nuevo_grafo)
+
+    def mouseReleaseEvent(self, event):
+        super().mouseReleaseEvent(event)
+
+        # Verifica si algún nodo fue movido y actualiza sus coordenadas en el grafo
+        for item in self.selectedItems():
+            if isinstance(item, NodoGrafico):
+                nuevo_x = item.scenePos().x()
+                nuevo_y = item.scenePos().y()
+                print(f"Nodo {item.nombre} movido a ({nuevo_x:.2f}, {nuevo_y:.2f})")
+
+                grafo = self.controlador.actualizar_nodo(item.nombre, nuevo_x, nuevo_y)
+                self.graficar_grafo(grafo)

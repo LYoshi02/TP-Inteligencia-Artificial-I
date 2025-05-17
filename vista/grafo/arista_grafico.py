@@ -4,34 +4,30 @@ from PyQt6.QtCore import Qt
 from PyQt6.QtGui import QPen, QFont, QColor
 from PyQt6.QtWidgets import QGraphicsItemGroup, QGraphicsLineItem, QGraphicsTextItem
 
-from modelo.grafo.nodo import Nodo
+from vista.grafo.nodo_grafico import NodoGrafico
 
 TemaArista = Literal["default", "camino"]
 
 class AristaGrafico(QGraphicsItemGroup):
-    def __init__(self, origen: Nodo, destino: Nodo, peso: float, parent=None):
+    def __init__(self, origen: NodoGrafico, destino: NodoGrafico, peso: float, parent=None):
         super().__init__(parent)
+        self.origen: NodoGrafico = origen
+        self.destino: NodoGrafico = destino
 
         # Crear la línea
-        self.linea = QGraphicsLineItem(
-            origen.x, origen.y,
-            destino.x, destino.y
-        )
+        self.linea = QGraphicsLineItem()
         self.linea.setZValue(-1)  # Detrás de los nodos
 
         # Crear el texto del peso
         self.texto = QGraphicsTextItem(str(peso), self.linea)
-        # Posicionar el texto en el medio de la línea
-        self.texto.setPos(
-            (origen.x + destino.x) / 2,
-            (origen.y + destino.y) / 2
-        )
 
         self.aplicar_tema("default")
 
         # Agregar elementos al grupo
         self.addToGroup(self.linea)
         self.addToGroup(self.texto)
+
+        self.actualizar_posicion()
 
     def aplicar_tema(self, tema: TemaArista):
         match tema:
@@ -46,3 +42,12 @@ class AristaGrafico(QGraphicsItemGroup):
                 font = QFont("Arial", 10)
                 font.setBold(True)
                 self.texto.setFont(font)
+
+    def actualizar_posicion(self):
+        origen_pos = self.origen.scenePos()
+        destino_pos = self.destino.scenePos()
+        self.linea.setLine(origen_pos.x(), origen_pos.y(), destino_pos.x(), destino_pos.y())
+        self.texto.setPos(
+            (origen_pos.x() + destino_pos.x()) / 2,
+            (origen_pos.y() + destino_pos.y()) / 2
+        )
