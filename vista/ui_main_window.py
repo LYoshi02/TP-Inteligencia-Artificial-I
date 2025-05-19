@@ -1,5 +1,5 @@
 from PyQt6 import QtCore, QtGui, QtWidgets
-from PyQt6.QtWidgets import QGraphicsDropShadowEffect, QSizePolicy
+from PyQt6.QtWidgets import QGraphicsDropShadowEffect, QSizePolicy, QHeaderView
 
 
 class Ui_MainWindow(object):
@@ -192,6 +192,22 @@ class Ui_MainWindow(object):
         self.labelWidget5.setAlignment(QtCore.Qt.AlignmentFlag.AlignLeft)
         self.labelWidget5.setObjectName("labelWidget5")
         self.layoutWidget5.addWidget(self.labelWidget5)
+
+        self.table_manhattan = QtWidgets.QTableWidget()
+        self.table_manhattan.setRowCount(1)
+        self.table_manhattan.setColumnCount(4)
+        self.table_manhattan.setHorizontalHeaderLabels(["Cantidad de pasos", "Camino encontrado", "Costo del camino", "Objetivo encontrado"])
+        self.table_manhattan.horizontalHeader().setSectionResizeMode(QHeaderView.ResizeMode.ResizeToContents)
+        self.table_manhattan.verticalHeader().setVisible(False)
+        self.layoutWidget5.addWidget(self.table_manhattan)
+
+        self.table_lineaRecta = QtWidgets.QTableWidget()
+        self.table_lineaRecta.setRowCount(1)
+        self.table_lineaRecta.setColumnCount(4)
+        self.table_lineaRecta.setHorizontalHeaderLabels(["Cantidad de pasos", "Camino encontrado", "Costo del camino", "Objetivo encontrado"])
+        self.table_lineaRecta.horizontalHeader().setSectionResizeMode(QHeaderView.ResizeMode.ResizeToContents)
+        self.table_lineaRecta.verticalHeader().setVisible(False)
+        self.layoutWidget2.addWidget(self.table_lineaRecta)
 
         # Columna derecha: Menú de botones
         self.layoutMenu = QtWidgets.QVBoxLayout()

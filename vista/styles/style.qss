@@ -237,3 +237,41 @@ QGroupBox {
         color: black;
         padding: 2px 5px;
     }
+
+QTableWidget {
+    background-color: #FFFFFF;
+    border: 1px solid #DADADA;
+    border-radius: 10px;
+    gridline-color: #CCCCCC;
+    font-size: 13px;
+    color: #222222;
+    selection-background-color: #5A8C8C;
+    selection-color: #FFFFFF;
+}
+
+QHeaderView::section {
+    background-color: #5A8C8C;
+    color: white;
+    padding: 4px;
+    border: none;
+    font-weight: bold;
+    font-size: 13px;
+}
+
+QTableWidget QTableCornerButton::section {
+    background-color: #5A8C8C;
+    border: none;
+}
+
+QTableWidget::item {
+    padding: 4px;
+}
+
+QTableWidget::item:selected {
+    background-color: #B0BFC0;
+    color: #FFFFFF;
+}
+
+QTableView QHeaderView::section:vertical {
+    background-color: white;
+}
