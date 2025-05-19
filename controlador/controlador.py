@@ -1,4 +1,5 @@
 import json
+import math
 import random
 
 from constantes.heuristicas import HEURISTICAS
@@ -33,25 +34,14 @@ class Controlador:
 
     def generar_grafo_aleatorio(self, cant_nodos: int, ancho: float, alto: float) -> Grafo:
         self.restablecer_grafo()
-
-        # TODO: idea n°1 para solucionar lo de las posiciones
-        # pos_x_anterior = 0
-        # pos_y_anterior = 0
-        # for i in range(cant_nodos):
-        #     nombre = chr(65 + i)
-        #     x = random.uniform(pos_x_anterior + 50, ancho)
-        #     y = random.uniform(pos_y_anterior + 50 , alto)
-        #     try:
-        #         self.agregar_nodo(nombre, x, y)
-        #         pos_x_anterior = x
-        #         pos_y_anterior = y
-        #     except Exception as e:
-        #         print(f"Error al agregar nodo {nombre}: {e}")
-
+        centro_x = ancho / 6
+        centro_y = alto / 6
+        radio = min(ancho, alto) / 4
         for i in range(cant_nodos):
             nombre = chr(65 + i)
-            x = random.uniform(0, ancho - 100)
-            y = random.uniform(0, alto - 100)
+            angulo = 2 * math.pi * i / cant_nodos
+            x = centro_x + radio * math.cos(angulo)
+            y = centro_y + radio * math.sin(angulo)
             try:
                 self.agregar_nodo(nombre, x, y)
             except Exception as e:

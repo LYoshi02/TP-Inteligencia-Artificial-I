@@ -37,7 +37,6 @@ class Vista(QMainWindow):
 
         self.mostrar_resultados(False)
 
-
         # Desactivar campos de datos
         self.ui.labelComboBox.setVisible(False)
         self.ui.comboBox.setVisible(False)
@@ -186,7 +185,7 @@ class Vista(QMainWindow):
         self.ui.widget_lRecta.setVisible(False)
         self.ui.graphicsView_lRecta.setDisabled(True)
 
-        self.mostrar_botones_archivo(True)
+        self.mostrar_botones_archivo(False)
 
     def generar_grafo_aleatorio(self):
         grafo = self.controlador.generar_grafo_aleatorio(self.ui.spinBox.value(), self.ui.graphicsView_base.width(), self.ui.graphicsView_base.height())
@@ -207,7 +206,7 @@ class Vista(QMainWindow):
         self.ui.widget_base.setDisabled(modo_aleatorio)
         self.ui.graphicsView_base.setDisabled(modo_aleatorio)
 
-        self.mostrar_botones_archivo(True)
+        self.mostrar_botones_archivo(modo_manual)
 
         self.ui.infoButtonComboBox.setVisible(True)
         self.ui.labelComboBox.setVisible(True)
@@ -224,9 +223,9 @@ class Vista(QMainWindow):
         else:
             titulo = "Pasos para generar el grafo:"
             instrucciones = [
-                "<b>1.</b> Ingrese la cantidad de nodos.",
+                "<b>1.</b> Ingrese la cantidad de nodos y presione el botón 'Generar grafo'",
                 "<b>2.</b> Selecciona la heurística.",
-                "<b>3.</b> Presiona 'Play' para generar y resolver el grafo automáticamente."
+                "<b>3.</b> Haz clic en 'Play' para ejecutar el algoritmo."
             ]
         self.ui.groupBoxInstrucciones.setTitle(titulo)
         self.actualizar_instrucciones(instrucciones)
