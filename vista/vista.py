@@ -170,6 +170,8 @@ class Vista(QMainWindow):
 
         self.controlador.restablecer_grafo()
 
+        self.scene_B.nodo_para_conectar = None
+
         self.mostrar_resultados(False)
 
         self.ui.widget_base.setDisabled(False)
@@ -184,8 +186,6 @@ class Vista(QMainWindow):
 
         self.ui.widget_lRecta.setVisible(False)
         self.ui.graphicsView_lRecta.setDisabled(True)
-
-        self.mostrar_botones_archivo(False)
 
     def generar_grafo_aleatorio(self):
         grafo = self.controlador.generar_grafo_aleatorio(self.ui.spinBox.value(), self.ui.graphicsView_base.width(), self.ui.graphicsView_base.height())
