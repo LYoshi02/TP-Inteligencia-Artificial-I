@@ -223,6 +223,7 @@ class Ui_MainWindow(object):
         self.pushButtonPlay.setIcon(QtGui.QIcon("./vista/images/icons8-play-30.png"))
         self.pushButtonPlay.setIconSize(QtCore.QSize(53, 50))
         self.pushButtonPlay.setFixedSize(60, 60)
+        self.pushButtonPlay.setToolTip("Iniciar algoritmo")
         self.layoutBotones.addWidget(self.pushButtonPlay)
 
         self.line = QtWidgets.QFrame()
@@ -233,14 +234,36 @@ class Ui_MainWindow(object):
 
         self.verticalLayout_5 = QtWidgets.QVBoxLayout()
 
-        icon_nombres = ["siguiente_paso", "paso_atras", "limpiar"]
-        for i, icon_path in enumerate(
-                ["icons8-doble-derecha-52.png", "icons8-doble-izquierda-52.png", "icons8-escoba-48.png"]):
+        botones: dict[str, dict[str, str]] = {
+            "paso_atras": {
+                "tooltip": "Retroceder paso",
+                "icono": "icons8-doble-izquierda-52.png"
+            },
+            "siguiente_paso": {
+                "tooltip": "Avanzar paso",
+                "icono": "icons8-doble-derecha-52.png"
+            },
+            "paso_inicial": {
+                "tooltip": "Ir al paso inicial",
+                "icono": "icons8-primero-1-52.png"
+            },
+            "ultimo_paso": {
+                "tooltip": "Ir al último paso",
+                "icono": "icons8-skip-forward-52.png"
+            },
+            "limpiar": {
+                "tooltip": "Borrar grafo",
+                "icono": "icons8-escoba-48.png"
+            }
+        }
+
+        for nombre_boton, info_boton in botones.items():
             btn = QtWidgets.QPushButton()
-            btn.setObjectName(f"pushButton_{icon_nombres[i]}")
+            btn.setObjectName(f"pushButton_{nombre_boton}")
             btn.setMinimumSize(50, 45)
             btn.setMaximumSize(50, 45)
-            btn.setIcon(QtGui.QIcon(f"./vista/images/{icon_path}"))
+            btn.setToolTip(info_boton["tooltip"])
+            btn.setIcon(QtGui.QIcon(f"./vista/images/{info_boton["icono"]}"))
             btn.setIconSize(QtCore.QSize(30, 40))
             self.verticalLayout_5.addWidget(btn, 0, QtCore.Qt.AlignmentFlag.AlignHCenter)
 

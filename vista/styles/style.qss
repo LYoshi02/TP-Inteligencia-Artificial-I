@@ -88,6 +88,8 @@ QComboBox:disabled {
 
 #pushButton_siguiente_paso,
 #pushButton_paso_atras,
+#pushButton_paso_inicial,
+#pushButton_ultimo_paso,
 #pushButton_limpiar,
 #pushButton_cargar_archivo_grafo,
 #pushButton_guardar_archivo_grafo,
@@ -100,6 +102,8 @@ QComboBox:disabled {
 
 #pushButton_siguiente_paso:hover,
 #pushButton_paso_atras:hover,
+#pushButton_paso_inicial:hover,
+#pushButton_ultimo_paso:hover,
 #pushButton_limpiar:hover,
 #pushButton_cargar_archivo_grafo:hover,
 #pushButton_guardar_archivo_grafo:hover,

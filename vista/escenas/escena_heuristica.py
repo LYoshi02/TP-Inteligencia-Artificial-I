@@ -19,6 +19,14 @@ class EscenaHeuristica:
         recorrido = self._controlador.retroceder_paso(self._heuristica)
         self.graficar_grafo(recorrido)
 
+    def ir_al_paso_inicial(self) -> None:
+        recorrido = self._controlador.ir_al_paso_inicial(self._heuristica)
+        self.graficar_grafo(recorrido)
+
+    def ir_a_ultimo_paso(self) -> None:
+        recorrido = self._controlador.ir_a_ultimo_paso(self._heuristica)
+        self.graficar_grafo(recorrido)
+
     @property
     def heuristica(self):
         return self._heuristica

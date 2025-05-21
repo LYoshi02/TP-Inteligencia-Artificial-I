@@ -67,6 +67,8 @@ class Vista(QMainWindow):
         self.ui.pushButtonPlay.clicked.connect(self.iniciar_algoritmo)
         self.findChild(QtWidgets.QPushButton, "pushButton_siguiente_paso").clicked.connect(self.avanzar_paso)
         self.findChild(QtWidgets.QPushButton, "pushButton_paso_atras").clicked.connect(self.retroceder_paso)
+        self.findChild(QtWidgets.QPushButton, "pushButton_paso_inicial").clicked.connect(self.ir_al_paso_inicial)
+        self.findChild(QtWidgets.QPushButton, "pushButton_ultimo_paso").clicked.connect(self.ir_a_ultimo_paso)
         self.findChild(QtWidgets.QPushButton, "pushButton_limpiar").clicked.connect(self.limpiar_escena)
         self.findChild(QtWidgets.QPushButton, "pushButton_cargar_archivo_grafo").clicked.connect(self.cargar_archivo_grafo)
         self.findChild(QtWidgets.QPushButton, "pushButton_guardar_archivo_grafo").clicked.connect(self.guardar_archivo_grafo)
@@ -122,6 +124,14 @@ class Vista(QMainWindow):
     def retroceder_paso(self):
         for escena_heuristica in self.escenas_heuristicas.values():
             escena_heuristica.retroceder_paso()
+
+    def ir_al_paso_inicial(self):
+        for escena_heuristica in self.escenas_heuristicas.values():
+            escena_heuristica.ir_al_paso_inicial()
+
+    def ir_a_ultimo_paso(self):
+        for escena_heuristica in self.escenas_heuristicas.values():
+            escena_heuristica.ir_a_ultimo_paso()
 
     def obtener_estados(self, nodos):
         dialogo = QtWidgets.QDialog(self)

@@ -149,6 +149,14 @@ class Controlador:
         self._procesos_busqueda[heuristica].retroceder_paso()
         return self._procesos_busqueda[heuristica]
 
+    def ir_al_paso_inicial(self, heuristica: str) -> RecorridoAlgoritmo:
+        self._procesos_busqueda[heuristica].ir_al_paso_inicial()
+        return self._procesos_busqueda[heuristica]
+
+    def ir_a_ultimo_paso(self, heuristica: str) -> RecorridoAlgoritmo:
+        self._procesos_busqueda[heuristica].ir_a_ultimo_paso()
+        return self._procesos_busqueda[heuristica]
+
     # Operaciones de archivos
     def cargar_archivo_grafo(self, ruta_archivo: str) -> bool:
         if not ruta_archivo:

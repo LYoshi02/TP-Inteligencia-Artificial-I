@@ -54,6 +54,15 @@ class RecorridoAlgoritmo:
             nuevo_paso = self.__aplicar_algoritmo(paso_anterior)
             self.__agregar_paso(nuevo_paso)
 
+    def ir_al_paso_inicial(self):
+        while self.obtener_paso_actual().nro != NRO_PASO_INICIAL:
+            self.retroceder_paso()
+
+    def ir_a_ultimo_paso(self) -> None:
+        # TODO: revisar caso donde no se puede llegar al nodo objetivo
+        while not self.obtener_paso_actual().fin:
+            self.avanzar_paso()
+
     def __aplicar_algoritmo(self, paso_anterior: Paso) -> Paso:
         nuevo_paso: Paso
         fin_busqueda = False
