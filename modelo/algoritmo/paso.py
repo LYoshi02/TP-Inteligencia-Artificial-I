@@ -4,11 +4,11 @@ from modelo.grafo.nodo import Nodo
 
 
 class Paso:
-    def __init__(self, nro_paso: int, nodo_actual: Nodo, aristas_nodo_actual: set[Arista],
+    def __init__(self, nro_paso: int, nodo_actual: Nodo | None, aristas_nodo_actual: set[Arista],
                  nodos_abiertos: ColaPrioridad[Nodo], nodos_cerrados: set[Nodo], camino: list[Nodo],
                  fin: bool = False):
         self._nro: int = nro_paso
-        self._nodo_actual: Nodo = nodo_actual
+        self._nodo_actual: Nodo | None = nodo_actual
         self._aristas_nodo_actual: set[Arista] = aristas_nodo_actual
         self._nodos_abiertos: ColaPrioridad[Nodo] = nodos_abiertos
         self._nodos_cerrados: set[Nodo] = nodos_cerrados
