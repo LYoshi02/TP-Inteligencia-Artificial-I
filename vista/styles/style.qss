@@ -15,7 +15,8 @@ QWidget#centralwidget {
 #widget_manhattan,
 #widget_lRecta,
 #widget_manhattanResults,
-#widget_lRectaResults {
+#widget_lRectaResults,
+#widget_referencia{
     background-color: #FFFFFF;
     border-radius: 15px;
     border: 1px solid #DADADA;
@@ -74,7 +75,7 @@ QComboBox:disabled {
     color: white;
 }
 
-#pushButtonPlay {
+#pushButtonPlay, #pushButtonPause {
     background-color: #222222;
     border-radius: 15px;
     color: white;
@@ -82,7 +83,7 @@ QComboBox:disabled {
     transition: background-color 0.3s ease, color 0.3s ease;
 }
 
-#pushButtonPlay:hover {
+#pushButtonPlay:hover, #pushButtonPause:hover {
     background-color: #444444;
 }
 

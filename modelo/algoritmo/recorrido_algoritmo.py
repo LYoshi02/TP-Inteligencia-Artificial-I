@@ -92,7 +92,7 @@ class RecorridoAlgoritmo:
             if nodo_adyacente in conjunto_cerrados:
                 continue
 
-            costo_tentativo = nodo_actual.costo_desde_inicio + arista.distancia
+            costo_tentativo = nodo_actual.costo_desde_inicio + arista.costo
 
             if not cola_prioridad_abiertos.tiene_elemento(nodo_adyacente):
                 # Actualizo la info del nodo adyacente

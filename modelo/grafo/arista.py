@@ -2,10 +2,10 @@ from modelo.grafo.nodo import Nodo
 
 
 class Arista:
-    def __init__(self, nodo_origen: Nodo, nodo_destino: Nodo, distancia: float = 0):
+    def __init__(self, nodo_origen: Nodo, nodo_destino: Nodo, costo: float = 0):
         self._nodo_origen = nodo_origen
         self._nodo_destino = nodo_destino
-        self._distancia = distancia
+        self._costo = costo
 
     def obtener_nodo_opuesto(self, nodo: Nodo):
         if self._nodo_origen == nodo:
@@ -22,18 +22,18 @@ class Arista:
         return self._nodo_destino
 
     @property
-    def distancia(self):
-        return self._distancia
+    def costo(self):
+        return self._costo
 
-    @distancia.setter
-    def distancia(self, distancia: float):
-        self._distancia = distancia
+    @costo.setter
+    def costo(self, costo: float):
+        self._costo = costo
 
     def to_dict(self) -> dict:
         return {
             "nodo_origen": self._nodo_origen.nombre,
             "nodo_destino": self._nodo_destino.nombre,
-            "distancia": self._distancia
+            "costo": self._costo
         }
 
     @staticmethod
@@ -45,8 +45,8 @@ class Arista:
 
         nodo_origen = nodos[data["nodo_origen"]]
         nodo_destino = nodos[data["nodo_destino"]]
-        distancia = data.get("distancia", 0)
-        return Arista(nodo_origen, nodo_destino, distancia)
+        costo = data.get("costo", 0)
+        return Arista(nodo_origen, nodo_destino, costo)
 
     def __eq__(self, arista):
         if isinstance(arista, Arista):
@@ -58,4 +58,4 @@ class Arista:
         return hash(frozenset([self._nodo_origen, self._nodo_destino]))
 
     def __repr__(self):
-        return f"{self._nodo_origen} --({self._distancia})-- {self._nodo_destino}"
+        return f"{self._nodo_origen} --({self._costo})-- {self._nodo_destino}"

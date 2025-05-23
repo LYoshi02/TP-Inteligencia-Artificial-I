@@ -35,7 +35,7 @@ class Vista(QMainWindow):
         self.ui.graphicsView_lRecta.setDisabled(True)
         self.ui.graphicsView_base.setDisabled(True)
 
-        self.mostrar_resultados(False)
+        self.mostrar_resultados_y_referencias(False)
 
         # Desactivar campos de datos
         self.ui.labelComboBox.setVisible(False)
@@ -65,6 +65,7 @@ class Vista(QMainWindow):
     # Botones
     def _conectar_botones(self):
         self.ui.pushButtonPlay.clicked.connect(self.iniciar_algoritmo)
+        self.ui.pushButtonPause.clicked.connect(self.pausar_algoritmo)
         self.findChild(QtWidgets.QPushButton, "pushButton_siguiente_paso").clicked.connect(self.avanzar_paso)
         self.findChild(QtWidgets.QPushButton, "pushButton_paso_atras").clicked.connect(self.retroceder_paso)
         self.findChild(QtWidgets.QPushButton, "pushButton_paso_inicial").clicked.connect(self.ir_al_paso_inicial)
@@ -91,6 +92,8 @@ class Vista(QMainWindow):
                 return
 
             self.obtener_estados(nodos)
+            self.ui.pushButtonPlay.hide()
+            self.ui.pushButtonPause.show()
             self.mostrar_botones_archivo(False)
 
             if seleccion == "Ambos":
@@ -99,7 +102,8 @@ class Vista(QMainWindow):
                 self.ejecutar_heuristica()
 
             self.inicializar_busquedas()
-            self.mostrar_resultados(True)
+            self.agregar_referencias()
+            self.mostrar_resultados_y_referencias(True)
         except Exception as e:
             QtWidgets.QMessageBox.critical(self, "Error", f"Ocurrió un error: {str(e)}")
 
@@ -132,6 +136,17 @@ class Vista(QMainWindow):
     def ir_a_ultimo_paso(self):
         for escena_heuristica in self.escenas_heuristicas.values():
             escena_heuristica.ir_a_ultimo_paso()
+
+    def pausar_algoritmo(self):
+        self.ui.pushButtonPlay.show()
+        self.ui.pushButtonPause.hide()
+        seleccion = self.ui.comboBox.currentText()
+        self.mostrar_resultados_y_referencias(False)
+        if seleccion == "Ambos":
+            self.ui.graphicsView_lRecta.setDisabled(False)
+            self.ui.graphicsView_manhattan.setDisabled(False)
+        else:
+            self.ui.graphicsView_base.setDisabled(False)
 
     def obtener_estados(self, nodos):
         dialogo = QtWidgets.QDialog(self)
@@ -181,8 +196,9 @@ class Vista(QMainWindow):
         self.controlador.restablecer_grafo()
 
         self.scene_B.nodo_para_conectar = None
-
-        self.mostrar_resultados(False)
+        self.ui.pushButtonPlay.show()
+        self.ui.pushButtonPause.hide()
+        self.mostrar_resultados_y_referencias(False)
 
         self.ui.widget_base.setDisabled(False)
         self.ui.widget_base.setVisible(True)
@@ -213,8 +229,8 @@ class Vista(QMainWindow):
         self.ui.spinBox.setVisible(modo_aleatorio)
         self.ui.pushButton_generar.setVisible(modo_aleatorio)
 
-        self.ui.widget_base.setDisabled(modo_aleatorio)
-        self.ui.graphicsView_base.setDisabled(modo_aleatorio)
+        self.ui.widget_base.setDisabled(False)
+        self.ui.graphicsView_base.setDisabled(False)
 
         self.mostrar_botones_archivo(modo_manual)
 
@@ -226,7 +242,7 @@ class Vista(QMainWindow):
             titulo = "Pasos para dibujar el grafo:"
             instrucciones =  [
                 "<b>1.</b> Haz clic en el área para agregar nodos.",
-                "<b>2.</b> Haz doble clic en un nodo y luego en otro para conectarlos mediante una arista e ingresar su peso.",
+                "<b>2.</b> Haz doble clic en un nodo y luego en otro para conectarlos mediante una arista e ingresar su costo.",
                 "<b>3.</b> Selecciona la heurística que desees utilizar.",
                 "<b>4.</b> Haz clic en 'Play' para ejecutar el algoritmo."
             ]
@@ -254,7 +270,7 @@ class Vista(QMainWindow):
             label.setText(texto)
             self.ui.layoutInstrucciones.addWidget(label)
 
-    def mostrar_resultados(self, mostrar: bool):
+    def mostrar_resultados_y_referencias(self, mostrar: bool):
         self.ui.horizontalLayout_2.setEnabled(mostrar)
         self.ui.horizontalLayout_2.setContentsMargins(0, 0, 0, 0)
 
@@ -265,13 +281,16 @@ class Vista(QMainWindow):
 
         self.ui.widget_lRectaResults.setVisible(False)
         self.ui.widget_manhattanResults.setVisible(False)
+        self.ui.widget_referencia.setVisible(False)
 
         if mostrar:
-            self.ui.layoutContenedorP.setStretch(0, 10)
-            self.ui.layoutContenedorP.setStretch(1, 3)
+            self.ui.widget_referencia.setVisible(True)
+            self.ui.layoutContenedorP.setStretch(0, 1)
+            self.ui.layoutContenedorP.setStretch(1, 10)
+            self.ui.layoutContenedorP.setStretch(2, 2)
 
             seleccion = self.ui.comboBox.currentText()
-            if seleccion == "Línea Recta":
+            if seleccion == "Euclidiana":
                 self.ui.widget_lRectaResults.setVisible(True)
             elif seleccion == "Manhattan":
                 self.ui.widget_manhattanResults.setVisible(True)
@@ -279,8 +298,48 @@ class Vista(QMainWindow):
                 self.ui.widget_manhattanResults.setVisible(True)
                 self.ui.widget_lRectaResults.setVisible(True)
         else:
-            self.ui.layoutContenedorP.setStretch(0, 1)
-            self.ui.layoutContenedorP.setStretch(1, 0)
+            self.ui.layoutContenedorP.setStretch(0, 0)
+            self.ui.layoutContenedorP.setStretch(1, 1)
+            self.ui.layoutContenedorP.setStretch(2, 0)
+
+    def agregar_referencias(self):
+        colores = [
+            ("#ef233c", "Inicio"),
+            ("#EE9B00", "Actual"),
+            ("#ced4da", "Cerrado"),
+            ("#48cae4", "Abierto"),
+            ("#0077b6", "Abierto Mejor"),
+            ("#ff5a5f", "Camino"),
+            ("#487575", "Default")
+        ]
+
+        count = self.ui.layout_widget_referencia.count()
+        for i in reversed(range(1, count)):
+            item = self.ui.layout_widget_referencia.takeAt(i)
+            if item.widget():
+                item.widget().deleteLater()
+
+        for color, texto in colores:
+            widget = QtWidgets.QWidget()
+            layout = QtWidgets.QHBoxLayout(widget)
+            layout.setContentsMargins(0, 0, 0, 0)
+            layout.setSpacing(5)
+
+            label_color = QtWidgets.QLabel()
+            label_color.setFixedSize(18, 18)
+            label_color.setStyleSheet(f"""
+                background-color: {color};
+                border-radius: 9px;
+                border: 1px solid black;
+            """)
+
+            label_texto = QtWidgets.QLabel(texto)
+            label_texto.setStyleSheet("font-size: 14px; font-weight: normal;")
+
+            layout.addWidget(label_color)
+            layout.addWidget(label_texto)
+
+            self.ui.layout_widget_referencia.addWidget(widget)
 
     def ejecutar_heuristica(self):
         seleccion = self.ui.comboBox.currentText()
@@ -293,7 +352,7 @@ class Vista(QMainWindow):
         self.ui.widget_base.setVisible(False)
         self.ui.graphicsView_base.setVisible(False)
 
-        if seleccion == "Línea Recta":
+        if seleccion == "Euclidiana":
             self.ui.widget_lRecta.setVisible(True)
             self.ui.graphicsView_lRecta.setDisabled(True)
             self.ui.graphicsView_lRecta.setScene(scene_heuristica)

@@ -56,7 +56,7 @@ class Grafo:
         return self._nodos.get(nodo)
 
     # Agrega una nueva arista a ambos nodos dentro del diccionario
-    def agregar_arista(self, nodo_origen: Nodo, nodo_destino: Nodo, distancia: float):
+    def agregar_arista(self, nodo_origen: Nodo, nodo_destino: Nodo, costo: float):
         if nodo_origen not in self._nodos:
             print(f"agregar_arista - El nodo '{nodo_origen.nombre}' no se encuentra en el grafo")
             return
@@ -74,7 +74,7 @@ class Grafo:
             self._nodos[nodo_destino].discard(nueva_arista)
 
         # Agrega una nueva arista al diccionario
-        nueva_arista.distancia = distancia
+        nueva_arista.costo = costo
         self._nodos[nodo_origen].add(nueva_arista)
         self._nodos[nodo_destino].add(nueva_arista)
 
@@ -130,7 +130,7 @@ class Grafo:
 
         for arista_data in data["aristas"]:
             arista = Arista.from_dict(arista_data, nombre_a_nodo)
-            grafo.agregar_arista(arista.nodo_origen, arista.nodo_destino, arista.distancia)
+            grafo.agregar_arista(arista.nodo_origen, arista.nodo_destino, arista.costo)
 
         return grafo
 

@@ -32,7 +32,7 @@ class GrafoScene(QGraphicsScene):
             aristas_nodo = self.controlador.obtener_aristas_nodo(nodo)
             for arista in aristas_nodo:
                 if not arista in aristas_graficadas:
-                    arista_ui = self.__graficar_arista(nodos_graficados[nodo], nodos_graficados[arista.obtener_nodo_opuesto(nodo)], arista.distancia)
+                    arista_ui = self.__graficar_arista(nodos_graficados[nodo], nodos_graficados[arista.obtener_nodo_opuesto(nodo)], arista.costo)
                     aristas_graficadas[arista] = arista_ui
                     nodos_graficados[nodo].agregar_arista_conectada(arista_ui)
                 else:
@@ -108,9 +108,9 @@ class GrafoScene(QGraphicsScene):
         self.addItem(nodo_ui)
         return nodo_ui
 
-    def __graficar_arista(self, origen: NodoGrafico, destino: NodoGrafico, peso: float) -> AristaGrafico:
-        print(f"Graficando arista ({origen.nombre}) con ({destino.nombre}) con peso {peso}")
-        arista_ui = AristaGrafico(origen, destino, peso)
+    def __graficar_arista(self, origen: NodoGrafico, destino: NodoGrafico, costo: float) -> AristaGrafico:
+        print(f"Graficando arista ({origen.nombre}) con ({destino.nombre}) con costo {costo}")
+        arista_ui = AristaGrafico(origen, destino, costo)
         self.addItem(arista_ui)
         return arista_ui
 
@@ -147,20 +147,36 @@ class GrafoScene(QGraphicsScene):
                     item.permitir_movimiento(False)
                     item.aplicar_tema("default")
                 elif item != self.nodo_para_conectar:
-                    peso, ok = QInputDialog.getInt(None, "Peso de la arista", "Ingrese el peso:")
+                    costo, ok = QInputDialog.getInt(None, "Costo de la arista", "Ingrese el costo:")
                     if ok:
                         # Se agrega la arista al controlador
                         nodo_origen = self.controlador.obtener_nodo(self.nodo_para_conectar.nombre)
                         nodo_destino = self.controlador.obtener_nodo(item.nombre)
 
-                        print(f"Conectando ({self.nodo_para_conectar.nombre}) con ({item.nombre}) con peso {peso}")
+                        print(f"Conectando ({self.nodo_para_conectar.nombre}) con ({item.nombre}) con costo {costo}")
                         if nodo_origen and nodo_destino:
-                            nuevo_grafo = self.controlador.agregar_arista(nodo_origen, nodo_destino, peso)
+                            nuevo_grafo = self.controlador.agregar_arista(nodo_origen, nodo_destino, costo)
                             self.graficar_grafo(nuevo_grafo)
 
     def eliminar_nodo(self, nodo: NodoGrafico):
         nuevo_grafo = self.controlador.eliminar_nodo(nodo.nombre, nodo.pos().x(), nodo.pos().y())
         self.graficar_grafo(nuevo_grafo)
+
+    def eliminar_arista(self, nodo_origen: NodoGrafico, nodo_destino: NodoGrafico):
+        nodo_origen = self.controlador.obtener_nodo(nodo_origen.nombre)
+        nodo_destino = self.controlador.obtener_nodo(nodo_destino.nombre)
+        grafo_actualizado = self.controlador.eliminar_arista(nodo_origen, nodo_destino)
+        self.graficar_grafo(grafo_actualizado)
+
+    def actualizar_costo_arista(self, nodo_origen: NodoGrafico, nodo_destino: NodoGrafico):
+        costo, ok = QInputDialog.getInt(None, "Actualizar costo de arista", "Nuevo costo:")
+
+        if ok:
+            nodo_origen = self.controlador.obtener_nodo(nodo_origen.nombre)
+            nodo_destino = self.controlador.obtener_nodo(nodo_destino.nombre)
+            grafo_actualizado = self.controlador.actualizar_costo_arista(nodo_origen, nodo_destino, costo)
+
+            self.graficar_grafo(grafo_actualizado)
 
     def mouseReleaseEvent(self, event):
         super().mouseReleaseEvent(event)

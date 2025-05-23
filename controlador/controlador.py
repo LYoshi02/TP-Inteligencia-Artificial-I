@@ -34,40 +34,57 @@ class Controlador:
 
     def generar_grafo_aleatorio(self, cant_nodos: int, ancho: float, alto: float) -> Grafo:
         self.restablecer_grafo()
+
+        print("ancho: ", ancho)
+        print("alto: ", alto)
+
         centro_x = ancho / 6
         centro_y = alto / 6
-        radio = min(ancho, alto) / 4
-        for i in range(cant_nodos):
-            nombre = chr(65 + i)
-            angulo = 2 * math.pi * i / cant_nodos
-            x = centro_x + radio * math.cos(angulo)
-            y = centro_y + radio * math.sin(angulo)
-            try:
-                self.agregar_nodo(nombre, x, y)
-            except Exception as e:
-                print(f"Error al agregar nodo {nombre}: {e}")
+        radio_externo = min(ancho, alto) / 3
+        radio_interno = radio_externo / 2
+
+        nombres = ["N" + str(i + 1) for i in range(cant_nodos)]
+
+        def agregar_nodos_en_circulo(nombres_nodos, radio):
+            total = len(nombres_nodos)
+            for i, nombre in enumerate(nombres_nodos):
+                angulo = 2 * math.pi * i / total
+                x = centro_x + radio * math.cos(angulo)
+                y = centro_y + radio * math.sin(angulo)
+                try:
+                    self.agregar_nodo(nombre, x, y)
+                except Exception as err:
+                    print(f"Error al agregar nodo {nombre}: {err}")
+
+        if cant_nodos < 5:
+            agregar_nodos_en_circulo(nombres, radio_externo)
+        else:
+            nodos_externos = cant_nodos // 2
+
+            agregar_nodos_en_circulo(nombres[:nodos_externos], radio_externo)
+            agregar_nodos_en_circulo(nombres[nodos_externos:], radio_interno)
 
         nodos_creados = list(self._grafo.obtener_nodos())
 
         for nodo_origen in nodos_creados:
             posibles_destinos = [n for n in nodos_creados if n != nodo_origen]
+            random.shuffle(posibles_destinos)
 
-            if posibles_destinos:
-                nodo_destino_1 = random.choice(posibles_destinos)
-                peso_1 = random.randint(1, 99)
-                try:
-                    self.agregar_arista(nodo_origen, nodo_destino_1, peso_1)
-                except Exception as e:
-                    print(f"Error al agregar la primer arista de {nodo_origen} a {nodo_destino_1}: {e}")
+            cantidad_conexiones = random.randint(1, 2)
+            conexiones = 0
 
-                restantes = [n for n in posibles_destinos if n != nodo_destino_1]
-                if restantes:
-                    nodo_destino_2 = random.choice(restantes)
-                    peso_2 = random.randint(1, 99)
+            for destino in posibles_destinos:
+                if conexiones >= cantidad_conexiones:
+                    break
+
+                arista = Arista(nodo_origen, destino)
+                if arista not in self._grafo._nodos[nodo_origen]:
+                    costo = random.randint(1, 99)
                     try:
-                        self.agregar_arista(nodo_origen, nodo_destino_2, peso_2)
-                    except Exception as e:
-                        print(f"Error al agregar la segunda arista de {nodo_origen} a {nodo_destino_2}: {e}")
+                        self.agregar_arista(nodo_origen, destino, costo)
+                        conexiones += 1
+                    except Exception as err:
+                        print(f"Error al agregar arista de {nodo_origen} a {destino}: {err}")
 
         return self._grafo
 
@@ -106,9 +123,9 @@ class Controlador:
         print("Estado Objetivo: ", self._nodo_objetivo)
 
     # Operaciones con Aristas
-    def agregar_arista(self, nodo_origen: Nodo, nodo_destino: Nodo, distancia: float) -> Grafo:
-        print("Agregando arista:", nodo_origen, nodo_destino, distancia)
-        self._grafo.agregar_arista(nodo_origen, nodo_destino, distancia)
+    def agregar_arista(self, nodo_origen: Nodo, nodo_destino: Nodo, costo: float) -> Grafo:
+        print("Agregando arista:", nodo_origen, nodo_destino, costo)
+        self._grafo.agregar_arista(nodo_origen, nodo_destino, costo)
         return self._grafo
 
     def eliminar_arista(self, nodo_origen: Nodo, nodo_destino: Nodo) -> Grafo:
@@ -118,7 +135,17 @@ class Controlador:
     def obtener_aristas_nodo(self, nodo: Nodo) -> set[Arista] | None:
         return self._grafo.obtener_aristas_nodo(nodo)
 
-    # Operaciones del Algoritmo
+    def actualizar_costo_arista(self, nodo_origen: Nodo, nodo_destino: Nodo, nuevo_costo: int) -> Grafo:
+        aristas_origen = self._grafo.obtener_aristas_nodo(nodo_origen)
+
+        for arista in aristas_origen:
+            if arista.obtener_nodo_opuesto(nodo_origen) == nodo_destino:
+                arista.costo = nuevo_costo
+                break
+
+        return self._grafo
+
+        # Operaciones del Algoritmo
     def comenzar_algoritmo(self, heuristica: str) -> RecorridoAlgoritmo:
         if self._nodo_inicio == None or self._nodo_objetivo == None:
             print("No se establecieron los nodos de inicio y/o objetivo")

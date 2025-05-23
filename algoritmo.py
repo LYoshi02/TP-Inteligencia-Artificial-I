@@ -44,7 +44,7 @@ def a_estrella(grafo: Grafo, nodo_inicio: Nodo, nodo_objetivo: Nodo):
                 print("------------")
                 continue
 
-            costo_tentativo = nodo_actual.costo_desde_inicio + arista.distancia
+            costo_tentativo = nodo_actual.costo_desde_inicio + arista.costo
 
             if not cola_prioridad_abiertos.tiene_elemento(nodo_adyacente):
                 # Actualizo la info del nodo adyacente

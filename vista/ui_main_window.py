@@ -118,7 +118,7 @@ class Ui_MainWindow(object):
         self.comboBox = QtWidgets.QComboBox()
         self.comboBox.setObjectName("comboBox")
         self.comboBox.setMinimumHeight(30)
-        self.comboBox.addItems(["Selecciona una heurística", "Ambos", "Línea Recta", "Manhattan"])
+        self.comboBox.addItems(["Selecciona una heurística", "Ambos", "Euclidiana", "Manhattan"])
         self.layoutControles.addWidget(self.comboBox)
 
         # ----- Botones de Manejo de Archivos -----
@@ -143,7 +143,18 @@ class Ui_MainWindow(object):
 
         # Columna central: Contenedor principal
         self.layoutContenedorP = QtWidgets.QVBoxLayout()
-        self.layoutContenedorP.setSpacing(20)
+        self.layoutContenedorP.setSpacing(10)
+
+        self.horizontalLayout_encabezado = QtWidgets.QHBoxLayout()
+        self.widget_referencia = QtWidgets.QWidget()
+        self.widget_referencia.setObjectName("widget_referencia")
+        self.layout_widget_referencia = QtWidgets.QHBoxLayout(self.widget_referencia)
+        self.labelWidgetRef = QtWidgets.QLabel("Referencias:")
+        self.labelWidgetRef.setAlignment(QtCore.Qt.AlignmentFlag.AlignLeft)
+        self.labelWidgetRef.setObjectName("labelWidgetRef")
+        self.layout_widget_referencia.addWidget(self.labelWidgetRef)
+        self.horizontalLayout_encabezado.addWidget(self.widget_referencia)
+        self.layoutContenedorP.addLayout(self.horizontalLayout_encabezado)
 
         self.horizontalLayout_3 = QtWidgets.QHBoxLayout()
         self.widget_base = QtWidgets.QWidget()
@@ -182,29 +193,29 @@ class Ui_MainWindow(object):
         self.layoutContenedorP.addLayout(self.horizontalLayout_2)
 
         self.layoutWidget2 = QtWidgets.QVBoxLayout(self.widget_lRectaResults)
-        self.labelWidget2 = QtWidgets.QLabel("Resultados - Línea Recta:")
+        self.labelWidget2 = QtWidgets.QLabel("Resultados - Distancia Euclidiana:")
         self.labelWidget2.setAlignment(QtCore.Qt.AlignmentFlag.AlignLeft)
         self.labelWidget2.setObjectName("labelWidget2")
         self.layoutWidget2.addWidget(self.labelWidget2)
 
         self.layoutWidget5 = QtWidgets.QVBoxLayout(self.widget_manhattanResults)
-        self.labelWidget5 = QtWidgets.QLabel("Resultados - Manhattan:")
+        self.labelWidget5 = QtWidgets.QLabel("Resultados - Distancia Manhattan:")
         self.labelWidget5.setAlignment(QtCore.Qt.AlignmentFlag.AlignLeft)
         self.labelWidget5.setObjectName("labelWidget5")
         self.layoutWidget5.addWidget(self.labelWidget5)
 
         self.table_manhattan = QtWidgets.QTableWidget()
         self.table_manhattan.setRowCount(1)
-        self.table_manhattan.setColumnCount(4)
-        self.table_manhattan.setHorizontalHeaderLabels(["Cantidad de pasos", "Camino encontrado", "Costo del camino", "Objetivo encontrado"])
+        self.table_manhattan.setColumnCount(5)
+        self.table_manhattan.setHorizontalHeaderLabels(["Cantidad de nodos", "Costo Total", "Tiempo Total", "Camino Encontrado", "Objetivo encontrado"])
         self.table_manhattan.horizontalHeader().setSectionResizeMode(QHeaderView.ResizeMode.ResizeToContents)
         self.table_manhattan.verticalHeader().setVisible(False)
         self.layoutWidget5.addWidget(self.table_manhattan)
 
         self.table_lineaRecta = QtWidgets.QTableWidget()
         self.table_lineaRecta.setRowCount(1)
-        self.table_lineaRecta.setColumnCount(4)
-        self.table_lineaRecta.setHorizontalHeaderLabels(["Cantidad de pasos", "Camino encontrado", "Costo del camino", "Objetivo encontrado"])
+        self.table_lineaRecta.setColumnCount(5)
+        self.table_lineaRecta.setHorizontalHeaderLabels(["Cantidad de nodos", "Costo Total", "Tiempo Total", "Camino Encontrado", "Objetivo encontrado"])
         self.table_lineaRecta.horizontalHeader().setSectionResizeMode(QHeaderView.ResizeMode.ResizeToContents)
         self.table_lineaRecta.verticalHeader().setVisible(False)
         self.layoutWidget2.addWidget(self.table_lineaRecta)
@@ -225,6 +236,15 @@ class Ui_MainWindow(object):
         self.pushButtonPlay.setFixedSize(60, 60)
         self.pushButtonPlay.setToolTip("Iniciar algoritmo")
         self.layoutBotones.addWidget(self.pushButtonPlay)
+
+        self.pushButtonPause = QtWidgets.QPushButton()
+        self.pushButtonPause.setObjectName("pushButtonPause")
+        self.pushButtonPause.setIcon(QtGui.QIcon("./vista/images/icons8-pausa-50.png"))
+        self.pushButtonPause.setIconSize(QtCore.QSize(40, 40))
+        self.pushButtonPause.setFixedSize(60, 60)
+        self.pushButtonPause.setToolTip("Pausar algoritmo")
+        self.pushButtonPause.hide()
+        self.layoutBotones.addWidget(self.pushButtonPause)
 
         self.line = QtWidgets.QFrame()
         self.line.setFrameShape(QtWidgets.QFrame.Shape.HLine)
@@ -277,7 +297,7 @@ class Ui_MainWindow(object):
 
         widgets_con_sombra = [
             self.widget_base, self.widget_manhattan, self.widget_manhattanResults, self.widget_lRecta,
-            self.widget_lRectaResults, self.comboBox, self.spinBox, self.widget_menu
+            self.widget_lRectaResults, self.comboBox, self.spinBox, self.widget_menu, self.widget_referencia
         ]
         for widget in widgets_con_sombra:
             sombra = QGraphicsDropShadowEffect()
