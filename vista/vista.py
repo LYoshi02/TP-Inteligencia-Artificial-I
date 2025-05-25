@@ -28,11 +28,11 @@ class Vista(QMainWindow):
         self.ui.graphicsView_base.setScene(self.scene_B)
 
         self.ui.widget_manhattan.setVisible(False)
-        self.ui.widget_lRecta.setVisible(False)
+        self.ui.widget_euclidiana.setVisible(False)
         self.ui.widget_base.setDisabled(True)
 
         self.ui.graphicsView_manhattan.setDisabled(True)
-        self.ui.graphicsView_lRecta.setDisabled(True)
+        self.ui.graphicsView_euclidiana.setDisabled(True)
         self.ui.graphicsView_base.setDisabled(True)
 
         self.mostrar_resultados_y_referencias(False)
@@ -138,15 +138,34 @@ class Vista(QMainWindow):
             escena_heuristica.ir_a_ultimo_paso()
 
     def pausar_algoritmo(self):
+        self.controlador.pausar_algoritmo()
+        seleccion = self.ui.comboBox.currentText()
+        if seleccion == "Euclidiana":
+            self.ui.widget_euclidiana.setVisible(False)
+            self.ui.graphicsView_euclidiana.setScene(None)
+        elif seleccion == "Manhattan":
+            self.ui.widget_manhattan.setVisible(False)
+            self.ui.graphicsView_manhattan.setScene(None)
+        elif seleccion == "Ambos":
+            self.ui.widget_euclidiana.setVisible(False)
+            self.ui.widget_manhattan.setVisible(False)
+            self.ui.graphicsView_euclidiana.setScene(None)
+            self.ui.graphicsView_manhattan.setScene(None)
+
+        self.ui.widget_base.setVisible(True)
+        self.ui.widget_base.setDisabled(False)
+        self.ui.graphicsView_base.setVisible(True)
+        self.ui.graphicsView_base.setDisabled(False)
+        self.ui.graphicsView_base.setScene(self.scene_B)
+        self.scene_B.graficar_grafo(self.controlador.obtener_grafo())
+
+        self.escenas_heuristicas.clear()
+
         self.ui.pushButtonPlay.show()
         self.ui.pushButtonPause.hide()
-        seleccion = self.ui.comboBox.currentText()
+        self.ui.comboBox.setEnabled(True)
         self.mostrar_resultados_y_referencias(False)
-        if seleccion == "Ambos":
-            self.ui.graphicsView_lRecta.setDisabled(False)
-            self.ui.graphicsView_manhattan.setDisabled(False)
-        else:
-            self.ui.graphicsView_base.setDisabled(False)
+        self.mostrar_botones_archivo(self.ui.radioButtonManual.isChecked())
 
     def obtener_estados(self, nodos):
         dialogo = QtWidgets.QDialog(self)
@@ -210,8 +229,8 @@ class Vista(QMainWindow):
         self.ui.widget_manhattan.setVisible(False)
         self.ui.graphicsView_manhattan.setDisabled(True)
 
-        self.ui.widget_lRecta.setVisible(False)
-        self.ui.graphicsView_lRecta.setDisabled(True)
+        self.ui.widget_euclidiana.setVisible(False)
+        self.ui.graphicsView_euclidiana.setDisabled(True)
 
     def generar_grafo_aleatorio(self):
         grafo = self.controlador.generar_grafo_aleatorio(self.ui.spinBox.value(), self.ui.graphicsView_base.width(), self.ui.graphicsView_base.height())
@@ -279,7 +298,7 @@ class Vista(QMainWindow):
             if item:
                 item.setVisible(False)
 
-        self.ui.widget_lRectaResults.setVisible(False)
+        self.ui.widget_euclidianaResults.setVisible(False)
         self.ui.widget_manhattanResults.setVisible(False)
         self.ui.widget_referencia.setVisible(False)
 
@@ -291,12 +310,12 @@ class Vista(QMainWindow):
 
             seleccion = self.ui.comboBox.currentText()
             if seleccion == "Euclidiana":
-                self.ui.widget_lRectaResults.setVisible(True)
+                self.ui.widget_euclidianaResults.setVisible(True)
             elif seleccion == "Manhattan":
                 self.ui.widget_manhattanResults.setVisible(True)
             elif seleccion == "Ambos":
                 self.ui.widget_manhattanResults.setVisible(True)
-                self.ui.widget_lRectaResults.setVisible(True)
+                self.ui.widget_euclidianaResults.setVisible(True)
         else:
             self.ui.layoutContenedorP.setStretch(0, 0)
             self.ui.layoutContenedorP.setStretch(1, 1)
@@ -345,17 +364,17 @@ class Vista(QMainWindow):
         seleccion = self.ui.comboBox.currentText()
         scene_heuristica = GrafoScene(self.controlador)
 
-        self.ui.widget_lRecta.setVisible(False)
+        self.ui.widget_euclidiana.setVisible(False)
         self.ui.widget_manhattan.setVisible(False)
-        self.ui.graphicsView_lRecta.setDisabled(True)
+        self.ui.graphicsView_euclidiana.setDisabled(True)
         self.ui.graphicsView_manhattan.setDisabled(True)
         self.ui.widget_base.setVisible(False)
         self.ui.graphicsView_base.setVisible(False)
 
         if seleccion == "Euclidiana":
-            self.ui.widget_lRecta.setVisible(True)
-            self.ui.graphicsView_lRecta.setDisabled(True)
-            self.ui.graphicsView_lRecta.setScene(scene_heuristica)
+            self.ui.widget_euclidiana.setVisible(True)
+            self.ui.graphicsView_euclidiana.setDisabled(True)
+            self.ui.graphicsView_euclidiana.setScene(scene_heuristica)
             self.escenas_heuristicas[HEURISTICAS.distancia_linea_recta.nombre] = (
                 EscenaHeuristica(self.controlador, scene_heuristica, HEURISTICAS.distancia_linea_recta.nombre))
         elif seleccion == "Manhattan":
@@ -369,12 +388,12 @@ class Vista(QMainWindow):
         scene_linea_recta = GrafoScene(self.controlador)
         scene_manhattan = GrafoScene(self.controlador)
 
-        self.ui.graphicsView_lRecta.setScene(scene_linea_recta)
+        self.ui.graphicsView_euclidiana.setScene(scene_linea_recta)
         self.ui.graphicsView_manhattan.setScene(scene_manhattan)
 
-        self.ui.graphicsView_lRecta.setDisabled(True)
+        self.ui.graphicsView_euclidiana.setDisabled(True)
         self.ui.widget_base.setDisabled(False)
-        self.ui.widget_lRecta.setVisible(True)
+        self.ui.widget_euclidiana.setVisible(True)
         self.ui.widget_manhattan.setVisible(True)
         self.ui.graphicsView_manhattan.setDisabled(True)
         self.ui.widget_base.setVisible(False)

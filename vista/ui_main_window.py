@@ -98,8 +98,8 @@ class Ui_MainWindow(object):
 
         self.pushButton_generar = QtWidgets.QPushButton()
         self.pushButton_generar.setObjectName("pushButton_generar")
-        self.pushButton_generar.setText("Generar grafo")
-        self.pushButton_generar.setFixedSize(100, 30)
+        self.pushButton_generar.setText("Generar Grafo")
+        self.pushButton_generar.setFixedSize(130, 35)
         self.layoutControles.addWidget(self.pushButton_generar, alignment=QtCore.Qt.AlignmentFlag.AlignHCenter)
 
         # ComboBox
@@ -128,13 +128,15 @@ class Ui_MainWindow(object):
         self.pushButtonCargarArchivo = QtWidgets.QPushButton()
         self.pushButtonCargarArchivo.setObjectName("pushButton_cargar_archivo_grafo")
         self.pushButtonCargarArchivo.setText("Cargar Grafo")
+        self.pushButtonCargarArchivo.setFixedSize(130, 35)
 
         self.pushButtonGuardarArchivo = QtWidgets.QPushButton()
         self.pushButtonGuardarArchivo.setObjectName("pushButton_guardar_archivo_grafo")
         self.pushButtonGuardarArchivo.setText("Guardar Grafo")
+        self.pushButtonGuardarArchivo.setFixedSize(130, 35)
 
-        self.layoutBotonesArchivo.addWidget(self.pushButtonCargarArchivo)
-        self.layoutBotonesArchivo.addWidget(self.pushButtonGuardarArchivo)
+        self.layoutBotonesArchivo.addWidget(self.pushButtonCargarArchivo, alignment=QtCore.Qt.AlignmentFlag.AlignHCenter)
+        self.layoutBotonesArchivo.addWidget(self.pushButtonGuardarArchivo, alignment=QtCore.Qt.AlignmentFlag.AlignHCenter)
         self.layoutControles.addLayout(self.layoutBotonesArchivo)
         # -------------------
 
@@ -159,13 +161,13 @@ class Ui_MainWindow(object):
         self.horizontalLayout_3 = QtWidgets.QHBoxLayout()
         self.widget_base = QtWidgets.QWidget()
         self.widget_manhattan = QtWidgets.QWidget()
-        self.widget_lRecta = QtWidgets.QWidget()
+        self.widget_euclidiana = QtWidgets.QWidget()
         self.widget_base.setObjectName("widget_base")
         self.widget_manhattan.setObjectName("widget_manhattan")
-        self.widget_lRecta.setObjectName("widget_lRecta")
+        self.widget_euclidiana.setObjectName("widget_euclidiana")
         self.horizontalLayout_3.addWidget(self.widget_base)
         self.horizontalLayout_3.addWidget(self.widget_manhattan)
-        self.horizontalLayout_3.addWidget(self.widget_lRecta)
+        self.horizontalLayout_3.addWidget(self.widget_euclidiana)
         self.layoutContenedorP.addLayout(self.horizontalLayout_3)
 
         self.layout_widget_base = QtWidgets.QVBoxLayout(self.widget_base)
@@ -178,21 +180,21 @@ class Ui_MainWindow(object):
         self.graphicsView_manhattan.setObjectName("graphicsView_manhattan")
         self.layout_widget_manhattan.addWidget(self.graphicsView_manhattan)
 
-        self.layout_widget_lRecta = QtWidgets.QVBoxLayout(self.widget_lRecta)
-        self.graphicsView_lRecta = QtWidgets.QGraphicsView()
-        self.graphicsView_lRecta.setObjectName("graphicsView_lRecta")
-        self.layout_widget_lRecta.addWidget(self.graphicsView_lRecta)
+        self.layout_widget_euclidiana= QtWidgets.QVBoxLayout(self.widget_euclidiana)
+        self.graphicsView_euclidiana = QtWidgets.QGraphicsView()
+        self.graphicsView_euclidiana.setObjectName("graphicsView_euclidiana")
+        self.layout_widget_euclidiana.addWidget(self.graphicsView_euclidiana)
 
         self.horizontalLayout_2 = QtWidgets.QHBoxLayout()
         self.widget_manhattanResults = QtWidgets.QWidget()
         self.widget_manhattanResults.setObjectName("widget_manhattanResults")
-        self.widget_lRectaResults = QtWidgets.QWidget()
-        self.widget_lRectaResults.setObjectName("widget_lRectaResults")
+        self.widget_euclidianaResults = QtWidgets.QWidget()
+        self.widget_euclidianaResults.setObjectName("widget_euclidianaResults")
         self.horizontalLayout_2.addWidget(self.widget_manhattanResults)
-        self.horizontalLayout_2.addWidget(self.widget_lRectaResults)
+        self.horizontalLayout_2.addWidget(self.widget_euclidianaResults)
         self.layoutContenedorP.addLayout(self.horizontalLayout_2)
 
-        self.layoutWidget2 = QtWidgets.QVBoxLayout(self.widget_lRectaResults)
+        self.layoutWidget2 = QtWidgets.QVBoxLayout(self.widget_euclidianaResults)
         self.labelWidget2 = QtWidgets.QLabel("Resultados - Distancia Euclidiana:")
         self.labelWidget2.setAlignment(QtCore.Qt.AlignmentFlag.AlignLeft)
         self.labelWidget2.setObjectName("labelWidget2")
@@ -296,8 +298,8 @@ class Ui_MainWindow(object):
         self.horizontalLayout.addLayout(self.layoutMenu, 1)
 
         widgets_con_sombra = [
-            self.widget_base, self.widget_manhattan, self.widget_manhattanResults, self.widget_lRecta,
-            self.widget_lRectaResults, self.comboBox, self.spinBox, self.widget_menu, self.widget_referencia
+            self.widget_base, self.widget_manhattan, self.widget_manhattanResults, self.widget_euclidiana,
+            self.widget_euclidianaResults, self.comboBox, self.spinBox, self.widget_menu, self.widget_referencia
         ]
         for widget in widgets_con_sombra:
             sombra = QGraphicsDropShadowEffect()

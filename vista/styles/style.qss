@@ -13,9 +13,9 @@ QWidget#centralwidget {
 
 #widget_base,
 #widget_manhattan,
-#widget_lRecta,
+#widget_euclidiana,
 #widget_manhattanResults,
-#widget_lRectaResults,
+#widget_euclidianaResults,
 #widget_referencia{
     background-color: #FFFFFF;
     border-radius: 15px;
@@ -31,7 +31,7 @@ QWidget#centralwidget {
 }
 
 #graphicsView_manhattan,
-#graphicsView_lRecta,
+#graphicsView_euclidiana,
 #graphicsView_base {
     background-color: #F0F0F0;
 }
@@ -65,14 +65,6 @@ QSpinBox:disabled,
 QComboBox:disabled {
     background-color: #EEEEEE;
     color: #AAAAAA;
-}
-
-#pushButton_3,
-#pushButton_4,
-#pushButton_5 {
-    background-color: #5A8C8C;
-    border-radius: 15px;
-    color: white;
 }
 
 #pushButtonPlay, #pushButtonPause {

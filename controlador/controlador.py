@@ -184,6 +184,11 @@ class Controlador:
         self._procesos_busqueda[heuristica].ir_a_ultimo_paso()
         return self._procesos_busqueda[heuristica]
 
+    def pausar_algoritmo(self):
+        self._nodo_inicio = None
+        self._nodo_objetivo = None
+        self._procesos_busqueda = {}
+
     # Operaciones de archivos
     def cargar_archivo_grafo(self, ruta_archivo: str) -> bool:
         if not ruta_archivo:
