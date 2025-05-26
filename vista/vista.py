@@ -218,6 +218,7 @@ class Vista(QMainWindow):
         self.ui.pushButtonPlay.show()
         self.ui.pushButtonPause.hide()
         self.mostrar_resultados_y_referencias(False)
+        self.mostrar_botones_archivo(self.ui.radioButtonManual.isChecked())
 
         self.ui.widget_base.setDisabled(False)
         self.ui.widget_base.setVisible(True)
