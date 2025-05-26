@@ -214,7 +214,7 @@ class Vista(QMainWindow):
 
         self.controlador.restablecer_grafo()
 
-        self.scene_B.nodo_para_conectar = None
+        self.scene_B.deseleccionar_nodo_para_conectar()
         self.ui.pushButtonPlay.show()
         self.ui.pushButtonPause.hide()
         self.mostrar_resultados_y_referencias(False)
@@ -234,6 +234,7 @@ class Vista(QMainWindow):
 
     def generar_grafo_aleatorio(self):
         grafo = self.controlador.generar_grafo_aleatorio(self.ui.spinBox.value(), self.ui.graphicsView_base.width(), self.ui.graphicsView_base.height())
+        self.scene_B.deseleccionar_nodo_para_conectar()
         self.scene_B.graficar_grafo(grafo)
 
     # ---- Interacciones con la UI ----
@@ -431,12 +432,12 @@ class Vista(QMainWindow):
         path, _ = QFileDialog.getOpenFileName(None, "Cargar Grafo", "", "Archivos JSON (*.json)")
         grafo_cargado = self.controlador.cargar_archivo_grafo(path)
         if grafo_cargado:
+            self.scene_B.deseleccionar_nodo_para_conectar()
             self.scene_B.graficar_grafo(self.controlador.obtener_grafo())
         else:
             dialogo = QtWidgets.QDialog(self)
             dialogo.setWindowTitle("Cargar Grafo")
             QtWidgets.QMessageBox.warning(dialogo, "Error", "No se pudo cargar el grafo del archivo seleccionado.")
-
 
     def guardar_archivo_grafo(self):
         path, _ = QFileDialog.getSaveFileName(None, "Guardar Grafo", "", "Archivos JSON (*.json)")

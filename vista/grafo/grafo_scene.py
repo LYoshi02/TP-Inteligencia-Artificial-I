@@ -14,7 +14,7 @@ class GrafoScene(QGraphicsScene):
     def __init__(self, controlador: Controlador):
         super().__init__()
         self.controlador = controlador
-        self.nodo_para_conectar = None
+        self.nodo_para_conectar: NodoGrafico | None = None
 
     def graficar_grafo(self, grafo: Grafo, recorrido_algoritmo: RecorridoAlgoritmo = None):
         self.__limpiar_grafo()
@@ -143,7 +143,7 @@ class GrafoScene(QGraphicsScene):
                     item.aplicar_tema("seleccionado")
                 # Para deseleccionar nodo
                 elif self.nodo_para_conectar == item:
-                    self.nodo_para_conectar = None
+                    self.deseleccionar_nodo_para_conectar()
                     item.permitir_movimiento(False)
                     item.aplicar_tema("default")
                 elif item != self.nodo_para_conectar:
@@ -160,6 +160,8 @@ class GrafoScene(QGraphicsScene):
 
     def eliminar_nodo(self, nodo: NodoGrafico):
         nuevo_grafo = self.controlador.eliminar_nodo(nodo.nombre, nodo.pos().x(), nodo.pos().y())
+        if self.nodo_para_conectar == nodo:
+            self.deseleccionar_nodo_para_conectar()
         self.graficar_grafo(nuevo_grafo)
 
     def eliminar_arista(self, nodo_origen: NodoGrafico, nodo_destino: NodoGrafico):
@@ -177,6 +179,9 @@ class GrafoScene(QGraphicsScene):
             grafo_actualizado = self.controlador.actualizar_costo_arista(nodo_origen, nodo_destino, costo)
 
             self.graficar_grafo(grafo_actualizado)
+
+    def deseleccionar_nodo_para_conectar(self):
+        self.nodo_para_conectar = None
 
     def mouseReleaseEvent(self, event):
         super().mouseReleaseEvent(event)
