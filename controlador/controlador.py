@@ -145,7 +145,7 @@ class Controlador:
 
         return self._grafo
 
-        # Operaciones del Algoritmo
+    # Operaciones del Algoritmo
     def comenzar_algoritmo(self, heuristica: str) -> RecorridoAlgoritmo:
         if self._nodo_inicio == None or self._nodo_objetivo == None:
             print("No se establecieron los nodos de inicio y/o objetivo")
@@ -185,6 +185,7 @@ class Controlador:
         return self._procesos_busqueda[heuristica]
 
     def pausar_algoritmo(self):
+        self._grafo.restaurar_costos_nodos()
         self._nodo_inicio = None
         self._nodo_objetivo = None
         self._procesos_busqueda = {}

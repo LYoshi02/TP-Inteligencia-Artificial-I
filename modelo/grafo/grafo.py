@@ -48,6 +48,12 @@ class Grafo:
             if arista_eliminar in aristas:
                 aristas.remove(arista_eliminar)
 
+    # Restaura los costos de los nodos a su valor inicial
+    def restaurar_costos_nodos(self):
+        for nodo in self._nodos.keys():
+            nodo.costo_desde_inicio = float("inf")
+            nodo.heuristica = 0
+
     def obtener_aristas_nodo(self, nodo: Nodo) -> set[Arista] | None:
         if nodo not in self._nodos:
             print(f"obtener_aristas_nodo - El nodo '{nodo.nombre}' no se encuentra en el grafo")
