@@ -1,6 +1,8 @@
 from PyQt6 import QtCore, QtGui, QtWidgets
 from PyQt6.QtWidgets import QGraphicsDropShadowEffect, QSizePolicy, QHeaderView
 
+from constantes.heuristicas import HEURISTICAS
+
 
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
@@ -118,7 +120,12 @@ class Ui_MainWindow(object):
         self.comboBox = QtWidgets.QComboBox()
         self.comboBox.setObjectName("comboBox")
         self.comboBox.setMinimumHeight(30)
-        self.comboBox.addItems(["Selecciona una heurística", "Ambos", "Euclidiana", "Manhattan"])
+        self.comboBox.addItems([
+            "Selecciona una heurística",
+            "Ambos",
+            HEURISTICAS.distancia_euclidiana.texto,
+            HEURISTICAS.distancia_manhattan.texto
+        ])
         self.layoutControles.addWidget(self.comboBox)
 
         # ----- Botones de Manejo de Archivos -----

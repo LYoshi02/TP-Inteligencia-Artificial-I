@@ -158,7 +158,7 @@ class Controlador:
 
     def __obtener_tecnica_heuristica(self, heuristica: str):
         tecnica_heuristica: Heuristica
-        if heuristica == HEURISTICAS.distancia_linea_recta.nombre:
+        if heuristica == HEURISTICAS.distancia_euclidiana.nombre:
             tecnica_heuristica = DistanciaLineaRecta()
         elif heuristica == HEURISTICAS.distancia_manhattan.nombre:
             tecnica_heuristica = DistanciaManhattan()

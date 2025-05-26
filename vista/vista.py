@@ -140,10 +140,10 @@ class Vista(QMainWindow):
     def pausar_algoritmo(self):
         self.controlador.pausar_algoritmo()
         seleccion = self.ui.comboBox.currentText()
-        if seleccion == "Euclidiana":
+        if seleccion == HEURISTICAS.distancia_euclidiana.texto:
             self.ui.widget_euclidiana.setVisible(False)
             self.ui.graphicsView_euclidiana.setScene(None)
-        elif seleccion == "Manhattan":
+        elif seleccion == HEURISTICAS.distancia_manhattan.texto:
             self.ui.widget_manhattan.setVisible(False)
             self.ui.graphicsView_manhattan.setScene(None)
         elif seleccion == "Ambos":
@@ -310,9 +310,9 @@ class Vista(QMainWindow):
             self.ui.layoutContenedorP.setStretch(2, 2)
 
             seleccion = self.ui.comboBox.currentText()
-            if seleccion == "Euclidiana":
+            if seleccion == HEURISTICAS.distancia_euclidiana.texto:
                 self.ui.widget_euclidianaResults.setVisible(True)
-            elif seleccion == "Manhattan":
+            elif seleccion == HEURISTICAS.distancia_manhattan.texto:
                 self.ui.widget_manhattanResults.setVisible(True)
             elif seleccion == "Ambos":
                 self.ui.widget_manhattanResults.setVisible(True)
@@ -372,13 +372,13 @@ class Vista(QMainWindow):
         self.ui.widget_base.setVisible(False)
         self.ui.graphicsView_base.setVisible(False)
 
-        if seleccion == "Euclidiana":
+        if seleccion == HEURISTICAS.distancia_euclidiana.texto:
             self.ui.widget_euclidiana.setVisible(True)
             self.ui.graphicsView_euclidiana.setDisabled(True)
             self.ui.graphicsView_euclidiana.setScene(scene_heuristica)
-            self.escenas_heuristicas[HEURISTICAS.distancia_linea_recta.nombre] = (
-                EscenaHeuristica(self.controlador, scene_heuristica, HEURISTICAS.distancia_linea_recta.nombre))
-        elif seleccion == "Manhattan":
+            self.escenas_heuristicas[HEURISTICAS.distancia_euclidiana.nombre] = (
+                EscenaHeuristica(self.controlador, scene_heuristica, HEURISTICAS.distancia_euclidiana.nombre))
+        elif seleccion == HEURISTICAS.distancia_manhattan.texto:
             self.ui.widget_manhattan.setVisible(True)
             self.ui.graphicsView_manhattan.setDisabled(True)
             self.ui.graphicsView_manhattan.setScene(scene_heuristica)
@@ -399,8 +399,8 @@ class Vista(QMainWindow):
         self.ui.graphicsView_manhattan.setDisabled(True)
         self.ui.widget_base.setVisible(False)
 
-        self.escenas_heuristicas[HEURISTICAS.distancia_linea_recta.nombre] = (
-            EscenaHeuristica(self.controlador, scene_linea_recta, HEURISTICAS.distancia_linea_recta.nombre))
+        self.escenas_heuristicas[HEURISTICAS.distancia_euclidiana.nombre] = (
+            EscenaHeuristica(self.controlador, scene_linea_recta, HEURISTICAS.distancia_euclidiana.nombre))
         self.escenas_heuristicas[HEURISTICAS.distancia_manhattan.nombre] = (
             EscenaHeuristica(self.controlador, scene_manhattan, HEURISTICAS.distancia_manhattan.nombre))
 

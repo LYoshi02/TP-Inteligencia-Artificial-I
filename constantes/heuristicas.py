@@ -6,5 +6,5 @@ class InfoHeuristica:
     texto: str
 
 class HEURISTICAS:
-    distancia_linea_recta = InfoHeuristica("linea_recta", "Línea Recta")
+    distancia_euclidiana = InfoHeuristica("euclidiana", "Euclidiana")
     distancia_manhattan = InfoHeuristica("manhattan", "Manhattan")
