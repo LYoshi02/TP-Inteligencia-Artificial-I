@@ -2,6 +2,7 @@ from PyQt6 import QtCore, QtGui, QtWidgets
 from PyQt6.QtWidgets import QGraphicsDropShadowEffect, QSizePolicy, QHeaderView
 
 from constantes.heuristicas import HEURISTICAS
+from constantes.recursos import RUTAS_RECURSOS
 
 
 class Ui_MainWindow(object):
@@ -54,7 +55,7 @@ class Ui_MainWindow(object):
         self.infoButtonModo = QtWidgets.QPushButton()
         self.infoButtonModo.setObjectName("infoButtonModo")
         self.infoButtonModo.setFixedSize(20, 20)
-        self.infoButtonModo.setIcon(QtGui.QIcon("./vista/images/icons8-información-50.png"))
+        self.infoButtonModo.setIcon(QtGui.QIcon(RUTAS_RECURSOS.IMAGENES.informacion))
         self.infoButtonModo.setIconSize(QtCore.QSize(16, 16))
         self.layoutLabelModo.addWidget(self.infoButtonModo)
         self.labelModo = QtWidgets.QLabel("Modo de generación:")
@@ -83,7 +84,7 @@ class Ui_MainWindow(object):
         self.infoButtonSpinBox = QtWidgets.QPushButton()
         self.infoButtonSpinBox.setObjectName("infoButtonSpinBox")
         self.infoButtonSpinBox.setFixedSize(20, 20)
-        self.infoButtonSpinBox.setIcon(QtGui.QIcon("./vista/images/icons8-información-50.png"))
+        self.infoButtonSpinBox.setIcon(QtGui.QIcon(RUTAS_RECURSOS.IMAGENES.informacion))
         self.infoButtonSpinBox.setIconSize(QtCore.QSize(16, 16))
         self.layoutLabelSpinBox.addWidget(self.infoButtonSpinBox)
         self.labelSpinBox = QtWidgets.QLabel("Cantidad de nodos:")
@@ -109,7 +110,7 @@ class Ui_MainWindow(object):
         self.infoButtonComboBox = QtWidgets.QPushButton()
         self.infoButtonComboBox.setObjectName("infoButtonComboBox")
         self.infoButtonComboBox.setFixedSize(20, 20)
-        self.infoButtonComboBox.setIcon(QtGui.QIcon("./vista/images/icons8-información-50.png"))
+        self.infoButtonComboBox.setIcon(QtGui.QIcon(RUTAS_RECURSOS.IMAGENES.informacion))
         self.infoButtonComboBox.setIconSize(QtCore.QSize(16, 16))
         self.layoutLabelComboBox.addWidget(self.infoButtonComboBox)
         self.labelComboBox = QtWidgets.QLabel("Heurística:")
@@ -238,7 +239,7 @@ class Ui_MainWindow(object):
 
         self.pushButtonPlay = QtWidgets.QPushButton()
         self.pushButtonPlay.setObjectName("pushButtonPlay")
-        self.pushButtonPlay.setIcon(QtGui.QIcon("./vista/images/icons8-play-30.png"))
+        self.pushButtonPlay.setIcon(QtGui.QIcon(RUTAS_RECURSOS.IMAGENES.play))
         self.pushButtonPlay.setIconSize(QtCore.QSize(53, 50))
         self.pushButtonPlay.setFixedSize(60, 60)
         self.pushButtonPlay.setToolTip("Iniciar algoritmo")
@@ -246,7 +247,7 @@ class Ui_MainWindow(object):
 
         self.pushButtonPause = QtWidgets.QPushButton()
         self.pushButtonPause.setObjectName("pushButtonPause")
-        self.pushButtonPause.setIcon(QtGui.QIcon("./vista/images/icons8-pausa-50.png"))
+        self.pushButtonPause.setIcon(QtGui.QIcon(RUTAS_RECURSOS.IMAGENES.pausa))
         self.pushButtonPause.setIconSize(QtCore.QSize(40, 40))
         self.pushButtonPause.setFixedSize(60, 60)
         self.pushButtonPause.setToolTip("Pausar algoritmo")
@@ -264,23 +265,23 @@ class Ui_MainWindow(object):
         botones: dict[str, dict[str, str]] = {
             "paso_atras": {
                 "tooltip": "Retroceder paso",
-                "icono": "icons8-doble-izquierda-52.png"
+                "icono": RUTAS_RECURSOS.IMAGENES.flecha_doble_izquierda
             },
             "siguiente_paso": {
                 "tooltip": "Avanzar paso",
-                "icono": "icons8-doble-derecha-52.png"
+                "icono": RUTAS_RECURSOS.IMAGENES.flecha_doble_derecha
             },
             "paso_inicial": {
                 "tooltip": "Ir al paso inicial",
-                "icono": "icons8-primero-1-52.png"
+                "icono": RUTAS_RECURSOS.IMAGENES.flecha_paso_inicial
             },
             "ultimo_paso": {
                 "tooltip": "Ir al último paso",
-                "icono": "icons8-skip-forward-52.png"
+                "icono": RUTAS_RECURSOS.IMAGENES.flecha_ultimo_paso
             },
             "limpiar": {
                 "tooltip": "Borrar grafo",
-                "icono": "icons8-escoba-48.png"
+                "icono": RUTAS_RECURSOS.IMAGENES.escoba
             }
         }
 
@@ -290,7 +291,7 @@ class Ui_MainWindow(object):
             btn.setMinimumSize(50, 45)
             btn.setMaximumSize(50, 45)
             btn.setToolTip(info_boton["tooltip"])
-            btn.setIcon(QtGui.QIcon(f"./vista/images/{info_boton["icono"]}"))
+            btn.setIcon(QtGui.QIcon(info_boton["icono"]))
             btn.setIconSize(QtCore.QSize(30, 40))
             self.verticalLayout_5.addWidget(btn, 0, QtCore.Qt.AlignmentFlag.AlignHCenter)
 
