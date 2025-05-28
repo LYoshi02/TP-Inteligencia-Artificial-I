@@ -1,4 +1,8 @@
+import re
+
 from PyQt6 import QtCore, QtWidgets
+from PyQt6.QtCore import Qt
+from PyQt6.QtGui import QColor
 from PyQt6.QtWidgets import QMainWindow, QFileDialog
 
 from constantes.heuristicas import HEURISTICAS
@@ -35,7 +39,7 @@ class Vista(QMainWindow):
         self.ui.graphicsView_euclidiana.setDisabled(True)
         self.ui.graphicsView_base.setDisabled(True)
 
-        self.mostrar_resultados_y_referencias(False)
+        self.mostrar_widget_resultados_y_referencias(False)
 
         # Desactivar campos de datos
         self.ui.labelComboBox.setVisible(False)
@@ -51,7 +55,7 @@ class Vista(QMainWindow):
         self.ui.infoButtonSpinBox.setVisible(False)
 
         self.ui.groupBoxInstrucciones.setVisible(False)
-
+        self.activar_botones_pasos(False)
         self.mostrar_botones_archivo(False)
 
 
@@ -81,6 +85,12 @@ class Vista(QMainWindow):
         self.ui.radioButtonAleatorio.toggled.connect(self.activar_campos)
         self.ui.infoButtonSpinBox.clicked.connect(self.mostrar_info_cantidad_nodos)
 
+    def activar_botones_pasos(self, mostrar: bool):
+        self.findChild(QtWidgets.QPushButton, "pushButton_siguiente_paso").setEnabled(mostrar)
+        self.findChild(QtWidgets.QPushButton, "pushButton_paso_atras").setEnabled(mostrar)
+        self.findChild(QtWidgets.QPushButton, "pushButton_paso_inicial").setEnabled(mostrar)
+        self.findChild(QtWidgets.QPushButton, "pushButton_ultimo_paso").setEnabled(mostrar)
+
     # ---- Funcionalidades de los botones: Conexión con el controlador ----
     def iniciar_algoritmo(self):
 
@@ -94,6 +104,7 @@ class Vista(QMainWindow):
             self.obtener_estados(nodos)
             self.ui.pushButtonPlay.hide()
             self.ui.pushButtonPause.show()
+            self.activar_botones_pasos(True)
             self.mostrar_botones_archivo(False)
 
             if seleccion == "Ambos":
@@ -101,9 +112,10 @@ class Vista(QMainWindow):
             else:
                 self.ejecutar_heuristica()
 
-            self.inicializar_busquedas()
             self.agregar_referencias()
-            self.mostrar_resultados_y_referencias(True)
+            self.mostrar_widget_resultados_y_referencias(True)
+            self.inicializar_busquedas()
+
         except Exception as e:
             QtWidgets.QMessageBox.critical(self, "Error", f"Ocurrió un error: {str(e)}")
 
@@ -120,22 +132,27 @@ class Vista(QMainWindow):
         for escena_heuristica in self.escenas_heuristicas.values():
             recorrido = self.controlador.comenzar_algoritmo(escena_heuristica.heuristica)
             escena_heuristica.graficar_grafo(recorrido)
+        self.cargar_resultados()
 
     def avanzar_paso(self):
         for escena_heuristica in self.escenas_heuristicas.values():
             escena_heuristica.avanzar_paso()
+        self.cargar_resultados()
 
     def retroceder_paso(self):
         for escena_heuristica in self.escenas_heuristicas.values():
             escena_heuristica.retroceder_paso()
+        self.cargar_resultados()
 
     def ir_al_paso_inicial(self):
         for escena_heuristica in self.escenas_heuristicas.values():
             escena_heuristica.ir_al_paso_inicial()
+        self.cargar_resultados()
 
     def ir_a_ultimo_paso(self):
         for escena_heuristica in self.escenas_heuristicas.values():
             escena_heuristica.ir_a_ultimo_paso()
+        self.cargar_resultados()
 
     def pausar_algoritmo(self):
         self.controlador.pausar_algoritmo()
@@ -163,11 +180,16 @@ class Vista(QMainWindow):
 
         self.ui.pushButtonPlay.show()
         self.ui.pushButtonPause.hide()
+        self.activar_botones_pasos(False)
         self.ui.comboBox.setEnabled(True)
-        self.mostrar_resultados_y_referencias(False)
+        self.mostrar_widget_resultados_y_referencias(False)
         self.mostrar_botones_archivo(self.ui.radioButtonManual.isChecked())
 
+
     def obtener_estados(self, nodos):
+        def orden_nodos(clave):
+            return [int(texto) if texto.isdigit() else texto.lower() for texto in re.split(r'(\d+)', str(clave))]
+
         dialogo = QtWidgets.QDialog(self)
         dialogo.setWindowTitle("Seleccionar Estados")
         layout = QtWidgets.QVBoxLayout(dialogo)
@@ -175,7 +197,7 @@ class Vista(QMainWindow):
         combo_inicial = QtWidgets.QComboBox()
         combo_objetivo = QtWidgets.QComboBox()
         nombres_nodos = [nodo.nombre for nodo in nodos]
-        nombres_nodos.sort()
+        nombres_nodos.sort(key=orden_nodos)
         combo_inicial.addItems(nombres_nodos)
         combo_objetivo.addItems(nombres_nodos)
 
@@ -217,8 +239,9 @@ class Vista(QMainWindow):
         self.scene_B.deseleccionar_nodo_para_conectar()
         self.ui.pushButtonPlay.show()
         self.ui.pushButtonPause.hide()
-        self.mostrar_resultados_y_referencias(False)
+        self.mostrar_widget_resultados_y_referencias(False)
         self.mostrar_botones_archivo(self.ui.radioButtonManual.isChecked())
+        self.activar_botones_pasos(False)
 
         self.ui.widget_base.setDisabled(False)
         self.ui.widget_base.setVisible(True)
@@ -291,7 +314,7 @@ class Vista(QMainWindow):
             label.setText(texto)
             self.ui.layoutInstrucciones.addWidget(label)
 
-    def mostrar_resultados_y_referencias(self, mostrar: bool):
+    def mostrar_widget_resultados_y_referencias(self, mostrar: bool):
         self.ui.horizontalLayout_2.setEnabled(mostrar)
         self.ui.horizontalLayout_2.setContentsMargins(0, 0, 0, 0)
 
@@ -313,11 +336,15 @@ class Vista(QMainWindow):
             seleccion = self.ui.comboBox.currentText()
             if seleccion == HEURISTICAS.distancia_euclidiana.texto:
                 self.ui.widget_euclidianaResults.setVisible(True)
+                self.inicializar_tabla_resultados(self.ui.table_euclidiana)
             elif seleccion == HEURISTICAS.distancia_manhattan.texto:
                 self.ui.widget_manhattanResults.setVisible(True)
+                self.inicializar_tabla_resultados(self.ui.table_manhattan)
             elif seleccion == "Ambos":
                 self.ui.widget_manhattanResults.setVisible(True)
                 self.ui.widget_euclidianaResults.setVisible(True)
+                self.inicializar_tabla_resultados(self.ui.table_euclidiana)
+                self.inicializar_tabla_resultados(self.ui.table_manhattan)
         else:
             self.ui.layoutContenedorP.setStretch(0, 0)
             self.ui.layoutContenedorP.setStretch(1, 1)
@@ -361,6 +388,70 @@ class Vista(QMainWindow):
             layout.addWidget(label_texto)
 
             self.ui.layout_widget_referencia.addWidget(widget)
+
+    def inicializar_tabla_resultados(self, tabla):
+        tabla.setRowCount(1)
+        tabla.setColumnCount(5)
+
+        valores_iniciales = ["0", "0.00", "-", "-", "-"]
+
+        for col, valor in enumerate(valores_iniciales):
+            item = QtWidgets.QTableWidgetItem(valor)
+            item.setTextAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
+            tabla.setItem(0, col, item)
+
+        tabla.horizontalHeader().setSectionResizeMode(QtWidgets.QHeaderView.ResizeMode.ResizeToContents)
+        tabla.horizontalHeader().setSectionResizeMode(3, QtWidgets.QHeaderView.ResizeMode.Stretch)
+
+    def actualizar_tabla_resultados(self, tabla, resultados):
+        try:
+            if not resultados or not isinstance(resultados, dict):
+                raise ValueError("Resultados no es un diccionario válido")
+
+            datos = [
+                str(resultados.get('cantidad_nodos_explorados', 0)),
+                f"{float(resultados.get('costo_total')):.2f}" if resultados.get('costo_total') is not None else "-",
+                f"{float(resultados.get('tiempo_total')):.4f} seg" if resultados.get(
+                    'tiempo_total') is not None else "-",
+                " → ".join(resultados.get('ruta')) if isinstance(resultados.get('ruta'), list) else "No encontrado",
+                "✓" if resultados.get('objetivo_alcanzado', False) else "✗"
+            ]
+
+            tabla.clearContents()
+            tabla.setRowCount(1)
+
+            for col, valor in enumerate(datos):
+                item = QtWidgets.QTableWidgetItem(valor)
+                item.setTextAlignment(Qt.AlignmentFlag.AlignCenter)
+                if col == 4:
+                    item.setForeground(QColor("green") if valor == "✓" else QColor("red"))
+                tabla.setItem(0, col, item)
+
+            tabla.resizeColumnsToContents()
+
+        except Exception as e:
+            print(f"Error al actualizar tabla: {str(e)}")
+            self.inicializar_tabla_resultados(tabla)
+
+    def cargar_resultados(self):
+        try:
+            seleccion = self.ui.comboBox.currentText()
+            if not seleccion:
+                return
+
+            if seleccion in [HEURISTICAS.distancia_euclidiana.texto, "Ambos"]:
+                resultados = self.controlador.obtener_resultados_algoritmo(HEURISTICAS.distancia_euclidiana.nombre)
+                if resultados:
+                    self.actualizar_tabla_resultados(self.ui.table_euclidiana, resultados)
+
+            if seleccion in [HEURISTICAS.distancia_manhattan.texto, "Ambos"]:
+                resultados = self.controlador.obtener_resultados_algoritmo(HEURISTICAS.distancia_manhattan.nombre)
+                if resultados:
+                    self.actualizar_tabla_resultados(self.ui.table_manhattan, resultados)
+
+        except Exception as e:
+            print(f"Error al cargar resultados: {str(e)}")
+            QtWidgets.QMessageBox.warning(self, "Error", f"No se pudieron cargar los resultados: {str(e)}")
 
     def ejecutar_heuristica(self):
         seleccion = self.ui.comboBox.currentText()
