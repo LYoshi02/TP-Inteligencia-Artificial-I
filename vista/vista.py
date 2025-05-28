@@ -2,10 +2,11 @@ import re
 
 from PyQt6 import QtCore, QtWidgets
 from PyQt6.QtCore import Qt
-from PyQt6.QtGui import QColor
+from PyQt6.QtGui import QColor, QIcon
 from PyQt6.QtWidgets import QMainWindow, QFileDialog
 
 from constantes.heuristicas import HEURISTICAS
+from constantes.recursos import RUTAS_RECURSOS
 from controlador.controlador import Controlador
 from vista.escenas.escena_heuristica import EscenaHeuristica
 from vista.ui_main_window import Ui_MainWindow
@@ -18,6 +19,7 @@ class Vista(QMainWindow):
 
     def __init__(self):
         super().__init__()
+        self.setWindowIcon(QIcon(RUTAS_RECURSOS.IMAGENES.icono_ventana))
         self.ui = Ui_MainWindow()
         self.ui.setupUi(self)
         self.controlador = Controlador()

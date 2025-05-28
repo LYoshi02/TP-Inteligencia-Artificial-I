@@ -1,7 +1,7 @@
 import os, sys
 from dataclasses import dataclass
 
-def obtener_ruta_archivo(rel_path):
+def obtener_ruta_archivo(rel_path: str) -> str:
     if hasattr(sys, '_MEIPASS'):
         return os.path.join(sys._MEIPASS, rel_path)
     return os.path.join(os.path.abspath("."), rel_path)
@@ -20,6 +20,7 @@ class Imagenes:
     informacion: str
     pausa: str
     play: str
+    icono_ventana: str
 
 @dataclass
 class RutasRecursos:
@@ -38,6 +39,7 @@ RUTAS_RECURSOS = RutasRecursos(
         escoba=obtener_ruta_archivo("vista/images/icons8-escoba-48.png"),
         informacion=obtener_ruta_archivo("vista/images/icons8-información-50.png"),
         pausa=obtener_ruta_archivo("vista/images/icons8-pausa-50.png"),
-        play=obtener_ruta_archivo("vista/images/icons8-play-30.png")
+        play=obtener_ruta_archivo("vista/images/icons8-play-30.png"),
+        icono_ventana=obtener_ruta_archivo("vista/images/icons8-nodes-70.png")
     )
 )
