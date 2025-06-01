@@ -8,6 +8,7 @@ from constantes.heuristicas import HEURISTICAS
 from modelo.algoritmo.heuristica.distancia_manhattan import DistanciaManhattan
 from modelo.algoritmo.heuristica.distancia_linea_recta import DistanciaLineaRecta
 from modelo.algoritmo.heuristica.heuristica import Heuristica
+from modelo.algoritmo.heuristica.resultados_algoritmo import ResultadosAlgoritmo
 from modelo.algoritmo.recorrido_algoritmo import RecorridoAlgoritmo
 from modelo.grafo.arista import Arista
 from modelo.grafo.grafo import Grafo
@@ -166,33 +167,9 @@ class Controlador:
         self._procesos_busqueda = {}
 
     def obtener_resultados_algoritmo(self, heuristica: str) -> dict:
-        try:
-            recorrido = self._procesos_busqueda[heuristica]
-            if not recorrido:
-                print("Recorrido es None")
-                return self._resultados_por_defecto()
-
-            return {
-                "nro_paso" : recorrido.obtener_paso_actual().nro,
-                "objetivo_alcanzado": recorrido.verificar_objetivo_alcanzado(),
-                "ruta": recorrido.obtener_ruta() or [],
-                "costo_total": recorrido.obtener_costo_ruta() or 0.0,
-                "cantidad_nodos_explorados": recorrido.obtener_cantidad_nodos_explorados() or 0,
-                "tiempo_total": recorrido.tiempo_total or 0.0
-            }
-        except Exception as e:
-            print(f"Error grave al obtener resultados: {str(e)}")
-            return self._resultados_por_defecto()
-
-    def _resultados_por_defecto(self):
-        return {
-            "nro_paso" : 0,
-            "objetivo_alcanzado": False,
-            "ruta": [],
-            "costo_total": 0.0,
-            "cantidad_nodos_explorados": 0,
-            "tiempo_total": 0.0
-        }
+        recorrido = self._procesos_busqueda.get(heuristica)
+        resultados = ResultadosAlgoritmo(recorrido)
+        return resultados.to_dict()
 
     # Operaciones de archivos
     def cargar_archivo_grafo(self, ruta_archivo: str) -> bool:
