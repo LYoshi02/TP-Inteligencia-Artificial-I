@@ -219,14 +219,14 @@ class Ui_MainWindow(object):
 
         self.table_manhattan = QtWidgets.QTableWidget()
         self.table_manhattan.setColumnCount(6)
-        self.table_manhattan.setHorizontalHeaderLabels(["Nro de paso", "Cantidad de nodos", "Costo Total", "Tiempo Total", "Camino Encontrado", "Objetivo encontrado"])
+        self.table_manhattan.setHorizontalHeaderLabels(["Nro de paso", "Nodos Explorados", "Costo Total", "Tiempo Total", "Camino Encontrado", "Objetivo encontrado"])
         self.table_manhattan.horizontalHeader().setSectionResizeMode(QHeaderView.ResizeMode.ResizeToContents)
         self.table_manhattan.verticalHeader().setVisible(False)
         self.layoutWidget5.addWidget(self.table_manhattan)
 
         self.table_euclidiana = QtWidgets.QTableWidget()
         self.table_euclidiana.setColumnCount(6)
-        self.table_euclidiana.setHorizontalHeaderLabels(["Nro de paso", "Cantidad de nodos", "Costo Total", "Tiempo Total", "Camino Encontrado", "Objetivo encontrado"])
+        self.table_euclidiana.setHorizontalHeaderLabels(["Nro de paso", "Nodos Explorados", "Costo Total", "Tiempo Total", "Camino Encontrado", "Objetivo encontrado"])
         self.table_euclidiana.horizontalHeader().setSectionResizeMode(QHeaderView.ResizeMode.ResizeToContents)
         self.table_euclidiana.verticalHeader().setVisible(False)
         self.layoutWidget2.addWidget(self.table_euclidiana)

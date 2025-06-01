@@ -63,7 +63,7 @@ class Vista(QMainWindow):
 
         self.ui.groupBoxInstrucciones.setVisible(False)
         self.activar_botones_pasos(False)
-        self.mostrar_botones_archivo(False)
+        self.mostrar_botones_archivo(False, False)
 
     def _configurar_graphicsView(self, activo: bool):
         for view in [self.ui.graphicsView_manhattan, self.ui.graphicsView_euclidiana, self.ui.graphicsView_base]:
@@ -125,7 +125,6 @@ class Vista(QMainWindow):
             self.ui.pushButtonPlay.hide()
             self.ui.pushButtonPause.show()
             self.activar_botones_pasos(True)
-            self.mostrar_botones_archivo(False)
 
             if seleccion == "Ambos":
                 self.ejecutar_ambas_heuristicas()
@@ -207,7 +206,7 @@ class Vista(QMainWindow):
         self.activar_botones_pasos(False)
         self.ui.comboBox.setEnabled(True)
         self.mostrar_widget_resultados_y_referencias(False)
-        self.mostrar_botones_archivo(self.ui.radioButtonManual.isChecked())
+        self.mostrar_botones_archivo(self.ui.radioButtonManual.isChecked(), True)
 
 
     def obtener_estados(self, nodos):
@@ -266,7 +265,7 @@ class Vista(QMainWindow):
         self.ui.pushButtonPlay.show()
         self.ui.pushButtonPause.hide()
         self.mostrar_widget_resultados_y_referencias(False)
-        self.mostrar_botones_archivo(self.ui.radioButtonManual.isChecked())
+        self.mostrar_botones_archivo(self.ui.radioButtonManual.isChecked(), True)
         self.activar_botones_pasos(False)
 
         self.ui.widget_base.setDisabled(False)
@@ -303,7 +302,7 @@ class Vista(QMainWindow):
         self.ui.widget_base.setDisabled(False)
         self.ui.graphicsView_base.setDisabled(False)
 
-        self.mostrar_botones_archivo(modo_manual)
+        self.mostrar_botones_archivo(modo_manual, True)
 
         self.ui.infoButtonComboBox.setVisible(True)
         self.ui.labelComboBox.setVisible(True)
@@ -543,9 +542,9 @@ class Vista(QMainWindow):
             "Selecciona el tipo de heurística que se utilizará para calcular el camino."
         )
 
-    def mostrar_botones_archivo(self, visibilidad: bool):
-        self.ui.pushButtonCargarArchivo.setVisible(visibilidad)
-        self.ui.pushButtonGuardarArchivo.setVisible(visibilidad)
+    def mostrar_botones_archivo(self, modo_manual: bool, modo_ambos:bool):
+        self.ui.pushButtonCargarArchivo.setVisible(modo_manual)
+        self.ui.pushButtonGuardarArchivo.setVisible(modo_ambos)
 
     def cargar_archivo_grafo(self):
         path, _ = QFileDialog.getOpenFileName(None, "Cargar Grafo", "", "Archivos JSON (*.json)")
