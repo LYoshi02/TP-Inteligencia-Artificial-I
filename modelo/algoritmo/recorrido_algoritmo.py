@@ -26,8 +26,7 @@ class RecorridoAlgoritmo:
         paso_inicial = Paso(self._nro_paso_actual, nodo_inicio, self._grafo.obtener_aristas_nodo(nodo_inicio),
                             nodos_abiertos, nodos_cerrados, self.__construir_camino(nodo_inicio), False)
         self._pasos: dict[int, Paso] = {self._nro_paso_actual: paso_inicial}
-        self._tiempo_inicio = time.time()
-        self._tiempo_total = None
+        self._tiempos_por_paso: dict[int, float] = {}
 
     def __calcular_heuristicas(self, grafo: Grafo, nodo_objetivo: Nodo, heuristica: Heuristica) -> None:
         for nodo in grafo.obtener_nodos():
@@ -49,14 +48,17 @@ class RecorridoAlgoritmo:
         if paso_anterior.fin:
             # Se retrocede 1 paso, ya que la búsqueda finalizó y el paso actual no se procesa
             self._nro_paso_actual -= 1
-            self.__calcular_tiempo_final()
             print("La busqueda ya finalizó")
             return
 
         # Solo se aplica el algoritmo si no se calculó anteriormente el siguiente paso
         if not self._nro_paso_actual in self._pasos:
+            inicio = time.perf_counter()
             nuevo_paso = self.__aplicar_algoritmo(paso_anterior)
+            fin = time.perf_counter()
+
             self.__agregar_paso(nuevo_paso)
+            self._tiempos_por_paso[self._nro_paso_actual] = fin-inicio
 
     def ir_al_paso_inicial(self):
         while self.obtener_paso_actual().nro != NRO_PASO_INICIAL:
@@ -66,7 +68,6 @@ class RecorridoAlgoritmo:
         # TODO: revisar caso donde no se puede llegar al nodo objetivo
         while not self.obtener_paso_actual().fin:
             self.avanzar_paso()
-        self.__calcular_tiempo_final()
 
     def __aplicar_algoritmo(self, paso_anterior: Paso) -> Paso:
         nuevo_paso: Paso
@@ -145,10 +146,6 @@ class RecorridoAlgoritmo:
 
         return nodos_camino[::-1]
 
-    def __calcular_tiempo_final(self):
-        if self._tiempo_total is None:
-            self._tiempo_total = time.time() - self._tiempo_inicio
-
     #Resultados del recorrido
     def obtener_ruta(self) -> list[str]:
         paso_actual = self.obtener_paso_actual()
@@ -183,9 +180,8 @@ class RecorridoAlgoritmo:
         return self._nodo_objetivo
 
     @property
-    def tiempo_total(self):
-        try:
-            return float(self._tiempo_total) if self._tiempo_total is not None else 0.0
-        except Exception as e:
-            print(f"Error al obtener tiempo total: {str(e)}")
-            return 0.0
+    def tiempo_total(self) -> float:
+        return sum(
+            tiempo for paso, tiempo in self._tiempos_por_paso.items()
+            if paso <= self._nro_paso_actual
+        )

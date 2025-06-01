@@ -2,6 +2,8 @@ import json
 import math
 import random
 
+import networkx as nx
+
 from constantes.heuristicas import HEURISTICAS
 from modelo.algoritmo.heuristica.distancia_manhattan import DistanciaManhattan
 from modelo.algoritmo.heuristica.distancia_linea_recta import DistanciaLineaRecta
@@ -35,56 +37,29 @@ class Controlador:
     def generar_grafo_aleatorio(self, cant_nodos: int, ancho: float, alto: float) -> Grafo:
         self.restablecer_grafo()
 
-        print("ancho: ", ancho)
-        print("alto: ", alto)
+        probabilidad = (math.log(cant_nodos) + 1) / cant_nodos
+        while True: # Se genera el grafo hasta que sea conexo
+            grafo = nx.erdos_renyi_graph(n=cant_nodos, p=probabilidad)
+            if nx.is_connected(grafo):
+                break
 
-        centro_x = ancho / 6
-        centro_y = alto / 6
-        radio_externo = min(ancho, alto) / 3
-        radio_interno = radio_externo / 2
+        posiciones = nx.spring_layout(grafo)
+        nodos_generados = {}
 
-        nombres = ["N" + str(i + 1) for i in range(cant_nodos)]
+        for nodo in posiciones:
+            x, y = posiciones[nodo]
+            posiciones[nodo] = (x * ancho, y * alto) # Se escala las posiciones a la dimensión del graphicView
 
-        def agregar_nodos_en_circulo(nombres_nodos, radio):
-            total = len(nombres_nodos)
-            for i, nombre in enumerate(nombres_nodos):
-                angulo = 2 * math.pi * i / total
-                x = centro_x + radio * math.cos(angulo)
-                y = centro_y + radio * math.sin(angulo)
-                try:
-                    self.agregar_nodo(nombre, x, y)
-                except Exception as err:
-                    print(f"Error al agregar nodo {nombre}: {err}")
+        for nodo, (x, y) in posiciones.items():
+            nombre = f"N{nodo + 1}"
+            self.agregar_nodo(nombre, x, y)
+            nodos_generados[nodo] = self.obtener_nodo(nombre)
 
-        if cant_nodos < 5:
-            agregar_nodos_en_circulo(nombres, radio_externo)
-        else:
-            nodos_externos = cant_nodos // 2
-
-            agregar_nodos_en_circulo(nombres[:nodos_externos], radio_externo)
-            agregar_nodos_en_circulo(nombres[nodos_externos:], radio_interno)
-
-        nodos_creados = list(self._grafo.obtener_nodos())
-
-        for nodo_origen in nodos_creados:
-            posibles_destinos = [n for n in nodos_creados if n != nodo_origen]
-            random.shuffle(posibles_destinos)
-
-            cantidad_conexiones = random.randint(1, 2)
-            conexiones = 0
-
-            for destino in posibles_destinos:
-                if conexiones >= cantidad_conexiones:
-                    break
-
-                arista = Arista(nodo_origen, destino)
-                if arista not in self._grafo._nodos[nodo_origen]:
-                    costo = random.randint(1, 99)
-                    try:
-                        self.agregar_arista(nodo_origen, destino, costo)
-                        conexiones += 1
-                    except Exception as err:
-                        print(f"Error al agregar arista de {nodo_origen} a {destino}: {err}")
+        for nodo_origen, nodo_destino in grafo.edges():
+            origen = nodos_generados[nodo_origen]
+            destino = nodos_generados[nodo_destino]
+            costo = random.randint(0, 99)
+            self.agregar_arista(origen, destino, costo)
 
         return self._grafo
 
@@ -198,6 +173,7 @@ class Controlador:
                 return self._resultados_por_defecto()
 
             return {
+                "nro_paso" : recorrido.obtener_paso_actual().nro,
                 "objetivo_alcanzado": recorrido.verificar_objetivo_alcanzado(),
                 "ruta": recorrido.obtener_ruta() or [],
                 "costo_total": recorrido.obtener_costo_ruta() or 0.0,
@@ -210,6 +186,7 @@ class Controlador:
 
     def _resultados_por_defecto(self):
         return {
+            "nro_paso" : 0,
             "objetivo_alcanzado": False,
             "ruta": [],
             "costo_total": 0.0,

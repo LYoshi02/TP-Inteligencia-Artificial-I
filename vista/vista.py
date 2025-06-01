@@ -37,10 +37,15 @@ class Vista(QMainWindow):
         self.ui.widget_euclidiana.setVisible(False)
         self.ui.widget_base.setDisabled(True)
 
+        self.ui.graphicsView_base.installEventFilter(self)
+        self.ui.graphicsView_manhattan.installEventFilter(self)
+        self.ui.graphicsView_euclidiana.installEventFilter(self)
+
         self.ui.graphicsView_manhattan.setDisabled(True)
         self.ui.graphicsView_euclidiana.setDisabled(True)
         self.ui.graphicsView_base.setDisabled(True)
 
+        self.ui.widgetDatos.show()
         self.mostrar_widget_resultados_y_referencias(False)
 
         # Desactivar campos de datos
@@ -60,6 +65,18 @@ class Vista(QMainWindow):
         self.activar_botones_pasos(False)
         self.mostrar_botones_archivo(False)
 
+    def _configurar_graphicsView(self, activo: bool):
+        for view in [self.ui.graphicsView_manhattan, self.ui.graphicsView_euclidiana, self.ui.graphicsView_base]:
+            if activo:
+                view.setEnabled(True)
+                view.setInteractive(True)
+                view.setDragMode(QtWidgets.QGraphicsView.DragMode.RubberBandDrag)
+                view.viewport().setCursor(Qt.CursorShape.ArrowCursor)
+            else:
+                view.setEnabled(True)
+                view.setInteractive(False)
+                view.setDragMode(QtWidgets.QGraphicsView.DragMode.ScrollHandDrag)
+                view.viewport().setCursor(Qt.CursorShape.OpenHandCursor)
 
     # Centrar la ventana
     def centrar_ventana(self):
@@ -104,6 +121,7 @@ class Vista(QMainWindow):
                 return
 
             self.obtener_estados(nodos)
+            self.ui.widgetDatos.hide()
             self.ui.pushButtonPlay.hide()
             self.ui.pushButtonPause.show()
             self.activar_botones_pasos(True)
@@ -113,6 +131,8 @@ class Vista(QMainWindow):
                 self.ejecutar_ambas_heuristicas()
             else:
                 self.ejecutar_heuristica()
+
+            self._configurar_graphicsView(False)
 
             self.agregar_referencias()
             self.mostrar_widget_resultados_y_referencias(True)
@@ -158,6 +178,7 @@ class Vista(QMainWindow):
 
     def pausar_algoritmo(self):
         self.controlador.pausar_algoritmo()
+        self._configurar_graphicsView(True)
         seleccion = self.ui.comboBox.currentText()
         if seleccion == HEURISTICAS.distancia_euclidiana.texto:
             self.ui.widget_euclidiana.setVisible(False)
@@ -180,6 +201,7 @@ class Vista(QMainWindow):
 
         self.escenas_heuristicas.clear()
 
+        self.ui.widgetDatos.show()
         self.ui.pushButtonPlay.show()
         self.ui.pushButtonPause.hide()
         self.activar_botones_pasos(False)
@@ -239,6 +261,8 @@ class Vista(QMainWindow):
         self.controlador.restablecer_grafo()
 
         self.scene_B.deseleccionar_nodo_para_conectar()
+
+        self.ui.widgetDatos.show()
         self.ui.pushButtonPlay.show()
         self.ui.pushButtonPause.hide()
         self.mostrar_widget_resultados_y_referencias(False)
@@ -257,6 +281,7 @@ class Vista(QMainWindow):
 
         self.ui.widget_euclidiana.setVisible(False)
         self.ui.graphicsView_euclidiana.setDisabled(True)
+        self._configurar_graphicsView(True)
 
     def generar_grafo_aleatorio(self):
         grafo = self.controlador.generar_grafo_aleatorio(self.ui.spinBox.value(), self.ui.graphicsView_base.width(), self.ui.graphicsView_base.height())
@@ -393,17 +418,16 @@ class Vista(QMainWindow):
 
     def inicializar_tabla_resultados(self, tabla):
         tabla.setRowCount(1)
-        tabla.setColumnCount(5)
+        tabla.setColumnCount(6)
 
-        valores_iniciales = ["0", "0.00", "-", "-", "-"]
+        valores_iniciales = ["0", "0", "0.00", "-", "-", "-"]
 
         for col, valor in enumerate(valores_iniciales):
             item = QtWidgets.QTableWidgetItem(valor)
             item.setTextAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
             tabla.setItem(0, col, item)
 
-        tabla.horizontalHeader().setSectionResizeMode(QtWidgets.QHeaderView.ResizeMode.ResizeToContents)
-        tabla.horizontalHeader().setSectionResizeMode(3, QtWidgets.QHeaderView.ResizeMode.Stretch)
+        tabla.resizeColumnsToContents()
 
     def actualizar_tabla_resultados(self, tabla, resultados):
         try:
@@ -411,6 +435,7 @@ class Vista(QMainWindow):
                 raise ValueError("Resultados no es un diccionario válido")
 
             datos = [
+                str(resultados.get('nro_paso', 0)),
                 str(resultados.get('cantidad_nodos_explorados', 0)),
                 f"{float(resultados.get('costo_total')):.2f}" if resultados.get('costo_total') is not None else "-",
                 f"{float(resultados.get('tiempo_total')):.4f} seg" if resultados.get(
@@ -425,7 +450,7 @@ class Vista(QMainWindow):
             for col, valor in enumerate(datos):
                 item = QtWidgets.QTableWidgetItem(valor)
                 item.setTextAlignment(Qt.AlignmentFlag.AlignCenter)
-                if col == 4:
+                if col == 5:
                     item.setForeground(QColor("green") if valor == "✓" else QColor("red"))
                 tabla.setItem(0, col, item)
 
@@ -540,3 +565,22 @@ class Vista(QMainWindow):
             dialogo = QtWidgets.QDialog(self)
             dialogo.setWindowTitle("Guardar Grafo")
             QtWidgets.QMessageBox.warning(dialogo, "Error", "No se pudo guardar el grafo.")
+
+    def eventFilter(self, source, event): # zoom para los graphicsView
+        if isinstance(source, QtWidgets.QGraphicsView):
+            # zoom con Ctrl + rueda del mouse
+            if event.type() == QtCore.QEvent.Type.Wheel and QtWidgets.QApplication.keyboardModifiers() == QtCore.Qt.KeyboardModifier.ControlModifier:
+                zoom_factor = 1.15
+                if event.angleDelta().y() > 0:
+                    source.scale(zoom_factor, zoom_factor)
+                else:
+                    source.scale(1 / zoom_factor, 1 / zoom_factor)
+                return True
+
+            # doble clic para resetear zoom
+            elif event.type() == QtCore.QEvent.Type.MouseButtonDblClick:
+                source.resetTransform()
+                return True
+
+        return super().eventFilter(source, event)
+

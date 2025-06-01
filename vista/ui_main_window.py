@@ -22,6 +22,9 @@ class Ui_MainWindow(object):
         self.layoutDatos.setContentsMargins(10, 10, 10, 10)
         self.layoutDatos.setSpacing(20)
 
+        self.widgetDatos = QtWidgets.QWidget()
+        self.widgetDatos.setLayout(self.layoutDatos)
+
         self.separator1 = QtWidgets.QFrame()
         self.separator1.setFrameShape(QtWidgets.QFrame.Shape.HLine)
         self.separator1.setFrameShadow(QtWidgets.QFrame.Shadow.Sunken)
@@ -94,8 +97,8 @@ class Ui_MainWindow(object):
 
         self.spinBox = QtWidgets.QSpinBox()
         self.spinBox.setObjectName("spinBox")
-        self.spinBox.setMinimum(0)
-        self.spinBox.setMaximum(100)
+        self.spinBox.setMinimum(1)
+        self.spinBox.setMaximum(400)
         self.spinBox.setMinimumHeight(30)
         self.layoutControles.addWidget(self.spinBox)
 
@@ -215,15 +218,15 @@ class Ui_MainWindow(object):
         self.layoutWidget5.addWidget(self.labelWidget5)
 
         self.table_manhattan = QtWidgets.QTableWidget()
-        self.table_manhattan.setColumnCount(5)
-        self.table_manhattan.setHorizontalHeaderLabels(["Cantidad de nodos", "Costo Total", "Tiempo Total", "Camino Encontrado", "Objetivo encontrado"])
+        self.table_manhattan.setColumnCount(6)
+        self.table_manhattan.setHorizontalHeaderLabels(["Nro de paso", "Cantidad de nodos", "Costo Total", "Tiempo Total", "Camino Encontrado", "Objetivo encontrado"])
         self.table_manhattan.horizontalHeader().setSectionResizeMode(QHeaderView.ResizeMode.ResizeToContents)
         self.table_manhattan.verticalHeader().setVisible(False)
         self.layoutWidget5.addWidget(self.table_manhattan)
 
         self.table_euclidiana = QtWidgets.QTableWidget()
-        self.table_euclidiana.setColumnCount(5)
-        self.table_euclidiana.setHorizontalHeaderLabels(["Cantidad de nodos", "Costo Total", "Tiempo Total", "Camino Encontrado", "Objetivo encontrado"])
+        self.table_euclidiana.setColumnCount(6)
+        self.table_euclidiana.setHorizontalHeaderLabels(["Nro de paso", "Cantidad de nodos", "Costo Total", "Tiempo Total", "Camino Encontrado", "Objetivo encontrado"])
         self.table_euclidiana.horizontalHeader().setSectionResizeMode(QHeaderView.ResizeMode.ResizeToContents)
         self.table_euclidiana.verticalHeader().setVisible(False)
         self.layoutWidget2.addWidget(self.table_euclidiana)
@@ -299,7 +302,7 @@ class Ui_MainWindow(object):
         self.layoutMenu.addWidget(self.widget_menu)
         self.layoutMenu.addStretch()
 
-        self.horizontalLayout.addLayout(self.layoutDatos, 2)
+        self.horizontalLayout.addWidget(self.widgetDatos, 2)
         self.horizontalLayout.addLayout(self.layoutContenedorP, 10)
         self.horizontalLayout.addLayout(self.layoutMenu, 1)
 
