@@ -8,7 +8,7 @@ from constantes.heuristicas import HEURISTICAS
 from modelo.algoritmo.heuristica.distancia_manhattan import DistanciaManhattan
 from modelo.algoritmo.heuristica.distancia_linea_recta import DistanciaLineaRecta
 from modelo.algoritmo.heuristica.heuristica import Heuristica
-from modelo.algoritmo.heuristica.resultados_algoritmo import ResultadosAlgoritmo
+from modelo.algoritmo.resultados_algoritmo import ResultadosAlgoritmo
 from modelo.algoritmo.recorrido_algoritmo import RecorridoAlgoritmo
 from modelo.grafo.arista import Arista
 from modelo.grafo.grafo import Grafo
@@ -166,10 +166,10 @@ class Controlador:
         self._nodo_objetivo = None
         self._procesos_busqueda = {}
 
-    def obtener_resultados_algoritmo(self, heuristica: str) -> dict:
+    def obtener_resultados_algoritmo(self, heuristica: str) -> ResultadosAlgoritmo:
         recorrido = self._procesos_busqueda.get(heuristica)
         resultados = ResultadosAlgoritmo(recorrido)
-        return resultados.to_dict()
+        return resultados
 
     # Operaciones de archivos
     def cargar_archivo_grafo(self, ruta_archivo: str) -> bool:

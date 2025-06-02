@@ -8,6 +8,7 @@ from PyQt6.QtWidgets import QMainWindow, QFileDialog
 from constantes.heuristicas import HEURISTICAS
 from constantes.recursos import RUTAS_RECURSOS
 from controlador.controlador import Controlador
+from modelo.algoritmo.resultados_algoritmo import ResultadosAlgoritmo
 from vista.escenas.escena_heuristica import EscenaHeuristica
 from vista.ui_main_window import Ui_MainWindow
 from vista.grafo.arista_grafico import AristaGrafico
@@ -428,19 +429,15 @@ class Vista(QMainWindow):
 
         tabla.resizeColumnsToContents()
 
-    def actualizar_tabla_resultados(self, tabla, resultados):
+    def actualizar_tabla_resultados(self, tabla, resultados: ResultadosAlgoritmo):
         try:
-            if not resultados or not isinstance(resultados, dict):
-                raise ValueError("Resultados no es un diccionario válido")
-
             datos = [
-                str(resultados.get('nro_paso', 0)),
-                str(resultados.get('cantidad_nodos_explorados', 0)),
-                f"{float(resultados.get('costo_total')):.2f}" if resultados.get('costo_total') is not None else "-",
-                f"{float(resultados.get('tiempo_total')):.4f} seg" if resultados.get(
-                    'tiempo_total') is not None else "-",
-                " → ".join(resultados.get('ruta')) if isinstance(resultados.get('ruta'), list) else "No encontrado",
-                "✓" if resultados.get('objetivo_alcanzado', False) else "✗"
+                str(resultados.nro_paso),
+                str(resultados.cantidad_nodos_explorados),
+                f"{float(resultados.costo_total):.2f}" if resultados.costo_total is not None else "-",
+                f"{float(resultados.tiempo_total):.4f} seg" if resultados.tiempo_total is not None else "-",
+                " → ".join(resultados.ruta) if isinstance(resultados.ruta, list) else "No encontrado",
+                "✓" if resultados.objetivo_alcanzado else "✗"
             ]
 
             tabla.clearContents()
@@ -454,7 +451,6 @@ class Vista(QMainWindow):
                 tabla.setItem(0, col, item)
 
             tabla.resizeColumnsToContents()
-
         except Exception as e:
             print(f"Error al actualizar tabla: {str(e)}")
             self.inicializar_tabla_resultados(tabla)
