@@ -6,7 +6,7 @@ from PyQt6.QtWidgets import QGraphicsEllipseItem, QGraphicsTextItem, QMenu, QGra
 
 from modelo.grafo.nodo import Nodo
 
-TemaNodo = Literal["default", "seleccionado", "inicio", "actual", "cerrado", "abierto", "abierto_mejor", "camino"]
+TemaNodo = Literal["default", "seleccionado", "inicio", "actual", "cerrado", "abierto", "abierto_mejor", "camino", "objetivo"]
 
 class NodoGrafico(QGraphicsEllipseItem):
     def __init__(self, nodo: Nodo, radio=20):
@@ -33,19 +33,20 @@ class NodoGrafico(QGraphicsEllipseItem):
                 self.setPen(QPen(Qt.GlobalColor.black))
             case "seleccionado":
                 self.setBrush(QBrush(QColor("#333333")))
-                self.setPen(QPen(QColor("#555555")))
             case "inicio":
-                self.setBrush(QBrush(QColor("#ef233c")))
+                self.setBrush(QBrush(QColor("#8B6D5C")))
             case "actual":
-                self.setBrush(QBrush(QColor("#EE9B00")))
+                self.setBrush(QBrush(QColor("#C8AE6C")))
             case "cerrado":
                 self.setBrush(QBrush(QColor("#ced4da")))
             case "abierto":
-                self.setBrush(QBrush(QColor("#48cae4")))
+                self.setBrush(QBrush(QColor("#9C9CA3")))
             case "abierto_mejor":
-                self.setBrush(QBrush(QColor("#0077b6")))
+                self.setBrush(QBrush(QColor("#6E6E7F")))
             case "camino":
-                self.setBrush(QBrush(QColor("#ff5a5f")))
+                self.setBrush(QBrush(QColor("#C4B2A3")))
+            case "objetivo":
+                self.setBrush(QBrush(QColor("#A05240")))
 
     def contextMenuEvent(self, event):
         menu = QMenu()

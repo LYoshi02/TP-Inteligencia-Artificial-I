@@ -379,12 +379,13 @@ class Vista(QMainWindow):
 
     def agregar_referencias(self):
         colores = [
-            ("#ef233c", "Inicio"),
-            ("#EE9B00", "Actual"),
+            ("#8B6D5C", "Inicio"),
+            ("#A05240", "Objetivo"),
+            ("#C8AE6C", "Actual"),
             ("#ced4da", "Cerrado"),
-            ("#48cae4", "Abierto"),
-            ("#0077b6", "Abierto Mejor"),
-            ("#ff5a5f", "Camino"),
+            ("#9C9CA3", "Abierto"),
+            ("#6E6E7F", "Abierto Mejor"),
+            ("#C4B2A3", "Camino"),
             ("#487575", "Default")
         ]
 

@@ -72,12 +72,16 @@ class GrafoScene(QGraphicsScene):
         print("Nodo inicio: " + str(recorrido_algoritmo.nodo_inicio))
         if nodo_inicio_ui:
             nodo_inicio_ui.aplicar_tema("inicio")
+        nodo_objetivo_ui = nodos_graficados[recorrido_algoritmo.nodo_objetivo]
+        if nodo_objetivo_ui:
+            nodo_objetivo_ui.aplicar_tema("objetivo")
+
         # Pintar nodo actual
         if paso_actual.nodo_actual:
             nodo_actual_ui = nodos_graficados[paso_actual.nodo_actual]
             print("Nodo actual: " + str(paso_actual.nodo_actual))
             if nodo_actual_ui.nombre == recorrido_algoritmo.nodo_objetivo.nombre:
-                nodo_actual_ui.aplicar_tema("inicio")
+                nodo_actual_ui.aplicar_tema("objetivo")
             elif nodo_actual_ui:
                 nodo_actual_ui.aplicar_tema("actual")
 
