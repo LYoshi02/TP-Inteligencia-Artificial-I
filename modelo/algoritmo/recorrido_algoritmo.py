@@ -65,7 +65,6 @@ class RecorridoAlgoritmo:
             self.retroceder_paso()
 
     def ir_a_ultimo_paso(self) -> None:
-        # TODO: revisar caso donde no se puede llegar al nodo objetivo
         while not self.obtener_paso_actual().fin:
             self.avanzar_paso()
 

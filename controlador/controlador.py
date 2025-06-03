@@ -138,7 +138,6 @@ class Controlador:
             tecnica_heuristica = DistanciaLineaRecta()
         elif heuristica == HEURISTICAS.distancia_manhattan.nombre:
             tecnica_heuristica = DistanciaManhattan()
-        # TODO: ver como manejar este caso
         else:
             tecnica_heuristica = DistanciaLineaRecta()
 
