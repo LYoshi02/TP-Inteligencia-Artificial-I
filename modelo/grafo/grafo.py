@@ -1,5 +1,5 @@
-from grafo.arista import Arista
-from grafo.nodo import Nodo
+from modelo.grafo.arista import Arista
+from modelo.grafo.nodo import Nodo
 
 
 class Grafo:
@@ -27,6 +27,13 @@ class Grafo:
             return
         self._nodos[nodo] = set()
 
+    def actualizar_nodo(self, nodo_actualizado: Nodo):
+        if nodo_actualizado not in self._nodos:
+            print(f"actualizar_nodo - El nodo '{nodo_actualizado.nombre}' no existe en el diccionario")
+            return
+        aristas = self._nodos.pop(nodo_actualizado)
+        self._nodos[nodo_actualizado] = aristas
+
     # Elimina el nodo del diccionario y elimina todas las aristas de otros nodos
     # que conecten con el nodo que se quiere eliminar
     def eliminar_nodo(self, nodo_eliminar: Nodo):
@@ -41,6 +48,12 @@ class Grafo:
             if arista_eliminar in aristas:
                 aristas.remove(arista_eliminar)
 
+    # Restaura los costos de los nodos a su valor inicial
+    def restaurar_costos_nodos(self):
+        for nodo in self._nodos.keys():
+            nodo.costo_desde_inicio = float("inf")
+            nodo.heuristica = 0
+
     def obtener_aristas_nodo(self, nodo: Nodo) -> set[Arista] | None:
         if nodo not in self._nodos:
             print(f"obtener_aristas_nodo - El nodo '{nodo.nombre}' no se encuentra en el grafo")
@@ -49,7 +62,7 @@ class Grafo:
         return self._nodos.get(nodo)
 
     # Agrega una nueva arista a ambos nodos dentro del diccionario
-    def agregar_arista(self, nodo_origen: Nodo, nodo_destino: Nodo, distancia: float):
+    def agregar_arista(self, nodo_origen: Nodo, nodo_destino: Nodo, costo: float):
         if nodo_origen not in self._nodos:
             print(f"agregar_arista - El nodo '{nodo_origen.nombre}' no se encuentra en el grafo")
             return
@@ -67,7 +80,7 @@ class Grafo:
             self._nodos[nodo_destino].discard(nueva_arista)
 
         # Agrega una nueva arista al diccionario
-        nueva_arista.distancia = distancia
+        nueva_arista.costo = costo
         self._nodos[nodo_origen].add(nueva_arista)
         self._nodos[nodo_destino].add(nueva_arista)
 
@@ -88,6 +101,44 @@ class Grafo:
         else:
             print(
                 f"eliminar_arista - No existe la arista '{nodo_origen.nombre}---{nodo_destino.nombre}' que se quiere eliminar")
+
+    def to_dict(self):
+        nodos_data = [nodo.to_dict() for nodo in self._nodos.keys()]
+
+        aristas_guardadas = set()
+        aristas_data = []
+        for nodo, aristas in self._nodos.items():
+            for arista in aristas:
+                clave = frozenset([arista.nodo_origen.nombre, arista.nodo_destino.nombre])
+                if clave not in aristas_guardadas:
+                    aristas_data.append(arista.to_dict())
+                    aristas_guardadas.add(clave)
+
+        return {
+            "nodos": nodos_data,
+            "aristas": aristas_data,
+        }
+
+    @staticmethod
+    def from_dict(data: dict):
+        if not isinstance(data, dict):
+            raise Exception("El archivo no contiene un objeto JSON válido")
+        elif not "nodos" in data or not "aristas" in data:
+            raise Exception("El archivo no contiene un objeto JSON válido")
+
+        grafo = Grafo()
+        nombre_a_nodo = {}
+
+        for nodo_data in data["nodos"]:
+            nodo = Nodo.from_dict(nodo_data)
+            grafo.agregar_nodo(nodo)
+            nombre_a_nodo[nodo.nombre] = nodo
+
+        for arista_data in data["aristas"]:
+            arista = Arista.from_dict(arista_data, nombre_a_nodo)
+            grafo.agregar_arista(arista.nodo_origen, arista.nodo_destino, arista.costo)
+
+        return grafo
 
     # Imprimir nodos y aristas del grafo
     def __str__(self):
