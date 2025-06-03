@@ -3,7 +3,7 @@ import re
 from PyQt6 import QtCore, QtWidgets
 from PyQt6.QtCore import Qt
 from PyQt6.QtGui import QColor, QIcon
-from PyQt6.QtWidgets import QMainWindow, QFileDialog
+from PyQt6.QtWidgets import QMainWindow, QFileDialog, QHeaderView, QSizePolicy
 
 from constantes.heuristicas import HEURISTICAS
 from constantes.recursos import RUTAS_RECURSOS
@@ -379,13 +379,13 @@ class Vista(QMainWindow):
 
     def agregar_referencias(self):
         colores = [
-            ("#8B6D5C", "Inicio"),
-            ("#A05240", "Objetivo"),
-            ("#C8AE6C", "Actual"),
-            ("#ced4da", "Cerrado"),
-            ("#9C9CA3", "Abierto"),
-            ("#6E6E7F", "Abierto Mejor"),
-            ("#C4B2A3", "Camino"),
+            ("#9C4F4F", "Inicio"),
+            ("#B33939", "Objetivo"),
+            ("#BA8759", "Actual"),
+            ("#BEBEBE", "Cerrado"),
+            ("#8CA0B3", "Abierto"),
+            ("#3F5A78", "Abierto Mejor"),
+            ("#C3A6A1", "Camino"),
             ("#487575", "Default")
         ]
 
@@ -428,7 +428,7 @@ class Vista(QMainWindow):
             item.setTextAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
             tabla.setItem(0, col, item)
 
-        tabla.resizeColumnsToContents()
+      #  tabla.resizeColumnsToContents()
 
     def actualizar_tabla_resultados(self, tabla, resultados: ResultadosAlgoritmo):
         try:
@@ -450,11 +450,23 @@ class Vista(QMainWindow):
                 if col == 5:
                     item.setForeground(QColor("green") if valor == "✓" else QColor("red"))
                 tabla.setItem(0, col, item)
-
-            tabla.resizeColumnsToContents()
+            self.ajustarTabla(tabla)
         except Exception as e:
             print(f"Error al actualizar tabla: {str(e)}")
             self.inicializar_tabla_resultados(tabla)
+
+    def ajustarTabla(self, tabla): # Ajustamos el tamaño de las columnas
+        tabla.setSizePolicy(QSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Expanding))
+        tabla.setHorizontalScrollBarPolicy(Qt.ScrollBarPolicy.ScrollBarAsNeeded)
+        tabla.setVerticalScrollBarPolicy(Qt.ScrollBarPolicy.ScrollBarAsNeeded)
+        tabla.setWordWrap(True)
+        tabla.verticalHeader().setVisible(False)
+
+        header = tabla.horizontalHeader()
+        for i in range(tabla.columnCount()):
+            header.setSectionResizeMode(i, QHeaderView.ResizeMode.ResizeToContents)
+        tabla.resizeRowsToContents()
+        header.setStretchLastSection(True)
 
     def cargar_resultados(self):
         try:

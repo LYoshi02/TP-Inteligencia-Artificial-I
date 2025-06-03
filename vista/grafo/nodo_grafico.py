@@ -34,19 +34,19 @@ class NodoGrafico(QGraphicsEllipseItem):
             case "seleccionado":
                 self.setBrush(QBrush(QColor("#333333")))
             case "inicio":
-                self.setBrush(QBrush(QColor("#8B6D5C")))
+                self.setBrush(QBrush(QColor("#9C4F4F")))
             case "actual":
-                self.setBrush(QBrush(QColor("#C8AE6C")))
+                self.setBrush(QBrush(QColor("#BA8759")))
             case "cerrado":
-                self.setBrush(QBrush(QColor("#ced4da")))
+                self.setBrush(QBrush(QColor("#BEBEBE")))
             case "abierto":
-                self.setBrush(QBrush(QColor("#9C9CA3")))
+                self.setBrush(QBrush(QColor("#8CA0B3")))
             case "abierto_mejor":
-                self.setBrush(QBrush(QColor("#6E6E7F")))
+                self.setBrush(QBrush(QColor("#3F5A78")))
             case "camino":
-                self.setBrush(QBrush(QColor("#C4B2A3")))
+                self.setBrush(QBrush(QColor("#C3A6A1")))
             case "objetivo":
-                self.setBrush(QBrush(QColor("#A05240")))
+                self.setBrush(QBrush(QColor("#B33939")))
 
     def contextMenuEvent(self, event):
         menu = QMenu()

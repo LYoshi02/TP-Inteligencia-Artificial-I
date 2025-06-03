@@ -41,7 +41,7 @@ class AristaGrafico(QGraphicsItemGroup):
                 self.texto.setFont(QFont("Arial", 10))
             case "camino":
                 pen = QPen(QColor("#9B2226"))
-                pen.setWidth(2)
+                pen.setWidth(3)
                 self.linea.setPen(pen)
                 font = QFont("Arial", 10)
                 font.setBold(True)

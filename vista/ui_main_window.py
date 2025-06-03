@@ -220,14 +220,18 @@ class Ui_MainWindow(object):
         self.table_manhattan = QtWidgets.QTableWidget()
         self.table_manhattan.setColumnCount(6)
         self.table_manhattan.setHorizontalHeaderLabels(["Nro de paso", "Nodos Explorados", "Costo Total", "Tiempo Total", "Camino Encontrado", "Objetivo encontrado"])
-        self.table_manhattan.horizontalHeader().setSectionResizeMode(QHeaderView.ResizeMode.ResizeToContents)
+        #self.table_manhattan.horizontalHeader().setSectionResizeMode(QHeaderView.ResizeMode.ResizeToContents)
+        self.table_manhattan.setSizePolicy(QSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Expanding))
+        self.table_manhattan.horizontalHeader().setSectionResizeMode(QHeaderView.ResizeMode.Stretch)
         self.table_manhattan.verticalHeader().setVisible(False)
         self.layoutWidget5.addWidget(self.table_manhattan)
 
         self.table_euclidiana = QtWidgets.QTableWidget()
         self.table_euclidiana.setColumnCount(6)
         self.table_euclidiana.setHorizontalHeaderLabels(["Nro de paso", "Nodos Explorados", "Costo Total", "Tiempo Total", "Camino Encontrado", "Objetivo encontrado"])
-        self.table_euclidiana.horizontalHeader().setSectionResizeMode(QHeaderView.ResizeMode.ResizeToContents)
+        #self.table_euclidiana.horizontalHeader().setSectionResizeMode(QHeaderView.ResizeMode.ResizeToContents)
+        self.table_euclidiana.setSizePolicy(QSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Expanding))
+        self.table_euclidiana.horizontalHeader().setSectionResizeMode(QHeaderView.ResizeMode.Stretch)
         self.table_euclidiana.verticalHeader().setVisible(False)
         self.layoutWidget2.addWidget(self.table_euclidiana)
 
@@ -302,9 +306,9 @@ class Ui_MainWindow(object):
         self.layoutMenu.addWidget(self.widget_menu)
         self.layoutMenu.addStretch()
 
-        self.horizontalLayout.addWidget(self.widgetDatos, 2)
+        self.horizontalLayout.addWidget(self.widgetDatos, 1)
         self.horizontalLayout.addLayout(self.layoutContenedorP, 10)
-        self.horizontalLayout.addLayout(self.layoutMenu, 1)
+        self.horizontalLayout.addLayout(self.layoutMenu, 0)
 
         widgets_con_sombra = [
             self.widget_base, self.widget_manhattan, self.widget_manhattanResults, self.widget_euclidiana,
