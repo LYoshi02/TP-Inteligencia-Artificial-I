@@ -1,0 +1,821 @@
+{
+    "nodos": [
+        {
+            "nombre": "N1",
+            "x": 305.2925802026995,
+            "y": 117.40258448744038
+        },
+        {
+            "nombre": "N2",
+            "x": -94.81952964895517,
+            "y": 286.1203219724339
+        },
+        {
+            "nombre": "N3",
+            "x": 32.282513018962845,
+            "y": -121.73513409431823
+        },
+        {
+            "nombre": "N4",
+            "x": 62.88598551334049,
+            "y": 139.89194774511614
+        },
+        {
+            "nombre": "N5",
+            "x": 83.80203085493116,
+            "y": -213.90187655129367
+        },
+        {
+            "nombre": "N6",
+            "x": -53.636417633546635,
+            "y": -496.08922939443374
+        },
+        {
+            "nombre": "N7",
+            "x": 28.775682521704134,
+            "y": -312.52266286298874
+        },
+        {
+            "nombre": "N8",
+            "x": -336.16004996008354,
+            "y": 685.0900479796948
+        },
+        {
+            "nombre": "N9",
+            "x": -14.226063065907338,
+            "y": 49.396386791129274
+        },
+        {
+            "nombre": "N10",
+            "x": -168.60315788380916,
+            "y": 149.85879464741163
+        },
+        {
+            "nombre": "N11",
+            "x": -377.62978570640485,
+            "y": 87.03642436543882
+        },
+        {
+            "nombre": "N12",
+            "x": 98.874631166919,
+            "y": -305.56289921592145
+        },
+        {
+            "nombre": "N13",
+            "x": 199.5068520887878,
+            "y": 310.11301519449506
+        },
+        {
+            "nombre": "N14",
+            "x": 47.22834309399796,
+            "y": 310.68924441169037
+        },
+        {
+            "nombre": "N15",
+            "x": 195.41172514530945,
+            "y": -285.36344163247674
+        },
+        {
+            "nombre": "N16",
+            "x": -223.898749016162,
+            "y": 152.38408085735182
+        },
+        {
+            "nombre": "N17",
+            "x": 22.813675722797537,
+            "y": -207.2366983695033
+        },
+        {
+            "nombre": "N18",
+            "x": 251.61177367196015,
+            "y": -312.3179177071801
+        },
+        {
+            "nombre": "N19",
+            "x": -21.8667093804604,
+            "y": 962.0
+        },
+        {
+            "nombre": "N20",
+            "x": 176.36827653777215,
+            "y": -407.6821341090518
+        },
+        {
+            "nombre": "N21",
+            "x": -360.3157259815364,
+            "y": 418.93860078878794
+        },
+        {
+            "nombre": "N22",
+            "x": 480.37377215400744,
+            "y": 352.2205106791321
+        },
+        {
+            "nombre": "N23",
+            "x": -38.448468662326015,
+            "y": -248.61012345581582
+        },
+        {
+            "nombre": "N24",
+            "x": -229.4667666302807,
+            "y": -517.7610545501328
+        },
+        {
+            "nombre": "N25",
+            "x": -147.1124333713743,
+            "y": -179.06938944577718
+        },
+        {
+            "nombre": "N26",
+            "x": -12.921191520764395,
+            "y": 233.96273219274414
+        },
+        {
+            "nombre": "N27",
+            "x": -206.19500534084634,
+            "y": -329.29469162757715
+        },
+        {
+            "nombre": "N28",
+            "x": -92.72161606629135,
+            "y": -369.2073301111355
+        },
+        {
+            "nombre": "N29",
+            "x": -324.2752386935112,
+            "y": 235.9290009432232
+        },
+        {
+            "nombre": "N30",
+            "x": 152.0932387290135,
+            "y": 76.27638879312687
+        },
+        {
+            "nombre": "N31",
+            "x": 115.37285030579652,
+            "y": -28.300026057643908
+        },
+        {
+            "nombre": "N32",
+            "x": -213.15650177070256,
+            "y": 293.9795603645288
+        },
+        {
+            "nombre": "N33",
+            "x": 210.1289027097564,
+            "y": 52.07961247949876
+        },
+        {
+            "nombre": "N34",
+            "x": 148.64000189033138,
+            "y": -89.00296611012745
+        },
+        {
+            "nombre": "N35",
+            "x": 117.82770301489973,
+            "y": -413.7316897053241
+        },
+        {
+            "nombre": "N36",
+            "x": 145.09703606753848,
+            "y": -496.68735576116546
+        },
+        {
+            "nombre": "N37",
+            "x": 439.6459097110929,
+            "y": 172.0560492342895
+        },
+        {
+            "nombre": "N38",
+            "x": -311.88829198962486,
+            "y": -679.7121860737565
+        },
+        {
+            "nombre": "N39",
+            "x": -41.44356151494716,
+            "y": 612.492518429389
+        },
+        {
+            "nombre": "N40",
+            "x": -125.4415243578006,
+            "y": -36.80389346977652
+        },
+        {
+            "nombre": "N41",
+            "x": 341.10930608716444,
+            "y": 398.4081919540692
+        },
+        {
+            "nombre": "N42",
+            "x": -175.28941196782858,
+            "y": 350.72239429701045
+        },
+        {
+            "nombre": "N43",
+            "x": 259.1195723741645,
+            "y": -576.615671019928
+        },
+        {
+            "nombre": "N44",
+            "x": 197.5926626638288,
+            "y": -222.57648184309605
+        },
+        {
+            "nombre": "N45",
+            "x": 238.9789892998705,
+            "y": -71.43774504170341
+        },
+        {
+            "nombre": "N46",
+            "x": -262.7559165356962,
+            "y": 536.39090891216
+        },
+        {
+            "nombre": "N47",
+            "x": -193.87160031216303,
+            "y": 55.16806402710993
+        },
+        {
+            "nombre": "N48",
+            "x": -146.0571002363871,
+            "y": 611.7226927207296
+        },
+        {
+            "nombre": "N49",
+            "x": 17.597182204593096,
+            "y": 73.12377437445372
+        },
+        {
+            "nombre": "N50",
+            "x": -196.23037950382317,
+            "y": -802.2312504323277
+        }
+    ],
+    "aristas": [
+        {
+            "nodo_origen": "N1",
+            "nodo_destino": "N4",
+            "costo": 96
+        },
+        {
+            "nodo_origen": "N1",
+            "nodo_destino": "N30",
+            "costo": 12
+        },
+        {
+            "nodo_origen": "N1",
+            "nodo_destino": "N44",
+            "costo": 39
+        },
+        {
+            "nodo_origen": "N1",
+            "nodo_destino": "N22",
+            "costo": 38
+        },
+        {
+            "nodo_origen": "N2",
+            "nodo_destino": "N42",
+            "costo": 58
+        },
+        {
+            "nodo_origen": "N2",
+            "nodo_destino": "N14",
+            "costo": 71
+        },
+        {
+            "nodo_origen": "N2",
+            "nodo_destino": "N9",
+            "costo": 35
+        },
+        {
+            "nodo_origen": "N2",
+            "nodo_destino": "N46",
+            "costo": 66
+        },
+        {
+            "nodo_origen": "N2",
+            "nodo_destino": "N39",
+            "costo": 81
+        },
+        {
+            "nodo_origen": "N2",
+            "nodo_destino": "N25",
+            "costo": 8
+        },
+        {
+            "nodo_origen": "N2",
+            "nodo_destino": "N4",
+            "costo": 23
+        },
+        {
+            "nodo_origen": "N3",
+            "nodo_destino": "N44",
+            "costo": 95
+        },
+        {
+            "nodo_origen": "N3",
+            "nodo_destino": "N49",
+            "costo": 52
+        },
+        {
+            "nodo_origen": "N3",
+            "nodo_destino": "N20",
+            "costo": 19
+        },
+        {
+            "nodo_origen": "N3",
+            "nodo_destino": "N35",
+            "costo": 21
+        },
+        {
+            "nodo_origen": "N3",
+            "nodo_destino": "N23",
+            "costo": 11
+        },
+        {
+            "nodo_origen": "N3",
+            "nodo_destino": "N26",
+            "costo": 9
+        },
+        {
+            "nodo_origen": "N3",
+            "nodo_destino": "N5",
+            "costo": 9
+        },
+        {
+            "nodo_origen": "N3",
+            "nodo_destino": "N7",
+            "costo": 62
+        },
+        {
+            "nodo_origen": "N3",
+            "nodo_destino": "N10",
+            "costo": 19
+        },
+        {
+            "nodo_origen": "N4",
+            "nodo_destino": "N32",
+            "costo": 46
+        },
+        {
+            "nodo_origen": "N4",
+            "nodo_destino": "N45",
+            "costo": 64
+        },
+        {
+            "nodo_origen": "N4",
+            "nodo_destino": "N49",
+            "costo": 39
+        },
+        {
+            "nodo_origen": "N4",
+            "nodo_destino": "N17",
+            "costo": 40
+        },
+        {
+            "nodo_origen": "N5",
+            "nodo_destino": "N45",
+            "costo": 40
+        },
+        {
+            "nodo_origen": "N5",
+            "nodo_destino": "N34",
+            "costo": 57
+        },
+        {
+            "nodo_origen": "N5",
+            "nodo_destino": "N9",
+            "costo": 66
+        },
+        {
+            "nodo_origen": "N5",
+            "nodo_destino": "N6",
+            "costo": 24
+        },
+        {
+            "nodo_origen": "N6",
+            "nodo_destino": "N35",
+            "costo": 91
+        },
+        {
+            "nodo_origen": "N6",
+            "nodo_destino": "N25",
+            "costo": 89
+        },
+        {
+            "nodo_origen": "N6",
+            "nodo_destino": "N27",
+            "costo": 94
+        },
+        {
+            "nodo_origen": "N6",
+            "nodo_destino": "N36",
+            "costo": 57
+        },
+        {
+            "nodo_origen": "N6",
+            "nodo_destino": "N50",
+            "costo": 51
+        },
+        {
+            "nodo_origen": "N7",
+            "nodo_destino": "N20",
+            "costo": 76
+        },
+        {
+            "nodo_origen": "N7",
+            "nodo_destino": "N44",
+            "costo": 17
+        },
+        {
+            "nodo_origen": "N7",
+            "nodo_destino": "N40",
+            "costo": 8
+        },
+        {
+            "nodo_origen": "N8",
+            "nodo_destino": "N48",
+            "costo": 31
+        },
+        {
+            "nodo_origen": "N8",
+            "nodo_destino": "N21",
+            "costo": 30
+        },
+        {
+            "nodo_origen": "N8",
+            "nodo_destino": "N46",
+            "costo": 26
+        },
+        {
+            "nodo_origen": "N9",
+            "nodo_destino": "N30",
+            "costo": 96
+        },
+        {
+            "nodo_origen": "N10",
+            "nodo_destino": "N32",
+            "costo": 65
+        },
+        {
+            "nodo_origen": "N10",
+            "nodo_destino": "N16",
+            "costo": 3
+        },
+        {
+            "nodo_origen": "N10",
+            "nodo_destino": "N42",
+            "costo": 6
+        },
+        {
+            "nodo_origen": "N10",
+            "nodo_destino": "N26",
+            "costo": 16
+        },
+        {
+            "nodo_origen": "N10",
+            "nodo_destino": "N11",
+            "costo": 94
+        },
+        {
+            "nodo_origen": "N11",
+            "nodo_destino": "N47",
+            "costo": 45
+        },
+        {
+            "nodo_origen": "N12",
+            "nodo_destino": "N35",
+            "costo": 84
+        },
+        {
+            "nodo_origen": "N12",
+            "nodo_destino": "N28",
+            "costo": 98
+        },
+        {
+            "nodo_origen": "N12",
+            "nodo_destino": "N44",
+            "costo": 54
+        },
+        {
+            "nodo_origen": "N12",
+            "nodo_destino": "N30",
+            "costo": 27
+        },
+        {
+            "nodo_origen": "N13",
+            "nodo_destino": "N31",
+            "costo": 9
+        },
+        {
+            "nodo_origen": "N13",
+            "nodo_destino": "N14",
+            "costo": 15
+        },
+        {
+            "nodo_origen": "N14",
+            "nodo_destino": "N30",
+            "costo": 69
+        },
+        {
+            "nodo_origen": "N14",
+            "nodo_destino": "N49",
+            "costo": 68
+        },
+        {
+            "nodo_origen": "N14",
+            "nodo_destino": "N41",
+            "costo": 60
+        },
+        {
+            "nodo_origen": "N14",
+            "nodo_destino": "N42",
+            "costo": 15
+        },
+        {
+            "nodo_origen": "N14",
+            "nodo_destino": "N16",
+            "costo": 36
+        },
+        {
+            "nodo_origen": "N15",
+            "nodo_destino": "N43",
+            "costo": 59
+        },
+        {
+            "nodo_origen": "N15",
+            "nodo_destino": "N23",
+            "costo": 43
+        },
+        {
+            "nodo_origen": "N15",
+            "nodo_destino": "N18",
+            "costo": 76
+        },
+        {
+            "nodo_origen": "N15",
+            "nodo_destino": "N17",
+            "costo": 21
+        },
+        {
+            "nodo_origen": "N15",
+            "nodo_destino": "N45",
+            "costo": 85
+        },
+        {
+            "nodo_origen": "N15",
+            "nodo_destino": "N20",
+            "costo": 72
+        },
+        {
+            "nodo_origen": "N15",
+            "nodo_destino": "N33",
+            "costo": 43
+        },
+        {
+            "nodo_origen": "N16",
+            "nodo_destino": "N27",
+            "costo": 68
+        },
+        {
+            "nodo_origen": "N16",
+            "nodo_destino": "N42",
+            "costo": 36
+        },
+        {
+            "nodo_origen": "N16",
+            "nodo_destino": "N32",
+            "costo": 79
+        },
+        {
+            "nodo_origen": "N16",
+            "nodo_destino": "N21",
+            "costo": 12
+        },
+        {
+            "nodo_origen": "N16",
+            "nodo_destino": "N47",
+            "costo": 53
+        },
+        {
+            "nodo_origen": "N17",
+            "nodo_destino": "N47",
+            "costo": 11
+        },
+        {
+            "nodo_origen": "N17",
+            "nodo_destino": "N34",
+            "costo": 66
+        },
+        {
+            "nodo_origen": "N17",
+            "nodo_destino": "N35",
+            "costo": 35
+        },
+        {
+            "nodo_origen": "N17",
+            "nodo_destino": "N45",
+            "costo": 37
+        },
+        {
+            "nodo_origen": "N17",
+            "nodo_destino": "N27",
+            "costo": 29
+        },
+        {
+            "nodo_origen": "N17",
+            "nodo_destino": "N28",
+            "costo": 2
+        },
+        {
+            "nodo_origen": "N17",
+            "nodo_destino": "N36",
+            "costo": 24
+        },
+        {
+            "nodo_origen": "N18",
+            "nodo_destino": "N36",
+            "costo": 35
+        },
+        {
+            "nodo_origen": "N18",
+            "nodo_destino": "N35",
+            "costo": 72
+        },
+        {
+            "nodo_origen": "N18",
+            "nodo_destino": "N34",
+            "costo": 60
+        },
+        {
+            "nodo_origen": "N18",
+            "nodo_destino": "N31",
+            "costo": 86
+        },
+        {
+            "nodo_origen": "N19",
+            "nodo_destino": "N39",
+            "costo": 11
+        },
+        {
+            "nodo_origen": "N21",
+            "nodo_destino": "N29",
+            "costo": 92
+        },
+        {
+            "nodo_origen": "N21",
+            "nodo_destino": "N32",
+            "costo": 16
+        },
+        {
+            "nodo_origen": "N22",
+            "nodo_destino": "N41",
+            "costo": 95
+        },
+        {
+            "nodo_origen": "N23",
+            "nodo_destino": "N49",
+            "costo": 62
+        },
+        {
+            "nodo_origen": "N23",
+            "nodo_destino": "N31",
+            "costo": 34
+        },
+        {
+            "nodo_origen": "N23",
+            "nodo_destino": "N24",
+            "costo": 18
+        },
+        {
+            "nodo_origen": "N23",
+            "nodo_destino": "N25",
+            "costo": 64
+        },
+        {
+            "nodo_origen": "N23",
+            "nodo_destino": "N28",
+            "costo": 79
+        },
+        {
+            "nodo_origen": "N25",
+            "nodo_destino": "N28",
+            "costo": 93
+        },
+        {
+            "nodo_origen": "N26",
+            "nodo_destino": "N49",
+            "costo": 74
+        },
+        {
+            "nodo_origen": "N26",
+            "nodo_destino": "N39",
+            "costo": 12
+        },
+        {
+            "nodo_origen": "N26",
+            "nodo_destino": "N33",
+            "costo": 50
+        },
+        {
+            "nodo_origen": "N26",
+            "nodo_destino": "N34",
+            "costo": 25
+        },
+        {
+            "nodo_origen": "N26",
+            "nodo_destino": "N48",
+            "costo": 73
+        },
+        {
+            "nodo_origen": "N26",
+            "nodo_destino": "N47",
+            "costo": 21
+        },
+        {
+            "nodo_origen": "N27",
+            "nodo_destino": "N38",
+            "costo": 2
+        },
+        {
+            "nodo_origen": "N27",
+            "nodo_destino": "N28",
+            "costo": 36
+        },
+        {
+            "nodo_origen": "N29",
+            "nodo_destino": "N40",
+            "costo": 21
+        },
+        {
+            "nodo_origen": "N29",
+            "nodo_destino": "N42",
+            "costo": 48
+        },
+        {
+            "nodo_origen": "N31",
+            "nodo_destino": "N40",
+            "costo": 98
+        },
+        {
+            "nodo_origen": "N31",
+            "nodo_destino": "N33",
+            "costo": 63
+        },
+        {
+            "nodo_origen": "N32",
+            "nodo_destino": "N46",
+            "costo": 13
+        },
+        {
+            "nodo_origen": "N32",
+            "nodo_destino": "N47",
+            "costo": 50
+        },
+        {
+            "nodo_origen": "N35",
+            "nodo_destino": "N44",
+            "costo": 54
+        },
+        {
+            "nodo_origen": "N35",
+            "nodo_destino": "N43",
+            "costo": 86
+        },
+        {
+            "nodo_origen": "N36",
+            "nodo_destino": "N44",
+            "costo": 89
+        },
+        {
+            "nodo_origen": "N36",
+            "nodo_destino": "N43",
+            "costo": 72
+        },
+        {
+            "nodo_origen": "N37",
+            "nodo_destino": "N41",
+            "costo": 44
+        },
+        {
+            "nodo_origen": "N37",
+            "nodo_destino": "N45",
+            "costo": 53
+        },
+        {
+            "nodo_origen": "N38",
+            "nodo_destino": "N50",
+            "costo": 19
+        },
+        {
+            "nodo_origen": "N39",
+            "nodo_destino": "N48",
+            "costo": 71
+        },
+        {
+            "nodo_origen": "N44",
+            "nodo_destino": "N45",
+            "costo": 32
+        }
+    ]
+}
