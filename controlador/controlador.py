@@ -6,7 +6,7 @@ import networkx as nx
 
 from constantes.heuristicas import HEURISTICAS
 from modelo.algoritmo.heuristica.distancia_manhattan import DistanciaManhattan
-from modelo.algoritmo.heuristica.distancia_linea_recta import DistanciaLineaRecta
+from modelo.algoritmo.heuristica.distancia_euclidiana import DistanciaEuclidiana
 from modelo.algoritmo.heuristica.heuristica import Heuristica
 from modelo.algoritmo.resultados_algoritmo import ResultadosAlgoritmo
 from modelo.algoritmo.recorrido_algoritmo import RecorridoAlgoritmo
@@ -135,11 +135,11 @@ class Controlador:
     def __obtener_tecnica_heuristica(self, heuristica: str):
         tecnica_heuristica: Heuristica
         if heuristica == HEURISTICAS.distancia_euclidiana.nombre:
-            tecnica_heuristica = DistanciaLineaRecta()
+            tecnica_heuristica = DistanciaEuclidiana()
         elif heuristica == HEURISTICAS.distancia_manhattan.nombre:
             tecnica_heuristica = DistanciaManhattan()
         else:
-            tecnica_heuristica = DistanciaLineaRecta()
+            tecnica_heuristica = DistanciaEuclidiana()
 
         return tecnica_heuristica
 
